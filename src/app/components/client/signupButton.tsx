@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { DM_Sans } from "next/font/google";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 const sans = DM_Sans({ style: "normal", subsets: [] });
 
 export default function SignupButton() {
@@ -10,11 +9,11 @@ export default function SignupButton() {
   return (
     <>
       {path === "/" ? (
-        <DropdownMenuItem>
+        <li>
           <Link href={"/signup"} className={` ${sans.className}`}>
             Sign up
           </Link>
-        </DropdownMenuItem>
+        </li>
       ) : null}
     </>
   );

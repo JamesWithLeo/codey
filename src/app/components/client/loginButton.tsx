@@ -1,5 +1,4 @@
 "use client";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { DM_Sans } from "next/font/google";
 const sans = DM_Sans({ style: "normal", subsets: [] });
 
@@ -11,11 +10,11 @@ export default function LoginButton() {
   return (
     <>
       {path === "/" ? (
-        <DropdownMenuItem>
+        <li>
           <Link href={"/login"} className={` ${sans.className}`}>
             Login
           </Link>
-        </DropdownMenuItem>
+        </li>
       ) : null}
     </>
   );

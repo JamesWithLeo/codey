@@ -13,15 +13,9 @@ export default function AdminAside() {
     >
       <div className="grid grid-rows-10 w-full h-full group">
         <Link
-          href={"/"}
-          className="pl-8 border-l-4 row-start-2 hover:bg-gray-100 items-center flex"
-        >
-          Home
-        </Link>
-        <Link
-          href={"/admin/dashboard"}
+          href={"/admin"}
           className={[
-            path === "/admin/dashboard"
+            path === "/admin"
               ? "text-primary border-primary"
               : "border-transparent",
             "pl-8 items-center hover:bg-gray-100 border-l-4 flex row-start-3",
@@ -41,9 +35,6 @@ export default function AdminAside() {
         >
           Settings
         </Link>
-        <button className="row-start-9 text-left pl-8 items-center text-black">
-          Sign Out
-        </button>
       </div>
     </main>
   );

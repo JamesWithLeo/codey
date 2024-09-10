@@ -12,5 +12,16 @@ model users {
   firstname String
   lastname  String
   createdAt DateTime @default(now())
+}
 
+model product {
+  id          Int     @id @unique()@default(autoincrement())
+  name        String  
+  category    String
+  price       Int
+  description String
+  imageUrl    String
+  stock       Int
+  brand       String
+  isFeatured  Boolean
 }

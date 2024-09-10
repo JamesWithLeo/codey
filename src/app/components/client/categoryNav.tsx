@@ -5,11 +5,44 @@ import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
 export default function CategoryNav() {
   const path = usePathname();
-  if (path === "/login" || path === "/signup") return null;
+  if (
+    path === "/login" ||
+    path === "/signup" ||
+    path === "/admin" ||
+    path === "/admin/dashboard" ||
+    path === "/admin/settings"
+  )
+    return null;
   return (
     <section
       className={`flex gap-8 ${sans.className} border-t pt-2 flex justify-between px-8 text-xs items-center font-light `}
     >
+      <span
+        className={`flex items-center flex-col cursor-pointer text-gray-500`}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          fill="currentColor"
+          viewBox="0 0 256 256"
+        >
+          <path
+            d="M224,64V192a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V64a8,8,0,0,1,8-8H216A8,8,0,0,1,224,64Z"
+            opacity="0.2"
+          ></path>
+          <path d="M216,48H40A16,16,0,0,0,24,64V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V64A16,16,0,0,0,216,48ZM104,144V112h48v32Zm48,16v32H104V160ZM40,112H88v32H40Zm64-16V64h48V96Zm64,16h48v32H168Zm48-16H168V64h48ZM88,64V96H40V64ZM40,160H88v32H40Zm176,32H168V160h48v32Z"></path>
+        </svg>
+        <Link
+          href={"/"}
+          className={[
+            path === "/" ? "border-primary" : "border-white",
+            "border-b-2 ",
+          ].join(" ")}
+        >
+          All
+        </Link>
+      </span>
       <span
         className={`flex items-center flex-col cursor-pointer text-gray-500`}
       >
@@ -57,7 +90,7 @@ export default function CategoryNav() {
         >
           <path d="M215.79,118.17a8,8,0,0,0-5-5.66L153.18,90.9l14.66-73.33a8,8,0,0,0-13.69-7l-112,120a8,8,0,0,0,3,13l57.63,21.61L88.16,238.43a8,8,0,0,0,13.69,7l112-120A8,8,0,0,0,215.79,118.17ZM109.37,214l10.47-52.38a8,8,0,0,0-5-9.06L62,132.71l84.62-90.66L136.16,94.43a8,8,0,0,0,5,9.06l52.8,19.8Z"></path>
         </svg>
-        <h1>Electrical Tools</h1>
+        <h1>Electrical</h1>
       </span>
 
       <span className="flex items-center flex-col text-gray-500">
@@ -70,7 +103,7 @@ export default function CategoryNav() {
         >
           <path d="M232,104H208V56h24a8,8,0,0,0,0-16H205.83A16,16,0,0,0,192,32H176a16,16,0,0,0-13.83,8H144A104.11,104.11,0,0,0,40,144v18.16A16,16,0,0,0,32,176v16a16,16,0,0,0,8,13.84V232a8,8,0,0,0,16,0V208h48v24a8,8,0,0,0,16,0V205.84A16,16,0,0,0,128,192V176a16,16,0,0,0-8-13.84V144a24,24,0,0,1,24-24h18.17A16,16,0,0,0,176,128h16a16,16,0,0,0,13.83-8H232a8,8,0,0,0,0-16ZM112,176v16H48V176Zm-8-32v16H56V144a88.1,88.1,0,0,1,88-88h16v48H144A40,40,0,0,0,104,144Zm72-32V48h16v63.8c0,.07,0,.13,0,.2Z"></path>
         </svg>
-        <h1>Plumbing Tools</h1>
+        <h1>Plumbing</h1>
       </span>
 
       <span className="flex items-center flex-col text-gray-500">

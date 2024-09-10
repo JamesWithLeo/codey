@@ -1,6 +1,6 @@
 import Image from "next/image";
 interface Product {
-  id: string;
+  id: Number;
   name: string;
   category: string;
   price: number;
@@ -10,18 +10,13 @@ interface Product {
   brand: string;
   isFeatured: boolean; // If you want to feature some products
 }
-export default function Card() {
+export default function Card({ object }: { object: Product }) {
   return (
     <section className="p-2 w-full h-96 rounded border border-gray-100">
-      <Image
-        src={"https://picsum.photos/200"}
-        width={1000}
-        height={1000}
-        alt=""
-      />
-      <h1>Hammer</h1>
-
-      <h1>$23.32</h1>
+      {/* https://picsum.photos/200 */}
+      <Image src={object.imageUrl} width={1000} height={1000} alt="" />
+      <h1>{object.name}</h1>
+      <h1>${object.price}</h1>
       <button className="btn h-8 btn-sm">Add to cart</button>
     </section>
   );

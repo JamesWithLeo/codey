@@ -1,8 +1,9 @@
 "use client";
 
-import { ChangeEvent, ChangeEventHandler } from "react";
+import { ChangeEvent, MouseEventHandler, useState } from "react";
 
 export default function AddProduct() {
+  const [isLoading, setIsloading] = useState<boolean>(false);
   function HandleReset() {
     const nameInput = document.getElementById("nameInput") as HTMLInputElement;
     const priceInput = document.getElementById(
@@ -32,7 +33,9 @@ export default function AddProduct() {
     descriptionInput.value = "";
     isFeaturedInput.checked = false;
   }
-  async function HandleAdd() {
+  async function HandleAdd(
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) {
     const nameInput = document.getElementById("nameInput") as HTMLInputElement;
     const priceInput = document.getElementById(
       "priceInput",
@@ -82,6 +85,8 @@ export default function AddProduct() {
       return true;
     });
     if (!result) return; // exit function since requirements doesn't met
+    setIsloading(true);
+    event.currentTarget.disabled = true;
     const newProduct = {
       name: name,
       price: price,
@@ -102,6 +107,8 @@ export default function AddProduct() {
     const insertedProduct = await response.json();
     console.log(insertedProduct);
     HandleReset();
+    setIsloading(false);
+    event.currentTarget.disabled = false;
   }
 
   function HandleOnChange(
@@ -115,7 +122,7 @@ export default function AddProduct() {
 
   return (
     <>
-      <section className="flex flex-col gap-2" onSubmit={HandleAdd}>
+      <section className="flex flex-col gap-2">
         <div className="h-max flex-col gap-2 grid grid-cols-2">
           <label className="form-control w-full max-w-xs">
             <div className="label">
@@ -209,6 +216,9 @@ export default function AddProduct() {
         </div>
         <div className="w-full flex gap-2">
           <button className="btn flex-1 bg-primary" onClick={HandleAdd}>
+            {isLoading ? (
+              <span className="loading loading-spinner"></span>
+            ) : null}
             Add product
           </button>
           <button className="btn" onClick={HandleReset}>

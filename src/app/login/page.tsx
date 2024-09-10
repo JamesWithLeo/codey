@@ -4,6 +4,7 @@ import { DM_Sans } from "next/font/google";
 import Link from "next/link";
 const sans = DM_Sans({ subsets: [] });
 import { signIn } from "next-auth/react";
+
 export default function LoginPage() {
   return (
     <div className={`flex flex-col items-center h-dvh gap-4  justify-center`}>

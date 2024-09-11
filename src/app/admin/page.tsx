@@ -1,10 +1,9 @@
-import { getServerSession } from "next-auth";
-import AddProduct from "../components/client/addProduct";
+import ProductStat from "../components/server/productStat";
 
 export default async function AdminPage() {
   return (
-    <main className="flex h-dvh w-full p-2">
-      <AddProduct />
+    <main className="flex h-dvh w-full p-2 gap-2">
+      <ProductStat />
     </main>
   );
 }

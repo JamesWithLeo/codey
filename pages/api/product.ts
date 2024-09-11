@@ -8,7 +8,6 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "GET":
-      const { query } = req.query;
       const products = await prisma.product.findMany();
       res.status(200).json({ ok: 1, products });
       return;

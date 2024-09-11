@@ -1,18 +1,28 @@
+import { Suspense } from "react";
 import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-import Card from "../components/client/card";
+import SkeletonCard from "../components/server/skeletonCard";
+import ProductList from "../components/client/productList";
 
-export default async function Page() {
+const prisma = new PrismaClient();
+
+async function getProduct() {
   const products = await prisma.product.findMany({
-    where: { category: "Plumbing Tools" },
+    where: { category: "plumbing" },
   });
+
+  return products;
+}
+export default async function Page() {
+  const products = getProduct();
 
   return (
     <main className="min-h-dvh my-2 px-8 items-center flex flex-col">
       <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-7xl">
-        {products.map((product) => {
-          return <Card key={product.id} object={product} />;
-        })}
+        <Suspense fallback={<SkeletonCard />}>
+          <>
+            <ProductList promise={products} />
+          </>
+        </Suspense>
       </div>
     </main>
   );

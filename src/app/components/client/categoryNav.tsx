@@ -10,7 +10,8 @@ export default function CategoryNav() {
     path === "/signup" ||
     path === "/admin" ||
     path === "/admin/dashboard" ||
-    path === "/admin/settings"
+    path === "/admin/settings" ||
+    path?.startsWith("/p/")
   )
     return null;
   return (
@@ -67,7 +68,29 @@ export default function CategoryNav() {
             Hand Tools
           </Link>
         </span>
-
+        <span
+          className={`flex items-center flex-col cursor-pointer text-gray-500`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="28"
+            height="28"
+            fill="currentColor"
+            viewBox="0 0 256 256"
+          >
+            <path d="M215.79,118.17a8,8,0,0,0-5-5.66L153.18,90.9l14.66-73.33a8,8,0,0,0-13.69-7l-112,120a8,8,0,0,0,3,13l57.63,21.61L88.16,238.43a8,8,0,0,0,13.69,7l112-120A8,8,0,0,0,215.79,118.17ZM109.37,214l10.47-52.38a8,8,0,0,0-5-9.06L62,132.71l84.62-90.66L136.16,94.43a8,8,0,0,0,5,9.06l52.8,19.8Z"></path>
+          </svg>
+          <Link
+            href={"/powertools"}
+            id="handTools"
+            className={[
+              path === "/powertools" ? "border-primary" : "border-white",
+              "border-b-2 ",
+            ].join(" ")}
+          >
+            Power Tools
+          </Link>
+        </span>
         <span className="flex items-center flex-col text-gray-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -92,12 +115,12 @@ export default function CategoryNav() {
         <span className="flex items-center flex-col text-gray-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
+            width="28"
+            height="28"
             fill="currentColor"
             viewBox="0 0 256 256"
           >
-            <path d="M215.79,118.17a8,8,0,0,0-5-5.66L153.18,90.9l14.66-73.33a8,8,0,0,0-13.69-7l-112,120a8,8,0,0,0,3,13l57.63,21.61L88.16,238.43a8,8,0,0,0,13.69,7l112-120A8,8,0,0,0,215.79,118.17ZM109.37,214l10.47-52.38a8,8,0,0,0-5-9.06L62,132.71l84.62-90.66L136.16,94.43a8,8,0,0,0,5,9.06l52.8,19.8Z"></path>
+            <path d="M149.66,138.34a8,8,0,0,0-11.32,0L120,156.69,99.31,136l18.35-18.34a8,8,0,0,0-11.32-11.32L88,124.69,69.66,106.34a8,8,0,0,0-11.32,11.32L64.69,124,41.37,147.31a32,32,0,0,0,0,45.26l5.38,5.37-28.41,28.4a8,8,0,0,0,11.32,11.32l28.4-28.41,5.37,5.38a32,32,0,0,0,45.26,0L132,191.31l6.34,6.35a8,8,0,0,0,11.32-11.32L131.31,168l18.35-18.34A8,8,0,0,0,149.66,138.34Zm-52.29,65a16,16,0,0,1-22.62,0L52.69,181.25a16,16,0,0,1,0-22.62L76,135.31,120.69,180Zm140.29-185a8,8,0,0,0-11.32,0l-28.4,28.41-5.37-5.38a32.05,32.05,0,0,0-45.26,0L124,64.69l-6.34-6.35a8,8,0,0,0-11.32,11.32l80,80a8,8,0,0,0,11.32-11.32L191.31,132l23.32-23.31a32,32,0,0,0,0-45.26l-5.38-5.37,28.41-28.4A8,8,0,0,0,237.66,18.34Zm-34.35,79L180,120.69,135.31,76l23.32-23.31a16,16,0,0,1,22.62,0l22.06,22A16,16,0,0,1,203.31,97.37Z"></path>
           </svg>
           <Link
             href={"/electrical"}
@@ -142,9 +165,9 @@ export default function CategoryNav() {
             <path d="M128,80a48,48,0,1,0,48,48A48.06,48.06,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm95.68-93.85L135.68,18a15.88,15.88,0,0,0-15.36,0l-88,48.17a16,16,0,0,0-8.32,14v95.64a16,16,0,0,0,8.32,14l88,48.17a15.88,15.88,0,0,0,15.36,0l88-48.17h0a16,16,0,0,0,8.32-14V80.18A16,16,0,0,0,223.68,66.15ZM128,224,40,175.82V80.18L128,32l88,48.17v95.64Z"></path>
           </svg>
           <Link
-            href={"/fastener"}
+            href={"/fasteners"}
             className={[
-              path === "/fastener" ? "border-primary" : "border-white",
+              path === "/fasteners" ? "border-primary" : "border-white",
               "border-b-2 ",
             ].join(" ")}
           >
@@ -163,9 +186,9 @@ export default function CategoryNav() {
             <path d="M224,152V136a96.37,96.37,0,0,0-64-90.51V40a16,16,0,0,0-16-16H112A16,16,0,0,0,96,40v5.49A96.37,96.37,0,0,0,32,136v16a16,16,0,0,0-16,16v24a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V168A16,16,0,0,0,224,152Zm-16-16v16H160V62.67A80.36,80.36,0,0,1,208,136ZM144,40V152H112V40ZM48,136A80.36,80.36,0,0,1,96,62.67V152H48Zm176,56H32V168H224v24Z"></path>
           </svg>
           <Link
-            href={"/safety"}
+            href={"/safetygears"}
             className={[
-              path === "/safety" ? "border-primary" : "border-white",
+              path === "/safetygears" ? "border-primary" : "border-white",
               "border-b-2 ",
             ].join(" ")}
           >
@@ -184,9 +207,9 @@ export default function CategoryNav() {
             <path d="M248,200h-8a8,8,0,0,1-8-8V160a8,8,0,0,1,8-8h8a8,8,0,0,0,0-16h-8a24,24,0,0,0-24,24v8H199.2a40.09,40.09,0,0,0-33.71-31.61L129.44,49.85A16,16,0,0,0,114.67,40H24A16,16,0,0,0,8,56v96a40,40,0,0,0,32,64H160a40.07,40.07,0,0,0,39.2-32H216v8a24,24,0,0,0,24,24h8a8,8,0,0,0,0-16ZM148,136H64V56h50.67ZM48,56v80H40a39.72,39.72,0,0,0-16,3.35V56ZM160,200H40a24,24,0,0,1,0-48H160a24,24,0,0,1,0,48Zm8-24a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H160A8,8,0,0,1,168,176Z"></path>
           </svg>
           <Link
-            href={"/machinery"}
+            href={"/machineries"}
             className={[
-              path === "/machinery" ? "border-primary" : "border-white",
+              path === "/machineries" ? "border-primary" : "border-white",
               "border-b-2 ",
             ].join(" ")}
           >

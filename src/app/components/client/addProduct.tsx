@@ -26,6 +26,7 @@ export default function AddProduct() {
     const isFeaturedInput = document.getElementById(
       "isFeaturedInput",
     ) as HTMLInputElement;
+
     nameInput.value = "";
     priceInput.value = "";
     stockInput.value = "";
@@ -59,6 +60,7 @@ export default function AddProduct() {
     const isFeaturedInput = document.getElementById(
       "isFeaturedInput",
     ) as HTMLInputElement;
+
     const name = nameInput.value;
     const price = priceInput.value;
     const stock = stockInput.value;
@@ -209,14 +211,14 @@ export default function AddProduct() {
               className="select-bordered select select-sm"
               id="categoryInput"
             >
-              <option>Hand Tools</option>
-              <option>Power Tools</option>
-              <option>Construction Materials</option>
-              <option>Electrical Tools</option>
-              <option>Plumbing Tools</option>
-              <option>Fasteners</option>
-              <option>Safety Gear</option>
-              <option>Machinery</option>
+              <option value={"handtools"}>Hand Tools</option>
+              <option value={"powertools"}>Power Tools</option>
+              <option value={"materials"}>Construction Materials</option>
+              <option value={"electrical"}>Electrical Tools</option>
+              <option value={"plumbing"}>Plumbing Tools</option>
+              <option value={"fasteners"}>Fasteners</option>
+              <option value={"safetygears"}>Safety Gear</option>
+              <option value={"machineries"}>Machinery</option>
             </select>
           </label>
           <label className="form-control col-span-2 w-full">

@@ -1,4 +1,3 @@
-"use client";
 import Card from "./card";
 import { use } from "react";
 import { DM_Sans } from "next/font/google";

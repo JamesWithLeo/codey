@@ -1,4 +1,6 @@
+"use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface Product {
   id: Number;
@@ -12,13 +14,35 @@ interface Product {
   isFeatured: boolean; // If you want to feature some products
 }
 export default function Card({ object }: { object: Product }) {
+  const router = useRouter();
+  function HandleViewProduct() {
+    console.log("hello");
+    router.push(`/p/${object.id}/`);
+  }
   return (
-    <section className="p-2 w-full h-96 rounded border border-gray-100">
+    <section
+      className="card card-compact w-full border rounded-sm hover:shadow-md border-gray-100 "
+      onClick={HandleViewProduct}
+    >
       {/* https://picsum.photos/200 */}
-      <Image src={object.imageUrl} width={1000} height={1000} alt="" priority />
-      <h1>{object.name}</h1>
-      <h1>${object.price}</h1>
-      <button className="btn h-8 btn-sm">Add to cart</button>
+      <figure>
+        <Image
+          src={object.imageUrl}
+          width={1000}
+          height={1000}
+          alt=""
+          priority
+        />
+      </figure>
+      <div className="card-body">
+        <h1 className="card-title">{object.name}</h1>
+        <h1>${object.price}</h1>
+        <div className="card-actions justify-end ">
+          <button className="btn h-8 btn-sm" onClick={() => {}}>
+            Add to cart
+          </button>
+        </div>
+      </div>
     </section>
   );
 }

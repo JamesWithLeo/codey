@@ -5,7 +5,7 @@ import ProductList from "../components/client/productList";
 const prisma = new PrismaClient();
 async function getProduct() {
   const products = await prisma.product.findMany({
-    where: { category: "electrical" },
+    where: { category: "fasteners" },
   });
   return products;
 }

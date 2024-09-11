@@ -5,7 +5,7 @@ import Card from "./components/client/card";
 import { PrismaClient } from "@prisma/client";
 import { Suspense } from "react";
 import ProductList from "./components/client/productList";
-import SkeletonCard from "./components/client/skeletonCard";
+import SkeletonCard from "./components/server/skeletonCard";
 const prisma = new PrismaClient();
 
 async function getProduct() {

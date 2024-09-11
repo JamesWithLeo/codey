@@ -7,8 +7,8 @@ export default async function Page() {
     where: { category: "Electrical Tools" },
   });
   return (
-    <main className="w-full my-2 h-dvh flex px-8 flex-col items-center justify-center">
-      <div className="h-full grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
+    <main className="min-h-dvh my-2 px-8 items-center flex flex-col">
+      <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-7xl">
         {products.map((product) => {
           return <Card key={product.id} object={product} />;
         })}

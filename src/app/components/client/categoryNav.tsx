@@ -2,7 +2,7 @@
 import { DM_Sans } from "next/font/google";
 const sans = DM_Sans({ style: "normal", subsets: [] });
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 export default function CategoryNav() {
   const path = usePathname();
   if (

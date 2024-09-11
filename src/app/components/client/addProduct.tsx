@@ -4,6 +4,7 @@ import { ChangeEvent, MouseEventHandler, useState } from "react";
 
 export default function AddProduct() {
   const [isLoading, setIsloading] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   function HandleReset() {
     const nameInput = document.getElementById("nameInput") as HTMLInputElement;
     const priceInput = document.getElementById(
@@ -86,7 +87,7 @@ export default function AddProduct() {
     });
     if (!result) return; // exit function since requirements doesn't met
     setIsloading(true);
-    event.currentTarget.disabled = true;
+    console.log(event.target);
     const newProduct = {
       name: name,
       price: price,
@@ -108,7 +109,10 @@ export default function AddProduct() {
     console.log(insertedProduct);
     HandleReset();
     setIsloading(false);
-    event.currentTarget.disabled = false;
+    setIsSuccess(true);
+    setTimeout(() => {
+      setIsSuccess(false);
+    }, 3000);
   }
 
   function HandleOnChange(
@@ -122,6 +126,28 @@ export default function AddProduct() {
 
   return (
     <>
+      {isSuccess ? (
+        <div
+          role="alert"
+          className="alert shadow-lg fixed left-1/2 w-[96%] -translate-x-1/2  top-4 z-10"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 shrink-0 stroke-current"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              color="#FF8225"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span>New Product Added!</span>
+        </div>
+      ) : null}
       <section className="flex flex-col gap-2">
         <div className="h-max flex-col gap-2 grid grid-cols-2">
           <label className="form-control w-full max-w-xs">
@@ -190,6 +216,7 @@ export default function AddProduct() {
               <option>Plumbing Tools</option>
               <option>Fasteners</option>
               <option>Safety Gear</option>
+              <option>Machinery</option>
             </select>
           </label>
           <label className="form-control col-span-2 w-full">

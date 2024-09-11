@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Suspense } from "react";
 interface Product {
   id: Number;
   name: string;

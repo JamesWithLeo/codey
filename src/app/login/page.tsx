@@ -10,9 +10,9 @@ export default function LoginPage() {
     <div className={`flex flex-col items-center h-dvh gap-4  justify-center`}>
       <section className="max-w-xs flex flex-col gap-2 w-full h-max px-2 sm:px-0">
         <h1
-          className={`my-4 text-3xl ${sans.className} text-center text-primary `}
+          className={`my-4 text-xl ${sans.className} text-center text-primary `}
         >
-          Login
+          Log in or sign up
         </h1>
         <input
           type="text"
@@ -47,7 +47,7 @@ export default function LoginPage() {
             </Link>
           </div>
         </div>
-        <button className="btn bg-primary">Login</button>
+        <button className="btn bg-primary">continue</button>
         <button
           className="font-normal btn"
           onClick={() => signIn("github", { callbackUrl: "/" })}
@@ -60,12 +60,6 @@ export default function LoginPage() {
         >
           continue with google
         </button>
-        <Link
-          href={"/signup"}
-          className={`w-full font-light text-center ${sans.className} text-sm btn-ghost btn`}
-        >
-          Doesn&lsquo;t have account?
-        </Link>
       </section>
     </div>
   );

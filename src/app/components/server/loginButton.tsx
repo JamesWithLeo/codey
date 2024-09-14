@@ -8,7 +8,7 @@ export default function LoginButton() {
     <>
       <li>
         <Link href={"/login"} className={` ${sans.className}`}>
-          Login
+          Login or sign up
         </Link>
       </li>
     </>

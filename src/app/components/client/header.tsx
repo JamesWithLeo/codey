@@ -85,7 +85,7 @@ export default async function Header() {
               {!session || !session.user ? (
                 <>
                   <LoginButton />
-                  <SignupButton />
+                  {/* <SignupButton /> */}
                 </>
               ) : (
                 <li>

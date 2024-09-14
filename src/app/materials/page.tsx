@@ -12,7 +12,7 @@ export default async function Materials({
   const products = FilterSeachByName(query, "materials");
   return (
     <main className="min-h-dvh my-2 px-8 items-center flex flex-col">
-      <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-7xl">
+      <div className="h-full max-w-7xl grid grid-cols-2 place-items-stretch sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-4">
         <Suspense fallback={<SkeletonCard />}>
           <>
             <ProductList promise={products} />

@@ -1,21 +1,33 @@
-import Image from "next/image";
-import Link from "next/link";
-import Card from "./components/client/card";
-
 import { PrismaClient } from "@prisma/client";
 import { Suspense } from "react";
 import ProductList from "./components/client/productList";
 import SkeletonCard from "./components/server/skeletonCard";
+import Pagination from "./components/client/pagination";
 const prisma = new PrismaClient();
 
-async function getProduct() {
-  const products = await prisma.product.findMany();
+async function getProduct({ limit, skip }: { limit: number; skip: number }) {
+  const products = await prisma.product.findMany({
+    take: limit,
+    skip: skip,
+  });
   return products;
 }
-export default async function Home() {
-  const products = getProduct();
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string };
+}) {
+  let page: number;
+  const currentPage = parseInt(searchParams.page);
+  if (isNaN(currentPage)) page = 0;
+  else page = currentPage;
+  const limit = 10;
+  const products = getProduct({ limit: limit, skip: page });
+  const productLength = (await products).length;
   return (
-    <main className="w-full my-2 h-dvh flex px-8 flex-col items-center justify-center">
+    <main className="w-full py-2 h-dvh flex px-8 flex-col gap-2 items-center justify-center">
+      <Pagination isEnd={productLength !== 0} />
       <div className="h-full max-w-7xl grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         <Suspense fallback={<SkeletonCard />}>
           <>

@@ -10,32 +10,23 @@ export default async function Page({
   searchParams: { [key: string]: string };
 }) {
   let products;
-  const validCategory = [
-    "Hand Tools",
-    "Power Tools",
-    "Construction Materials",
-    "Electrical Tools",
-    "Plumbing Tools",
-    "Fasteners",
-    "Safety Gear",
-    "Machinery",
-  ];
-  // const isSearchCategory = validCategory.includes(params.category);
-  // if (isSearchCategory) {
-  //   products = prisma.product.findMany({
-  //     where: {
-  //       name: { contains: params.query, mode: "insensitive" },
-  //       category: params.category,
-  //     },
-  //   });
-  // } else {
-  // }
-  products = prisma.product.findMany({
-    where: {
-      name: { contains: params.query, mode: "insensitive" },
-    },
-  });
-  console.log("Searching:", params);
+  const category = params.category;
+  console.log(`Searching:${params}\ncategory: ${category}`);
+  if (category) {
+    products = prisma.product.findMany({
+      where: {
+        name: { contains: params.query, mode: "insensitive" },
+        category: category,
+      },
+    });
+  } else {
+    products = prisma.product.findMany({
+      where: {
+        name: { contains: params.query, mode: "insensitive" },
+      },
+    });
+  }
+
   return (
     <main className="min-h-dvh my-2 px-8 items-center flex flex-col">
       <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-7xl">

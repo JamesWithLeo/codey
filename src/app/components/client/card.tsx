@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface Product {
   id: Number;
@@ -16,12 +17,11 @@ interface Product {
 export default function Card({ object }: { object: Product }) {
   const router = useRouter();
   function HandleViewProduct() {
-    console.log("hello");
     router.push(`/p/${object.id}/`);
   }
   return (
     <section
-      className="card card-compact w-full border rounded-sm hover:shadow-md border-gray-100 "
+      className="card card-compact w-full h-full border rounded-sm hover:shadow-md border-gray-100 "
       onClick={HandleViewProduct}
     >
       {/* https://picsum.photos/200 */}
@@ -35,7 +35,7 @@ export default function Card({ object }: { object: Product }) {
         />
       </figure>
       <div className="card-body">
-        <h1 className="card-title">{object.name}</h1>
+        <h1 className="card-title text-md">{object.name}</h1>
         <h1>${object.price}</h1>
         <div className="card-actions justify-end ">
           <button className="btn h-8 btn-sm" onClick={() => {}}>

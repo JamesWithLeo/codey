@@ -34,11 +34,11 @@ export default function Card({ object }: { object: Product }) {
           priority
         />
       </figure>
-      <div className="card-body">
-        <h1 className="card-title text-md">{object.name}</h1>
+      <div className="p-2 md:p-4">
+        <h1 className="card-title md:text-md">{object.name}</h1>
         <h1>${object.price}</h1>
         <div className="card-actions justify-end ">
-          <button className="btn h-8 btn-sm" onClick={() => {}}>
+          <button className="btn h-8 btn-xs " onClick={() => {}}>
             Add to cart
           </button>
         </div>

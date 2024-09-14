@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 const sans = DM_Sans({ style: "normal", subsets: [] });
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 export default function CategoryNav() {
   const path = usePathname();
   if (
@@ -14,11 +15,44 @@ export default function CategoryNav() {
     path?.startsWith("/p/")
   )
     return null;
+
+  function HandleNext() {
+    const categoriesContainer = document.getElementById(
+      "categoriesContainer",
+    ) as HTMLDivElement;
+
+    categoriesContainer.scrollBy({ behavior: "smooth", left: 150 });
+  }
+
+  function HandlePrev() {
+    const categoriesContainer = document.getElementById(
+      "categoriesContainer",
+    ) as HTMLDivElement;
+
+    categoriesContainer.scrollBy({ behavior: "smooth", left: -150 });
+  }
   return (
     <section
-      className={`flex gap-8 ${sans.className} border-t pt-2 flex  justify-between px-8 text-xs items-center font-light flex-col `}
+      className={`flex gap-2 ${sans.className} border-t pt-2 flex justify-between  px-4 md:px-8 text-xs items-center font-light `}
     >
-      <div className="flex justify-between w-full max-w-7xl ">
+      <button
+        className="btn btn-circle md:hidden left-0 btn-xs "
+        onClick={HandlePrev}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="#0f0f0f"
+          viewBox="0 0 256 256"
+        >
+          <path d="M168,48V208a8,8,0,0,1-13.66,5.66l-80-80a8,8,0,0,1,0-11.32l80-80A8,8,0,0,1,168,48Z"></path>
+        </svg>
+      </button>
+      <div
+        className="flex justify-between w-full max-w-7xl overflow-x-hidden md:gap-9 gap-8 text-xs"
+        id="categoriesContainer"
+      >
         <span
           className={`flex items-center flex-col cursor-pointer text-gray-500`}
         >
@@ -45,6 +79,7 @@ export default function CategoryNav() {
             All
           </Link>
         </span>
+
         <span
           className={`flex items-center flex-col cursor-pointer text-gray-500`}
         >
@@ -68,6 +103,7 @@ export default function CategoryNav() {
             Hand Tools
           </Link>
         </span>
+
         <span
           className={`flex items-center flex-col cursor-pointer text-gray-500`}
         >
@@ -91,6 +127,7 @@ export default function CategoryNav() {
             Power Tools
           </Link>
         </span>
+
         <span className="flex items-center flex-col text-gray-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -105,10 +142,10 @@ export default function CategoryNav() {
             href={"/materials"}
             className={[
               path === "/materials" ? "border-primary" : "border-white",
-              "border-b-2 ",
+              "border-b-2 text-center",
             ].join(" ")}
           >
-            Construction Materials
+            Construction{<br />}Materials
           </Link>
         </span>
 
@@ -217,6 +254,17 @@ export default function CategoryNav() {
           </Link>
         </span>
       </div>
+      <button className="btn btn-circle  md:hidden btn-xs" onClick={HandleNext}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="#0f0f0f"
+          viewBox="0 0 256 256"
+        >
+          <path d="M181.66,133.66l-80,80A8,8,0,0,1,88,208V48a8,8,0,0,1,13.66-5.66l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+        </svg>
+      </button>
     </section>
   );
 }

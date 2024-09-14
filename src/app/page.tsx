@@ -25,10 +25,11 @@ export default async function Page({
   const limit = 10;
   const products = getProduct({ limit: limit, skip: page });
   const productLength = (await products).length;
+
   return (
-    <main className="w-full py-2 h-dvh flex px-8 flex-col gap-2 items-center justify-center">
+    <main className="w-full py-2 h-dvh flex px-4 md:px-8 flex-col gap-2 items-center justify-center">
       <Pagination isEnd={productLength !== 0} />
-      <div className="h-full max-w-7xl grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+      <div className="h-full max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-4">
         <Suspense fallback={<SkeletonCard />}>
           <>
             <ProductList promise={products} />

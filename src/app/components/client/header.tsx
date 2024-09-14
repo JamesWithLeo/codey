@@ -16,7 +16,7 @@ export default async function Header() {
     <header
       className={`w-full itsm sticky top-0 bg-white z-10 max-h-32 justify-center flex flex-col `}
     >
-      <section className="flex justify-center w-full flex-col items-center px-8 h-16">
+      <section className="flex justify-center w-full flex-col items-center px-4 md:px-8 h-16">
         <div className="max-w-7xl flex w-full justify-between items-center">
           <Link
             className={`text-3xl ${dmSerif.className} text-gray-700`}
@@ -24,7 +24,9 @@ export default async function Header() {
           >
             Hardware
           </Link>
-          <Search />
+          <div className="hidden md:block">
+            <Search />
+          </div>
           <div className="dropdown dropdown-end w-max h-max">
             <div
               tabIndex={0}

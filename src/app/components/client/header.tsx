@@ -1,16 +1,19 @@
 import { DM_Serif_Display } from "next/font/google";
-const dmSerif = DM_Serif_Display({ subsets: [], weight: "400" });
+const dmSerif = DM_Serif_Display({
+  subsets: ["latin"],
+  weight: ["400"],
+});
 import Link from "next/link";
 import LoginButton from "../server/loginButton";
-import SignupButton from "../server/signupButton";
-import { getServerSession } from "next-auth";
+
 import Image from "next/image";
 import LogoutButton from "./logoutButton";
 import CategoryNav from "./categoryNav";
 import Search from "./search";
+import { auth, Role } from "@/authOptions";
 
 export default async function Header() {
-  const session = await getServerSession();
+  const session = await auth();
 
   return (
     <header
@@ -19,15 +22,15 @@ export default async function Header() {
       <section className="flex justify-center w-full flex-col items-center px-4 md:px-8 h-16">
         <div className="max-w-7xl flex w-full justify-between items-center">
           <Link
-            className={`text-3xl ${dmSerif.className} text-gray-700`}
+            className={`text-2xl sm:text-3xl ${dmSerif.className} text-gray-600`}
             href={"/"}
           >
             Hardware
           </Link>
-          <div className="hidden md:block">
+          <div className=" sm:block">
             <Search />
           </div>
-          <div className="dropdown dropdown-end w-max h-max">
+          <div className="dropdown sm:block dropdown-end w-max h-max">
             <div
               tabIndex={0}
               role="button"
@@ -40,7 +43,7 @@ export default async function Header() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-6"
+                className="size-6 "
               >
                 <path
                   strokeLinecap="round"
@@ -76,7 +79,7 @@ export default async function Header() {
               tabIndex={0}
               className="dropdown-content shadow-lg menu bg-base-100 rounded-box z-[1] w-52 p-2"
             >
-              {session && session.user ? (
+              {session && session.user?.role === Role.admin ? (
                 <li>
                   <Link href={"/admin"}>Admin</Link>
                 </li>

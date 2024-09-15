@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "./components/client/header";
 import { SessionProvider } from "next-auth/react";
+import Footer from "./components/client/footer";
 
 export const metadata: Metadata = {
   title: "Hardware",
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

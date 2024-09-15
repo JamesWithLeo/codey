@@ -48,12 +48,12 @@ export default function LoginPage() {
           </div>
         </div>
         <button className="btn bg-primary">continue</button>
-        <button
+        {/* <button
           className="font-normal btn"
           onClick={() => signIn("github", { callbackUrl: "/" })}
         >
           continue with github
-        </button>
+        </button> */}
         <button
           className="font-normal btn"
           onClick={() => signIn("google", { callbackUrl: "/" })}

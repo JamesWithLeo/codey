@@ -18,13 +18,6 @@ export default function Search() {
     const searchInput = document.getElementById(
       "searchInput",
     ) as HTMLInputElement;
-    const search = searchInput.value;
-    if (!search) {
-      // value checking
-      HandleSearch.flush();
-      return;
-    }
-    // check whether category exist. if not, search for all result
     const categories = [
       "handtools",
       "powertools",
@@ -35,24 +28,36 @@ export default function Search() {
       "safetygears",
       "machineries",
     ];
+    const search = searchInput.value;
     const splittedPath = path?.split("/");
+    if (!search) {
+      if (splittedPath && categories.includes(splittedPath[1])) {
+        const category = splittedPath[1];
+        router.replace(`/${category}`);
+      } else {
+        router.replace("/");
+      }
+      HandleSearch.flush();
+      return;
+    }
+    // check whether category exist. if not, search for all result
     if (splittedPath && categories.includes(splittedPath[1])) {
       const category = splittedPath[1];
-      router.push(`/${category}?query=${search}`, {
+      router.replace(`/${category}?query=${search}`, {
         scroll: true,
       });
     } else {
-      router.push(`/search?query=${search}`, {
+      router.replace(`/search?query=${search}`, {
         scroll: true,
       });
     }
   }, 1000);
 
   return (
-    <label className="input-sm flex rounded-full input input-bordered items-center px-1">
+    <label className="sm:input-sm hidden sm:flex rounded-full h-8 input input-bordered after: items-center px-0">
       <input
         onFocus={HandleEnter}
-        className="input-sm input-bordered"
+        className="input-sm input-bordered w-28 sm:w-full px-0"
         placeholder="Search"
         id="searchInput"
         onChange={HandleSearch}

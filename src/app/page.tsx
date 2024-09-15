@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import ProductList from "./components/client/productList";
 import SkeletonCard from "./components/server/skeletonCard";
 import Pagination from "./components/client/pagination";
-import { getServerSession } from "next-auth";
+import { auth } from "@/authOptions";
 const prisma = new PrismaClient();
 
 async function getProduct({ limit, skip }: { limit: number; skip: number }) {
@@ -26,18 +26,19 @@ export default async function Page({
   const limit = 10;
   const products = getProduct({ limit: limit, skip: page });
   const productLength = (await products).length;
-  const session = await getServerSession();
-  console.log(session);
+
+  const session = await auth();
+  console.log("session:", session?.user);
   return (
-    <main className="w-full py-2 h-dvh flex px-4 md:px-8 flex-col gap-2 items-center justify-center">
-      <Pagination isEnd={productLength !== 0} />
-      <Suspense fallback={<SkeletonCard />}>
-        <>
-          <div className="h-full max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-4">
+    <main className="w-full py-2 h-full flex px-4 md:px-8 flex-col gap-2 items-center justify-center">
+      <div className="h-full max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-4">
+        <Suspense fallback={<SkeletonCard />}>
+          <>
             <ProductList promise={products} />
-          </div>
-        </>
-      </Suspense>
+          </>
+        </Suspense>
+      </div>
+      <Pagination isEnd={productLength !== 0} />
     </main>
   );
 }

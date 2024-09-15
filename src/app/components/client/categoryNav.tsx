@@ -2,9 +2,10 @@
 import { DM_Sans } from "next/font/google";
 const sans = DM_Sans({ style: "normal", subsets: [] });
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import Search from "./search";
 export default function CategoryNav() {
+  const router = useRouter();
   const path = usePathname();
   if (
     path === "/login" ||
@@ -49,12 +50,14 @@ export default function CategoryNav() {
           <path d="M168,48V208a8,8,0,0,1-13.66,5.66l-80-80a8,8,0,0,1,0-11.32l80-80A8,8,0,0,1,168,48Z"></path>
         </svg>
       </button>
+
       <div
-        className="flex justify-between w-full max-w-7xl overflow-x-hidden md:gap-9 gap-8 text-xs"
+        className="md:grid md:grid-rows-1 flex grid-cols-9 text-center w-full max-w-7xl overflow-x-hidden md:gap-9 gap-6 text-xs"
         id="categoriesContainer"
       >
         <span
-          className={`flex items-center flex-col cursor-pointer text-gray-500`}
+          className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
+          onClick={() => router.replace("/")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -72,8 +75,10 @@ export default function CategoryNav() {
           <Link
             href={"/"}
             className={[
-              path === "/" ? "border-primary" : "border-white",
-              "border-b-2 ",
+              path === "/"
+                ? "border-primary"
+                : "border-white group-hover:border-gray-100",
+              "border-b-2",
             ].join(" ")}
           >
             All
@@ -81,7 +86,8 @@ export default function CategoryNav() {
         </span>
 
         <span
-          className={`flex items-center flex-col cursor-pointer text-gray-500`}
+          className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
+          onClick={() => router.replace("/handtools")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +102,9 @@ export default function CategoryNav() {
             href={"/handtools"}
             id="handTools"
             className={[
-              path === "/handtools" ? "border-primary" : "border-white",
+              path === "/handtools"
+                ? "border-primary"
+                : "border-white group-hover:border-gray-100",
               "border-b-2 ",
             ].join(" ")}
           >
@@ -105,7 +113,8 @@ export default function CategoryNav() {
         </span>
 
         <span
-          className={`flex items-center flex-col cursor-pointer text-gray-500`}
+          className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
+          onClick={() => router.replace("/powertools")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +129,9 @@ export default function CategoryNav() {
             href={"/powertools"}
             id="handTools"
             className={[
-              path === "/powertools" ? "border-primary" : "border-white",
+              path === "/powertools"
+                ? "border-primary"
+                : "border-white group-hover:border-gray-100",
               "border-b-2 ",
             ].join(" ")}
           >
@@ -128,7 +139,10 @@ export default function CategoryNav() {
           </Link>
         </span>
 
-        <span className="flex items-center flex-col text-gray-500">
+        <span
+          className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
+          onClick={() => router.replace("/materials")}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -141,7 +155,9 @@ export default function CategoryNav() {
           <Link
             href={"/materials"}
             className={[
-              path === "/materials" ? "border-primary" : "border-white",
+              path === "/materials"
+                ? "border-primary"
+                : "border-white group-hover:border-gray-100",
               "border-b-2 text-center",
             ].join(" ")}
           >
@@ -149,7 +165,10 @@ export default function CategoryNav() {
           </Link>
         </span>
 
-        <span className="flex items-center flex-col text-gray-500">
+        <span
+          className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
+          onClick={() => router.replace("/electrical")}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -170,7 +189,10 @@ export default function CategoryNav() {
           </Link>
         </span>
 
-        <span className="flex items-center flex-col text-gray-500">
+        <span
+          className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
+          onClick={() => router.replace("/plumbing")}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -183,7 +205,9 @@ export default function CategoryNav() {
           <Link
             href={"/plumbing"}
             className={[
-              path === "/plumbing" ? "border-primary" : "border-white",
+              path === "/plumbing"
+                ? "border-primary"
+                : "border-white group-hover:border-gray-100",
               "border-b-2 ",
             ].join(" ")}
           >
@@ -191,7 +215,10 @@ export default function CategoryNav() {
           </Link>
         </span>
 
-        <span className="flex items-center flex-col text-gray-500">
+        <span
+          className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
+          onClick={() => router.replace("/fasteners")}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -204,7 +231,9 @@ export default function CategoryNav() {
           <Link
             href={"/fasteners"}
             className={[
-              path === "/fasteners" ? "border-primary" : "border-white",
+              path === "/fasteners"
+                ? "border-primary"
+                : "border-white group-hover:border-gray-100",
               "border-b-2 ",
             ].join(" ")}
           >
@@ -212,7 +241,10 @@ export default function CategoryNav() {
           </Link>
         </span>
 
-        <span className="flex items-center flex-col text-gray-500">
+        <span
+          className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
+          onClick={() => router.replace("/safetygears")}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -225,7 +257,9 @@ export default function CategoryNav() {
           <Link
             href={"/safetygears"}
             className={[
-              path === "/safetygears" ? "border-primary" : "border-white",
+              path === "/safetygears"
+                ? "border-primary"
+                : "border-white group-hover:border-gray-100",
               "border-b-2 ",
             ].join(" ")}
           >
@@ -233,7 +267,10 @@ export default function CategoryNav() {
           </Link>
         </span>
 
-        <span className="flex items-center flex-col text-gray-500">
+        <span
+          className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
+          onClick={() => router.replace("/machineries")}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"
@@ -246,7 +283,9 @@ export default function CategoryNav() {
           <Link
             href={"/machineries"}
             className={[
-              path === "/machineries" ? "border-primary" : "border-white",
+              path === "/machineries"
+                ? "border-primary"
+                : "border-white group-hover:border-gray-100",
               "border-b-2 ",
             ].join(" ")}
           >

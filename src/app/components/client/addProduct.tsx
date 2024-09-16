@@ -1,10 +1,13 @@
 "use client";
+import { Category } from "@prisma/client";
+import { Inter } from "next/font/google";
+const inter = Inter({ subsets: ["latin"], weight: ["600"] });
 
-import { ChangeEvent, MouseEventHandler, useState } from "react";
-
+import { ChangeEvent, useState } from "react";
 export default function AddProduct() {
   const [isLoading, setIsloading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
   function HandleReset() {
     const nameInput = document.getElementById("nameInput") as HTMLInputElement;
     const priceInput = document.getElementById(
@@ -34,7 +37,9 @@ export default function AddProduct() {
     imageUrlInput.value = "";
     descriptionInput.value = "";
     isFeaturedInput.checked = false;
+    HandleRemoveUrl();
   }
+
   async function HandleAdd(
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) {
@@ -48,7 +53,7 @@ export default function AddProduct() {
     const brandInput = document.getElementById(
       "brandInput",
     ) as HTMLInputElement;
-    const imageUrlInput = document.getElementById(
+    const thumbnailInput = document.getElementById(
       "imageUrlInput",
     ) as HTMLInputElement;
     const categoryInput = document.getElementById(
@@ -60,21 +65,31 @@ export default function AddProduct() {
     const isFeaturedInput = document.getElementById(
       "isFeaturedInput",
     ) as HTMLInputElement;
+    const isAvailableInput = document.getElementById(
+      "isAvailableInput",
+    ) as HTMLInputElement;
+    const otherUrlInput = document.getElementById("otherUrl") as HTMLDivElement;
 
     const name = nameInput.value;
     const price = priceInput.value;
     const stock = stockInput.value;
     const brand = brandInput.value;
-    const imageUrl = imageUrlInput.value;
+    const thumbnail = thumbnailInput.value;
     const category = categoryInput.value;
     const description = descriptionInput.value;
     const isFeatured = isFeaturedInput.checked;
+    const isAvailable = isAvailableInput.checked;
+    let otherUrl: string[] = [];
+    otherUrlInput.childNodes.forEach((input) => {
+      const urlInput = input as HTMLInputElement;
+      otherUrl.push(urlInput.value);
+    });
     const requiredInput = [
       nameInput,
       priceInput,
       stockInput,
       brandInput,
-      imageUrlInput,
+      thumbnailInput,
       categoryInput,
       descriptionInput,
     ];
@@ -87,28 +102,30 @@ export default function AddProduct() {
       }
       return true;
     });
+
     if (!result) return; // exit function since requirements doesn't met
     setIsloading(true);
-    console.log(event.target);
-    const newProduct = {
+    const newProduct = JSON.stringify({
       name: name,
       price: price,
       stock: stock,
       brand: brand,
-      imageUrl: imageUrl,
+      thumbnail: thumbnail,
       category: category,
       description: description,
       isFeatured: isFeatured,
-    };
+      isAvailable: isAvailable,
+      otherUrl: otherUrl,
+    });
+    console.log(newProduct);
     const response = await fetch("/api/product/", {
       method: "POST",
-      body: JSON.stringify(newProduct),
+      body: newProduct,
       headers: {
         "Content-Type": "application/json",
       },
     });
     const insertedProduct = await response.json();
-    console.log(insertedProduct);
     HandleReset();
     setIsloading(false);
     setIsSuccess(true);
@@ -124,6 +141,20 @@ export default function AddProduct() {
       "input-error",
       " ",
     );
+  }
+
+  function HandleAddUrl() {
+    const otherUrl = document.getElementById("otherUrl") as HTMLDivElement;
+    const input = document.createElement("input");
+    input.className = "input input-sm w-full input-bordered";
+    otherUrl.appendChild(input);
+  }
+
+  function HandleRemoveUrl() {
+    const otherUrl = document.getElementById("otherUrl") as HTMLDivElement;
+    const length = otherUrl.children.length - 1;
+    if (length) otherUrl.removeChild(otherUrl.children[length]);
+    else (otherUrl.children[0] as HTMLInputElement).value = "";
   }
 
   return (
@@ -150,6 +181,10 @@ export default function AddProduct() {
           <span>New Product Added!</span>
         </div>
       ) : null}
+
+      <h1 className={`font-bold text-2xl my-2 ${inter.className}`}>
+        Insert Product
+      </h1>
       <section className="flex flex-col gap-2">
         <div className="h-max flex-col gap-2 grid grid-cols-2">
           <label className="form-control w-full max-w-xs">
@@ -163,6 +198,7 @@ export default function AddProduct() {
               className="input input-sm input-bordered"
             />
           </label>
+
           <label className="form-control w-full max-w-xs">
             <div className="label">
               <span className="label-text-alt">price</span>
@@ -173,6 +209,7 @@ export default function AddProduct() {
               className="input input-sm input-bordered"
             />
           </label>
+
           <label className="form-control w-full max-w-xs">
             <div className="label">
               <span className="label-text-alt">stock</span>
@@ -183,6 +220,7 @@ export default function AddProduct() {
               className="input input-sm input-bordered"
             />
           </label>
+
           <label className="form-control w-full max-w-xs">
             <div className="label">
               <span className="label-text-alt">brand</span>
@@ -193,9 +231,10 @@ export default function AddProduct() {
               className="input input-sm input-bordered"
             />
           </label>
+
           <label className="form-control w-full max-w-xs">
             <div className="label">
-              <span className="label-text-alt">image url</span>
+              <span className="label-text-alt">thumbnail</span>
             </div>
             <input
               onChange={HandleOnChange}
@@ -203,6 +242,7 @@ export default function AddProduct() {
               className="input input-sm input-bordered"
             />
           </label>
+
           <label className="form-control w-full max-w-xs">
             <div className="label">
               <span className="label-text-alt">category</span>
@@ -211,16 +251,43 @@ export default function AddProduct() {
               className="select-bordered select select-sm"
               id="categoryInput"
             >
-              <option value={"handtools"}>Hand Tools</option>
-              <option value={"powertools"}>Power Tools</option>
-              <option value={"materials"}>Construction Materials</option>
-              <option value={"electrical"}>Electrical Tools</option>
-              <option value={"plumbing"}>Plumbing Tools</option>
-              <option value={"fasteners"}>Fasteners</option>
-              <option value={"safetygears"}>Safety Gear</option>
-              <option value={"machineries"}>Machinery</option>
+              <option value={Category.handtools}>Hand Tools</option>
+              <option value={Category.powertools}>Power Tools</option>
+              <option value={Category.materials}>Construction Materials</option>
+              <option value={Category.electrical}>Electrical Tools</option>
+              <option value={Category.plumbing}>Plumbing Tools</option>
+              <option value={Category.fasteners}>Fasteners</option>
+              <option value={Category.safetygears}>Safety Gear</option>
+              <option value={Category.machineries}>Machinery</option>
             </select>
           </label>
+
+          <div className="col-span-2">
+            <div className="label">
+              <span className="label-text-alt">other url</span>
+              <div className="flex gap-2">
+                <button
+                  className="btn btn-xs w-max self-end"
+                  onClick={HandleAddUrl}
+                >
+                  add
+                </button>
+                <button
+                  className="btn btn-xs w-max self-end btn-error"
+                  onClick={HandleRemoveUrl}
+                >
+                  remove
+                </button>
+              </div>
+            </div>
+            <label className="form-control w-full flex gap-2" id="otherUrl">
+              <input
+                onChange={HandleOnChange}
+                className="input input-sm w-full input-bordered"
+              />
+            </label>
+          </div>
+
           <label className="form-control col-span-2 w-full">
             <div className="label">
               <span className="label-text-alt">Description</span>
@@ -232,29 +299,41 @@ export default function AddProduct() {
             />
           </label>
 
-          <label className="w-full max-w-xs col-start-2 flex items-center justify-end gap-2">
-            <div className="label cursor-pointer">
-              <span className="label-text-alt">featured?</span>
-            </div>
-            <input
-              id="isFeaturedInput"
-              type="checkbox"
-              className="checkbox checkbox-sm rounded-full"
-            />
-          </label>
-        </div>
-        <div className="w-full flex gap-2">
-          <button className="btn flex-1 bg-primary" onClick={HandleAdd}>
-            {isLoading ? (
-              <span className="loading loading-spinner"></span>
-            ) : null}
-            Add product
-          </button>
-          <button className="btn" onClick={HandleReset}>
-            reset
-          </button>
+          <div className="flex">
+            <label className="w-full max-w-xs col-start-2 flex items-center justify-end gap-2">
+              <div className="label cursor-pointer">
+                <span className="label-text-alt">available?</span>
+              </div>
+              <input
+                id="isAvailableInput"
+                defaultChecked
+                type="checkbox"
+                className="checkbox checkbox-sm rounded-full"
+              />
+            </label>
+            <label className="w-full max-w-xs col-start-2 flex items-center justify-end gap-2">
+              <div className="label cursor-pointer">
+                <span className="label-text-alt">featured?</span>
+              </div>
+              <input
+                id="isFeaturedInput"
+                type="checkbox"
+                className="checkbox checkbox-sm rounded-full"
+              />
+            </label>
+          </div>
         </div>
       </section>
+
+      <div className="w-full flex gap-2 my-2">
+        <button className="btn flex-1 bg-primary" onClick={HandleAdd}>
+          {isLoading ? <span className="loading loading-spinner"></span> : null}
+          Add product
+        </button>
+        <button className="btn" onClick={HandleReset}>
+          reset
+        </button>
+      </div>
     </>
   );
 }

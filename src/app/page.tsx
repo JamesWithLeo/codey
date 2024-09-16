@@ -31,14 +31,14 @@ export default async function Page({
   console.log("session:", session?.user);
   return (
     <main className="w-full py-2 h-full flex px-4 md:px-8 flex-col gap-2 items-center justify-center">
-      <div className="h-full max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-4">
+      <div className="h-full max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4 min-h-dvh">
         <Suspense fallback={<SkeletonCard />}>
           <>
             <ProductList promise={products} />
           </>
         </Suspense>
       </div>
-      <Pagination isEnd={productLength !== 0} />
+      {productLength ? <Pagination isEnd={productLength !== 0} /> : null}
     </main>
   );
 }

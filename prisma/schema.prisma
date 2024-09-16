@@ -7,21 +7,42 @@ datasource db {
   url = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
+enum Role {
+  user
+  admin
+}
+enum Category {
+  handtools
+  powertools
+  materials
+  electrical
+  plumbing
+  fasteners
+  safetygears
+  machineries
+}
 model users {
   id        Int      @id @unique()@default(autoincrement())
-  firstname String
-  lastname  String
-  createdAt DateTime @default(now())
+  role      Role     @default(user)
+  email     String   @unique
+  username  String
+  createdAt BigInt
+  updatedAt BigInt   @default(0)
 }
 
 model product {
-  id          Int     @id @unique()@default(autoincrement())
+  id          Int      @id @unique()@default(autoincrement())
   name        String  
-  category    String
-  price       Int
+  category    Category 
+  price       Decimal  @db.Decimal(10, 2)
   description String
-  imageUrl    String
-  stock       Int
+  thumbnail   String
+  otherUrl    String[] @default([])
+  stock       Int      
   brand       String
-  isFeatured  Boolean
+  isFeatured  Boolean  @default(false)
+  isAvailable Boolean  @default(true)
+  createdAt   BigInt
+  updatedAt   BigInt
+  sales       Int      @default(0)
 }

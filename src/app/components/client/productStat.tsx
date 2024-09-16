@@ -2,19 +2,20 @@
 import { use } from "react";
 import AddProduct from "./addProduct";
 
-interface Product {
-  id: Number;
+type Product = {
+  id: number;
   name: string;
   category: string;
-  price: number;
+  price: string;
   description: string;
-  imageUrl: string;
+  thumbnail: string;
   stock: number;
   brand: string;
-  isFeatured: boolean; // If you want to feature some products
-}
-export default function Stat({ data }: { data: Promise<Product[]> }) {
-  const product = use(data);
+  isFeatured: boolean;
+};
+
+export default function Stat({ data }: { data: Product[] }) {
+  const product = data;
   return (
     <>
       <dialog id="modal" className="modal modal-bottom sm:modal-middle">

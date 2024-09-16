@@ -1,10 +1,10 @@
-import { PrismaClient } from "@prisma/client";
 import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import { prisma } from "@/prisma";
+import { Inter_Tight } from "next/font/google";
 import Recomended from "@/app/components/server/recomended";
-
-const prisma = new PrismaClient();
+const inter = Inter_Tight({ subsets: ["latin"], weight: ["300"] });
 export default async function Page({ params }: { params: any }) {
   const id = parseInt(params.id);
   let product;
@@ -18,9 +18,10 @@ export default async function Page({ params }: { params: any }) {
   } else {
     redirect("/p/not-found");
   }
+  console.log(product);
   return (
-    <main className="h-dvh md:px-8 flex flex-col items-center">
-      <div className="breadcrumbs text-xs overflow-y-hidden self-start px-4 sm:px-0">
+    <main className="h-dvh md:px-8 grid gap-2 flex-col items-center">
+      <div className="breadcrumbs text-xs overflow-y-hidden self-start px-4 md:px-0">
         <ul>
           <li>
             <Link href={"/"}>Home</Link>
@@ -34,11 +35,11 @@ export default async function Page({ params }: { params: any }) {
         </ul>
       </div>
 
-      <div className="grid grid-cols-1 grid-rows-3 sm:grid-rows-1 sm:grid-cols-2 flex-col sm:flex-row w-full gap-4 h-full mt-4 sm:mt-8 md:mt-12">
-        {product && product.imageUrl ? (
+      <div className="grid grid-cols-1 grid-rows-3 sm:grid-rows-1 sm:grid-cols-2 flex-col sm:flex-row w-full gap-4 h-full ">
+        {product && product.thumbnail ? (
           <div className="flex items-center flex-col px-4">
             <Image
-              src={product.imageUrl}
+              src={product.thumbnail}
               alt={product?.name ?? ""}
               height={100}
               width={100}
@@ -51,7 +52,7 @@ export default async function Page({ params }: { params: any }) {
           <div className="px-4 ">
             <h1 className="card-title">{product?.name}</h1>
             <h1 className="">{product?.brand}</h1>
-            <h1>${product?.price}</h1>
+            <h1>${parseFloat(product.price.toString()).toFixed(2)}</h1>
           </div>
           <div className="flex gap-2 w-full px-4 py-2">
             <button className="btn w-1/2 sm:w-max border-none shadow">
@@ -73,7 +74,9 @@ export default async function Page({ params }: { params: any }) {
 
           <div className="bg-gray-100 sm:bg-transparent row-span-4 h-full px-4">
             <h1 className="text-gray-600">Description</h1>
-            <h1>{product?.description}</h1>
+            <h1 className={`${inter.className} text-sm text-justify`}>
+              {product?.description}
+            </h1>
           </div>
         </div>
       </div>

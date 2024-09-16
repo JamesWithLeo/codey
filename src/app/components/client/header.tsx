@@ -10,7 +10,7 @@ import Image from "next/image";
 import LogoutButton from "./logoutButton";
 import CategoryNav from "./categoryNav";
 import Search from "./search";
-import { auth, Role } from "@/authOptions";
+import { auth } from "@/authOptions";
 
 export default async function Header() {
   const session = await auth();
@@ -79,7 +79,7 @@ export default async function Header() {
               tabIndex={0}
               className="dropdown-content shadow-lg menu bg-base-100 rounded-box z-[1] w-52 p-2"
             >
-              {session && session.user?.role === Role.admin ? (
+              {session && session.user?.role === "admin" ? (
                 <li>
                   <Link href={"/admin"}>Admin</Link>
                 </li>

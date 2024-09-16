@@ -6,13 +6,8 @@ import type {
   NextApiRequest,
   NextApiResponse,
 } from "next";
-import type { NextAuthOptions } from "next-auth";
 import { getServerSession } from "next-auth";
-
-export enum Role {
-  user = "user",
-  admin = "admin",
-}
+import { prisma } from "./prisma";
 
 declare module "next-auth" {
   interface Session {
@@ -25,16 +20,16 @@ declare module "next-auth" {
     streetNumber: string;
     city: string;
     zipCode: string;
-    role: Role;
-    uid: string;
+    role: "admin" | "user";
+    id: number;
   }
 }
 declare module "next-auth/jwt" {
   interface JWT {
-    role: Role;
+    role: "admin" | "user";
+    id: number;
   }
 }
-
 const authOptions: AuthOptions = {
   providers: [
     GithubProvider({
@@ -46,13 +41,8 @@ const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_SECRET as string,
     }),
   ],
-  pages: {
-    signIn: "/login",
-    signOut: "/",
-  },
-
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ user, account, profile }) {
       if (account?.provider === "google") {
         return true;
       }
@@ -61,25 +51,48 @@ const authOptions: AuthOptions = {
     async jwt({ token, trigger, account, profile, user }) {
       switch (trigger) {
         case "signIn":
-          if (account && account.provider === "google") {
+          if (account && account.provider === "google" && profile) {
+            const existingUser = await prisma.users.findUnique({
+              where: { email: profile.email! },
+            });
+            if (!existingUser) {
+              const newUser = await prisma.users.create({
+                data: {
+                  email: profile.email!,
+                  username: profile.name ?? "",
+                  createdAt: new Date().getTime(),
+                  updatedAt: new Date().getTime(),
+                },
+              });
+              token.id = newUser.id;
+              token.role = newUser.role;
+            } else {
+              token.id = existingUser.id;
+              token.role = existingUser.role;
+            }
           }
+
           break;
         case "signUp":
+          console.log("signUp");
           break;
         case "update":
+          console.log("update");
           break;
       }
-      token.role = Role.user;
       return token;
     },
-    async session({ session, token, user }) {
-      if (session.user) {
+    async session({ session, token, user, trigger }) {
+      if (session && session.user) {
+        session.user.id = token.id;
         session.user.role = token.role;
-        session.user.fistName = "james";
-        return session;
       }
       return session;
     },
+  },
+  pages: {
+    signIn: "/login",
+    signOut: "/",
   },
 };
 

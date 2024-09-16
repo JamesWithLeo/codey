@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+import { Category, Prisma, PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async function handler(
@@ -14,26 +14,31 @@ export default async function handler(
 
     case "POST":
       const name = req.body.name as string;
-      const price = parseInt(req.body.price);
+      const price = new Prisma.Decimal(req.body.price);
       const stock = parseInt(req.body.stock);
       const brand = req.body.brand as string;
-      const imageUrl = req.body.imageUrl as string;
-      const category = req.body.category as string;
+      const thumbnail = req.body.thumbnail as string;
+      const category = req.body.category as Category;
       const description = req.body.description as string;
+      const isAvailable = req.body.isAvailable === "true";
       const isFeatured = req.body.isFeatured === "true";
+      const otherUrl = req.body.otherUrl as string[];
       const newProduct = {
         name: name,
         price: price,
         stock: stock,
         brand: brand,
-        imageUrl: imageUrl,
+        thumbnail: thumbnail,
         category: category,
         description: description,
         isFeatured: isFeatured,
+        isAvailable: isAvailable,
+        createdAt: new Date().getTime(),
+        updatedAt: new Date().getTime(),
+        otherUrl: otherUrl,
       };
-      console.log(newProduct);
       const product = await prisma.product.create({ data: newProduct });
-      res.status(200).json({ ok: 1, product });
+      res.status(200).json({ ok: 1 });
       return;
 
     case "PUT":

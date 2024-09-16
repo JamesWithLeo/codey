@@ -1,0 +1,22 @@
+[
+  {
+    "name": "safety work helmet",
+    "price": "10.00",
+    "stock": "30",
+    "brand": "allon",
+    "thumbnail": "https://res.cloudinary.com/dupzzryrz/image/upload/w_1000,ar_1:1,c_fill/v1726025044/helmet1_t8kgis.jpg",
+    "category": "safetygears",
+    "description": "This durable blue safety helmet is designed for maximum protection in industrial, construction, and engineering environments. Featuring a robust outer shell made from high-density polyethylene, it offers excellent impact resistance, safeguarding the wearer from falling objects and other potential hazards. The helmet’s interior is lined with soft, sweat-absorbent padding for comfort during extended wear. With an adjustable suspension system, it fits securely on various head sizes, ensuring both comfort and safety. The bright blue color enhances visibility, making it ideal for high-traffic worksites.",
+    "isFeatured": "false"
+  },
+  {
+    "name": "smart adhesive tape",
+    "thumbnail": "https://res.cloudinary.com/dupzzryrz/image/upload/w_1000,ar_1:1,c_fill,g_auto/v1726022905/tape1_ppajjt.jpg",
+    "stock": "30",
+    "brand": "smart",
+    "price": "8",
+    "description": "Smart adhesive tape revolutionizes the way we think about everyday solutions with its advanced functionality and versatility. This innovative tape combines a high-performance adhesive with intelligent design, making it an essential tool for various applications. Its superior adhesion ensures a secure hold on a wide range of surfaces, while its sleek and durable construction allows for easy handling and application. Whether for home use, office organization, or industrial purposes, smart adhesive tape offers an elegant and practical solution to your adhesive needs, seamlessly integrating into your daily routine with ease.",
+    "isFeatured": "false",
+    "category": "electrical"
+  }
+]

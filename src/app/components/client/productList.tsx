@@ -1,22 +1,13 @@
 import Card from "./card";
 import { use } from "react";
 import { DM_Sans } from "next/font/google";
+import { product } from "@prisma/client";
 const sans = DM_Sans({ style: "normal", subsets: [] });
-interface Product {
-  id: Number;
-  name: string;
-  category: string;
-  price: number;
-  description: string;
-  imageUrl: string;
-  stock: number;
-  brand: string;
-  isFeatured: boolean; // If you want to feature some products
-}
+
 export default function ProductList({
   promise,
 }: {
-  promise: Promise<Product[]>;
+  promise: Promise<product[]>;
 }) {
   const products = use(promise); // This will resolve the promise when ready
 
@@ -24,12 +15,16 @@ export default function ProductList({
     <>
       {products.length ? (
         <>
-          {products.map((product: any) => (
-            <Card key={product.id} object={product} />
-          ))}
+          {products.map((product: product) => {
+            const productSerialize = {
+              ...product,
+              price: product.price.toString(),
+            };
+            return <Card key={product.id} object={productSerialize} />;
+          })}
         </>
       ) : (
-        <div className="absolute -translate-x-1/2 left-1/2 w-full h-full flex items-center flex-col justify-center text-gray-500">
+        <div className="h-dvh w-full flex items-center col-span-full flex-col justify-center text-gray-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="76"

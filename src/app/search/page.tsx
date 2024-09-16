@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Category, PrismaClient } from "@prisma/client";
 import { Suspense } from "react";
 import ProductList from "../components/client/productList";
 import SkeletonCard from "../components/server/skeletonCard";
@@ -10,7 +10,7 @@ export default async function Page({
   searchParams: { [key: string]: string };
 }) {
   let products;
-  const category = params.category;
+  const category = params.category as Category;
   console.log(`Searching:${params}\ncategory: ${category}`);
   if (category) {
     products = prisma.product.findMany({

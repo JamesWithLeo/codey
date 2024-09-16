@@ -1,5 +1,4 @@
 "use client";
-import { use } from "react";
 import AddProduct from "./addProduct";
 
 type Product = {

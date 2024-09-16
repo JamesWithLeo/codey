@@ -12,9 +12,7 @@ export default async function Dashboard() {
       </div>
       {users.map((value) => (
         <div className="bg-gray-100 px-2 py-1" key={value.id}>
-          <h1>
-            {value.firstname} {value.lastname}
-          </h1>
+          <h1>{value.email}</h1>
         </div>
       ))}
     </main>

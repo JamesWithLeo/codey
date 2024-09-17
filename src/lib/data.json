@@ -18,5 +18,49 @@
     "description": "Smart adhesive tape revolutionizes the way we think about everyday solutions with its advanced functionality and versatility. This innovative tape combines a high-performance adhesive with intelligent design, making it an essential tool for various applications. Its superior adhesion ensures a secure hold on a wide range of surfaces, while its sleek and durable construction allows for easy handling and application. Whether for home use, office organization, or industrial purposes, smart adhesive tape offers an elegant and practical solution to your adhesive needs, seamlessly integrating into your daily routine with ease.",
     "isFeatured": "false",
     "category": "electrical"
+  },
+  {
+    "name": "wire stripper knipex",
+    "thumbnail": "https://res.cloudinary.com/dupzzryrz/image/upload/w_1000,ar_1:1,c_fill,g_auto/v1726576370/wire-stripper-pliers1-snipex_lqgaz8.jpg",
+    "brand": "knipex",
+    "price": "25.55",
+    "category": "electrical",
+    "isFeatured": "false",
+    "stock": "20",
+    "description": "The Knipex wire stripper is a premium tool designed for precision, durability, and ease of use. Engineered for both professionals and DIY enthusiasts, this wire stripper delivers accurate, clean stripping of various wire types and sizes, ensuring a smooth and efficient workflow. Its ergonomic design provides a comfortable grip, reducing hand fatigue during prolonged use, while the high-quality construction guarantees long-lasting performance. Whether you're working on electrical installations or detailed wiring projects, the Knipex wire stripper is a reliable tool that combines functionality with exceptional craftsmanship."
+  },
+  {
+    "name": "multimeter",
+    "brand": "fluke",
+    "category": "electrical",
+    "stock": "20",
+    "price": "40.88",
+    "thumbnail": "https://res.cloudinary.com/dupzzryrz/image/upload/w_1000,ar_1:1,c_fill,g_auto/v1726578814/fluke-multimeter_yruxdj.jpg",
+    "description": "The multimeter is a versatile and essential tool for electricians, technicians, and DIY hobbyists alike. Designed to measure voltage, current, and resistance with precision, it is ideal for diagnosing electrical issues, testing circuits, and troubleshooting various electronic components. With its easy-to-read display and intuitive interface, the multimeter simplifies complex electrical measurements, offering reliable and accurate results every time. Built for durability and safety, this tool is perfect for both professional and home use, making it a valuable addition to any toolkit for handling electrical tasks with confidence.",
+    "isFeatured": "false"
+  },
+  {
+    "name": "circuit breaker monatlich breaker power breaker",
+    "thumbnail": "https://res.cloudinary.com/dupzzryrz/image/upload/w_1000,ar_1:1,c_fill,g_auto/v1726579543/circuit-breaker1-monalich_dourom.jpg",
+    "brand": "monatlich",
+    "description": "The Monatlich Circuit Breaker is a dependable and high-performance solution for safeguarding your electrical systems. Engineered with precision and durability, it provides reliable protection by automatically interrupting electrical flow in the event of an overload or short circuit, preventing potential damage and ensuring safety. Designed for both residential and commercial use, the Monatlich Circuit Breaker features a compact design and easy installation, making it an ideal choice for electricians and homeowners alike. With its advanced functionality and robust construction, this circuit breaker delivers long-lasting performance you can trust for all your electrical protection needs."
+  },
+  {
+    "name": "bright flashlight olight seeker 2 pro",
+    "brand": "olight",
+    "category": "electrical",
+    "price": "20.82",
+    "stock": "30",
+    "thumbnail": "https://res.cloudinary.com/dupzzryrz/image/upload/w_1000,ar_1:1,c_fill,g_auto/v1726580442/amir-shamsipur-ksCDERQJRhA-unsplash_lfough.jpg",
+    "description": "The Bright Flashlight Olight Seeker 2 Pro is a high-performance lighting tool designed to provide powerful illumination in any environment. With its compact yet durable construction, this flashlight delivers an impressive beam that cuts through the darkest conditions, making it ideal for outdoor adventures, emergency situations, or professional use. Equipped with advanced features like multiple brightness settings and a user-friendly interface, the Olight Seeker 2 Pro ensures maximum visibility and convenience. Its ergonomic design offers a comfortable grip, while its rechargeable battery provides long-lasting power, making the Bright Flashlight Olight Seeker 2 Pro the perfect companion for those who need reliable light at their fingertips."
+  },
+  {
+    "thumbnail": "https://res.cloudinary.com/dupzzryrz/image/upload/w_1000,ar_1:1,c_fill,g_auto/v1726580673/soldering-iron-1038540_1920_hii8eg.jpg",
+    "stock": "10",
+    "brand": "fluke",
+    "name": "soldermaster pro 5000 soldering iron",
+    "category": "electrical",
+    "price": "40.88",
+    "description": "The SolderMaster Pro 5000 is a cutting-edge soldering tool designed for precision and efficiency in both professional and hobbyist applications. With its fast heating capability and adjustable temperature control, the SolderMaster Pro 5000 delivers consistent, high-quality soldering results for delicate electronics, circuit boards, and small metal components. Its ergonomic, heat-resistant handle ensures comfort during extended use, while the lightweight design offers superior control for intricate tasks. Whether you're a seasoned technician or a DIY enthusiast, the SolderMaster Pro 5000 is the ideal tool to elevate your soldering projects with reliability and ease."
   }
 ]

@@ -18,9 +18,8 @@ export default async function Page({ params }: { params: any }) {
   } else {
     redirect("/p/not-found");
   }
-  console.log(product);
   return (
-    <main className="h-dvh md:px-8 grid gap-2 flex-col items-center">
+    <main className="h-full md:px-8 grid gap-2 flex-col items-center py-2">
       <div className="breadcrumbs text-xs overflow-y-hidden self-start px-4 md:px-0">
         <ul>
           <li>
@@ -80,7 +79,7 @@ export default async function Page({ params }: { params: any }) {
           </div>
         </div>
       </div>
-      <Recomended />
+      <Recomended category={product.category} selectedProductId={product.id} />
     </main>
   );
 }

@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: any }) {
     redirect("/p/not-found");
   }
   return (
-    <main className="h-full md:px-8 grid gap-2 flex-col items-center py-2">
+    <main className="h-full md:px-8 grid gap-2 flex-col items-center pt-2 pb-8">
       <div className="breadcrumbs text-xs overflow-y-hidden self-start px-4 md:px-0">
         <ul>
           <li>

@@ -62,5 +62,29 @@
     "category": "electrical",
     "price": "40.88",
     "description": "The SolderMaster Pro 5000 is a cutting-edge soldering tool designed for precision and efficiency in both professional and hobbyist applications. With its fast heating capability and adjustable temperature control, the SolderMaster Pro 5000 delivers consistent, high-quality soldering results for delicate electronics, circuit boards, and small metal components. Its ergonomic, heat-resistant handle ensures comfort during extended use, while the lightweight design offers superior control for intricate tasks. Whether you're a seasoned technician or a DIY enthusiast, the SolderMaster Pro 5000 is the ideal tool to elevate your soldering projects with reliability and ease."
+  },
+  {
+    "brand": "stramm powerPro bit drill",
+    "thumbnail": "https://res.cloudinary.com/dupzzryrz/image/upload/w_1000,ar_1:1,c_fill,g_auto/v1726581631/bit-drill-stramm_ldqfze.jpg",
+    "stock": "10",
+    "category": "powertools",
+    "description": "The Stramm PowerPro Bit Drill is a high-performance tool engineered for precision and durability in drilling tasks. Designed for both professionals and home enthusiasts, the PowerPro effortlessly handles a wide range of materials, from wood and plastic to metal. Its superior build quality ensures a longer lifespan, while the sharp, sturdy drill bits provide clean and accurate holes with minimal effort. Whether you're working on construction projects, furniture assembly, or DIY repairs, the Stramm PowerPro Bit Drill delivers reliable performance, making it an essential addition to any toolbox."
+  },
+  {
+    "thumbnail": "https://res.cloudinary.com/dupzzryrz/image/upload/w_1000,ar_1:1,c_fill,g_auto/v1726582203/allen-key_r5agg6.jpg",
+    "description": "The ApexPro Allen Key Wrench is a robust and reliable tool designed for precision and ease of use. Crafted from high-grade steel, this wrench offers exceptional strength and durability, ensuring it can withstand the rigors of frequent use. Its ergonomic handle provides a comfortable grip, allowing for effortless turning and reducing hand fatigue during extended tasks. Perfect for assembling furniture, working on machinery, or handling various repair projects, the ApexPro Allen Key Wrench delivers the accuracy and performance needed to get the job done efficiently and effectively.",
+    "name": "ApexPro Allen Key Wrench",
+    "brand": "AlexPro",
+    "price": "5.35",
+    "stock": "30",
+    "category": "handtools"
+  },
+  {
+    "brand": "leystan",
+    "description": "The Leystan MaxMeasure Tape is a reliable and user-friendly tool designed for precision in every measurement. Engineered with a durable casing and a high-quality retractable tape, the MaxMeasure ensures accurate length readings for a variety of projects, from home improvement tasks to professional construction work. The tape features clear, easy-to-read markings and a robust locking mechanism, allowing for smooth and secure measurements. With its ergonomic design and dependable performance, the Leystan MaxMeasure Tape is a practical choice for anyone needing accurate and efficient measuring in their toolkit.",
+    "category": "handtools",
+    "price": "20.50",
+    "name": "Leystan MaxMeasure Tape",
+    "thumbnail": "https://res.cloudinary.com/dupzzryrz/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1726582703/tape1-leystan-unsplash_gwjjec.jpg"
   }
 ]

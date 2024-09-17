@@ -13,7 +13,7 @@ export default async function HandTools({
 
   return (
     <main className="min-h-dvh my-2 px-8 items-center flex flex-col">
-      <div className="h-full max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-4">
+      <div className="h-full max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4">
         <Suspense fallback={<SkeletonCard />}>
           <>
             <ProductList promise={products} />

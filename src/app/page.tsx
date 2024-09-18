@@ -5,10 +5,19 @@ import SkeletonCard from "./components/server/skeletonCard";
 import Pagination from "./components/client/pagination";
 const prisma = new PrismaClient();
 
-async function getProduct({ limit, skip }: { limit: number; skip: number }) {
+async function getProduct({
+  limit,
+  cursor = 1,
+}: {
+  limit: number;
+  cursor: number;
+}) {
   const products = await prisma.product.findMany({
+    cursor: { id: cursor },
     take: limit,
-    skip: skip,
+    orderBy: {
+      id: "asc",
+    },
   });
   return products;
 }
@@ -18,12 +27,18 @@ export default async function Page({
 }: {
   searchParams: { [key: string]: string };
 }) {
-  let page: number;
-  const currentPage = parseInt(searchParams.page);
-  if (isNaN(currentPage)) page = 0;
-  else page = currentPage;
+  let cursor: number;
+  const currentCursor = parseInt(searchParams.cursor);
+  if (!isNaN(currentCursor)) {
+    cursor = currentCursor;
+  } else {
+    cursor = 1;
+  }
+  console.log("n", currentCursor);
+  console.log("c", cursor);
   const limit = 10;
-  const products = getProduct({ limit: limit, skip: page });
+  const products = getProduct({ limit: limit, cursor: cursor });
+  const lastCursor = (await products)[9]?.id + 1;
   const productLength = (await products).length;
 
   return (
@@ -35,7 +50,9 @@ export default async function Page({
           </>
         </Suspense>
       </div>
-      {productLength ? <Pagination isEnd={productLength !== 0} /> : null}
+      {productLength ? (
+        <Pagination isEnd={productLength !== 10} nextCursor={lastCursor} />
+      ) : null}
     </main>
   );
 }

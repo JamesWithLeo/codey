@@ -60,8 +60,6 @@ const authOptions: AuthOptions = {
                 data: {
                   email: profile.email!,
                   username: profile.name ?? "",
-                  createdAt: new Date().getTime(),
-                  updatedAt: new Date().getTime(),
                 },
               });
               token.id = newUser.id;

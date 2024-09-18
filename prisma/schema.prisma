@@ -20,14 +20,17 @@ enum Category {
   fasteners
   safetygears
   machineries
+  others
 }
 model users {
   id        Int      @id @unique()@default(autoincrement())
   role      Role     @default(user)
   email     String   @unique
   username  String
-  createdAt BigInt
-  updatedAt BigInt   @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt   
+  
+  order     order[]  @relation("UserToOrders")
 }
 
 model product {
@@ -42,7 +45,30 @@ model product {
   brand       String
   isFeatured  Boolean  @default(false)
   isAvailable Boolean  @default(true)
-  createdAt   BigInt
-  updatedAt   BigInt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   sales       Int      @default(0)
+
+  order      order[]  @relation("ProductOrders")
+}
+
+enum Status {
+  pending
+  shipped
+  delivered
+  canceled
+}
+model order {
+  id           Int      @id @unique @default(autoincrement())
+  quantity     Int
+  total_price  Decimal  @db.Decimal(10, 2)
+  isPaid       Boolean  @default(true)
+  status       Status
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  product_id   Int
+  user_id      Int
+  users        users    @relation("UserToOrders",fields: [user_id], references: [id])
+  product      product  @relation("ProductOrders", fields: [product_id], references: [id])
 }

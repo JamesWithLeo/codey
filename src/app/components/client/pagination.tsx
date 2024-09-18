@@ -1,43 +1,36 @@
 "use client";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export default function Pagination({ isEnd }: { isEnd: boolean }) {
+export default function Pagination({
+  isEnd,
+  nextCursor,
+}: {
+  isEnd: boolean;
+  nextCursor: number;
+}) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const params = useParams();
-  const [page, setPage] = useState<number>(() => {
-    const currentPage = searchParams?.get("page");
-    if (!currentPage) return 0;
-    if (isNaN(parseInt(currentPage))) return 0;
-    return parseInt(currentPage, 10);
-  });
-  function movePage() {
-    router.replace(`/?page=${page}`);
-  }
+  const [page, setPage] = useState<number>(1);
   const HandleNext = () => {
+    router.replace(`/?cursor=${nextCursor}`);
     setPage(page + 1);
   };
 
   const HandleBack = () => {
+    const prevCursor = nextCursor - 10;
+    console.log(nextCursor);
+    router.replace(`/?cursor=${prevCursor}`);
     setPage(page - 1);
   };
 
-  useEffect(() => {
-    movePage();
-  }, [page]);
   return (
     <>
       <div className="join">
-        <button
-          className="join-item btn btn-sm"
-          onClick={HandleBack}
-          disabled={page === 0}
-        >
+        <button className="join-item btn btn-sm" onClick={HandleBack}>
           «
         </button>
         <button className="join-item btn btn-sm ">
-          <>Page {page + 1}</>
+          <>Page {page}</>
         </button>
         <button
           className="join-item btn btn-sm"

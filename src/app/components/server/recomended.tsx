@@ -8,25 +8,29 @@ import RecommendedList from "../client/recommendedList";
 export default async function Recomended({
   category,
   selectedProductId,
+  selectedProductName,
 }: {
   category: Category;
   selectedProductId: number;
+  selectedProductName: string;
 }) {
   const relatedProduct = prisma.product.findMany({
     where: {
-      category: category,
+      OR: [
+        {
+          name: { contains: selectedProductName },
+        },
+        {
+          category: category,
+        },
+      ],
       NOT: { id: selectedProductId },
     },
     take: 4,
   });
   return (
-    <main>
-      <h1>Recommended</h1>
-      <Suspense>
-        <div className="h-96 w-full grid grid-cols-5 gap-2">
-          <RecommendedList promise={relatedProduct} category={category} />
-        </div>
-      </Suspense>
-    </main>
+    <Suspense>
+      <RecommendedList promise={relatedProduct} category={category} />
+    </Suspense>
   );
 }

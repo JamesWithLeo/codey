@@ -7,7 +7,6 @@ import { ChangeEvent, useState } from "react";
 export default function AddProduct() {
   const [isLoading, setIsloading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
-
   function HandleReset() {
     const nameInput = document.getElementById("nameInput") as HTMLInputElement;
     const priceInput = document.getElementById(
@@ -117,7 +116,6 @@ export default function AddProduct() {
       isAvailable: isAvailable,
       otherUrl: otherUrl,
     });
-    console.log(newProduct);
     const response = await fetch("/api/product/", {
       method: "POST",
       body: newProduct,
@@ -126,6 +124,7 @@ export default function AddProduct() {
       },
     });
     const insertedProduct = await response.json();
+    console.log("Inserted Product:", insertedProduct);
     HandleReset();
     setIsloading(false);
     setIsSuccess(true);

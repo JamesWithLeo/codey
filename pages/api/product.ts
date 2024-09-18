@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Category, Prisma, PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-
+import { Category, Prisma } from "@prisma/client";
+import { prisma } from "@/prisma";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -20,8 +19,8 @@ export default async function handler(
       const thumbnail = req.body.thumbnail as string;
       const category = req.body.category as Category;
       const description = req.body.description as string;
-      const isAvailable = req.body.isAvailable === "true";
-      const isFeatured = req.body.isFeatured === "true";
+      const isAvailable = req.body.isAvailable === true;
+      const isFeatured = req.body.isFeatured === true;
       const otherUrl = req.body.otherUrl as string[];
       const newProduct = {
         name: name,
@@ -33,12 +32,10 @@ export default async function handler(
         description: description,
         isFeatured: isFeatured,
         isAvailable: isAvailable,
-        createdAt: new Date().getTime(),
-        updatedAt: new Date().getTime(),
         otherUrl: otherUrl,
       };
       const product = await prisma.product.create({ data: newProduct });
-      res.status(200).json({ ok: 1 });
+      res.status(200).json({ ok: 1, product });
       return;
 
     case "PUT":

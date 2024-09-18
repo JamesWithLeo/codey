@@ -10,10 +10,8 @@ export default function CategoryNav() {
   if (
     path === "/login" ||
     path === "/signup" ||
-    path === "/admin" ||
-    path === "/admin/dashboard" ||
-    path === "/admin/settings" ||
-    path?.startsWith("/p/")
+    path?.startsWith("/p/") ||
+    path?.startsWith("/admin")
   )
     return null;
 

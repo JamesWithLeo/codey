@@ -34,8 +34,7 @@ export default async function Page({
   } else {
     cursor = 1;
   }
-  console.log("n", currentCursor);
-  console.log("c", cursor);
+
   const limit = 10;
   const products = getProduct({ limit: limit, cursor: cursor });
   const lastCursor = (await products)[9]?.id + 1;
@@ -51,7 +50,7 @@ export default async function Page({
         </Suspense>
       </div>
       {productLength ? (
-        <Pagination isEnd={productLength !== 10} nextCursor={lastCursor} />
+        <Pagination isEnd={productLength !== limit} nextCursor={lastCursor} />
       ) : null}
     </main>
   );

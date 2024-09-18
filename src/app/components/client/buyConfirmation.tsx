@@ -53,7 +53,6 @@ export default function BuyConfirmation({
               Confirm
             </button>
             <form method="dialog" className="flex gap-2">
-              {/* if there is a button in form, it will close the modal */}
               <button className="btn">Cancel</button>
             </form>
           </div>

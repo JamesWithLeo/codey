@@ -23,14 +23,24 @@ export default function AdminAside() {
         >
           Dashboard
         </Link>
-
+        <Link
+          href={"/admin/pos"}
+          className={[
+            path === "/admin/pos"
+              ? "text-primary border-primary"
+              : "border-transparent",
+            "pl-8 items-center hover:bg-gray-100 border-l-4 flex row-start-4",
+          ].join(" ")}
+        >
+          Point of sales
+        </Link>
         <Link
           href={"/admin/settings"}
           className={[
             path === "/admin/settings"
               ? "text-primary border-primary"
               : "border-transparent",
-            "items-center hover:bg-gray-100 flex border-l-4  pl-8 row-start-4",
+            "items-center hover:bg-gray-100 flex border-l-4  pl-8 row-start-5",
           ].join(" ")}
         >
           Settings

@@ -6,11 +6,11 @@ type productType = {
   name: string;
   category: Category;
   price: number;
-  description: string;
   thumbnail: string;
   stock: number;
   brand: string;
-  isFeatured: boolean;
+
+  total_price: number;
   quantity: number;
 };
 export default function PosProductCard({
@@ -62,10 +62,8 @@ export default function PosProductCard({
         className="modal modal-bottom sm:modal-middle"
       >
         <div className="modal-box">
-          <h3 className="font-bold text-lg">{product.name}</h3>
-          <p className="py-4">
-            Press ESC key or click the button below to close
-          </p>
+          <h3 className="font-bold text-lg select-none">{product.name}</h3>
+          <p className="py-4">{product.price}</p>
           <div className="modal-action">
             <button className="btn bg-primary" onClick={HandleAddToTerminal}>
               Add

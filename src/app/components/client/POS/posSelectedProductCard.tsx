@@ -4,6 +4,8 @@ type productType = {
   name: string;
   category: Category;
   price: number;
+
+  total_price: number;
   quantity: number;
 };
 export default function PosSelectedProduct({
@@ -22,8 +24,8 @@ export default function PosSelectedProduct({
         <h1 className="col-span-3 truncate overflow-y-hidden ">
           {product.name}
         </h1>
-        <h1 className="">{product.price}</h1>
-        <h1>{product.quantity + 1}</h1>
+        <h1>{product.quantity}</h1>
+        <h1 className="">{product.total_price}</h1>
         <div className="col-start-6 flex items-center justify-end">
           <button className="text-contrast">
             <svg

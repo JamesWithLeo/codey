@@ -1,5 +1,4 @@
 "use client";
-
 import { Category } from "@prisma/client";
 import PosProductCard from "./posProductCad";
 import { useState } from "react";
@@ -10,11 +9,11 @@ type productType = {
   name: string;
   category: Category;
   price: number;
-  description: string;
   thumbnail: string;
   stock: number;
   brand: string;
-  isFeatured: boolean;
+
+  total_price: number;
   quantity: number;
 };
 export default function PosProductList({
@@ -26,25 +25,31 @@ export default function PosProductList({
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
   function HandleAddToTerminal(product: productType) {
-    console.log(selectedProduct?.includes(product));
-    if (selectedProduct?.includes(product)) {
-      setSelectedProduct((prevProducts) =>
-        (prevProducts || []).map((value) => {
-          if (value.id === product.id) {
-            return { ...value, quantity: value.quantity++ };
-          }
-          return value;
-        }),
+    setSelectedProduct((prevProducts) => {
+      const existingProduct = prevProducts?.find(
+        (value) => value.id === product.id,
       );
-    } else {
-      setSelectedProduct((prevProducts) => [...(prevProducts || []), product]);
-    }
 
-    console.log(selectedProduct);
+      if (existingProduct) {
+        // Map over the products and update the quantity of the matching product
+        return prevProducts?.map((value) =>
+          value.id === product.id
+            ? {
+                ...value,
+                quantity: value.quantity + 1,
+                total_price: value.total_price + value.price,
+              }
+            : value,
+        );
+      } else {
+        // If the product is not found, add it to the array with a quantity of 1
+        return [...(prevProducts || []), { ...product, quantity: 1 }];
+      }
+    });
   }
   function HandleRemoveFromTerminal(id: number) {
     setSelectedProduct((prevProducts) =>
-      prevProducts?.filter((product) => product.id !== id),
+      (prevProducts || []).filter((product) => product.id !== id),
     );
   }
   function HandleCreateReceipt() {
@@ -130,10 +135,10 @@ export default function PosProductList({
               <h1>Item</h1>
             </div>
             <div className="w-full h-full">
-              <h1>price</h1>
+              <h1>quantity</h1>
             </div>
             <div className="w-full h-full">
-              <h1>quantity</h1>
+              <h1>price</h1>
             </div>
           </span>
         </div>
@@ -148,8 +153,23 @@ export default function PosProductList({
             );
           })}
         </div>
-        <div className="flex flex-col justify-center row-start-11 px-2">
-          <button className="btn self-end btn-sm bg-primary">Process</button>
+        <div className="border-y px-2 py-1">
+          <span className="grid h-full grid-cols-6 text-xs justify-items-center">
+            <div className="col-span-3 w-full h-full">
+              <h1>total</h1>
+            </div>
+            <div className="w-full h-full col-start-6">
+              <h1>$100.00</h1>
+            </div>
+          </span>
+        </div>
+        <div className="flex flex-col justify-center row-start-11 px-2 py-1">
+          <button
+            className="btn self-end btn-xs bg-primary"
+            onClick={HandleCreateReceipt}
+          >
+            Process
+          </button>
         </div>
       </section>
     </main>

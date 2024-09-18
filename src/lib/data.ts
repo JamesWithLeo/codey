@@ -143,4 +143,16 @@ const products: productType[] = [
       "https://res.cloudinary.com/dupzzryrz/image/upload/w_1000,ar_1:1,c_fill,g_auto/v1726641017/Electrical_Gloves1_xkaodu.jpg",
     isFeatured: false,
   },
+  {
+    name: "NetMaster Pro Tester",
+    brand: "TechLink Solutions",
+    description:
+      "The NetMaster Pro Tester is an advanced network cable testing tool designed for professionals. It features high-speed detection, pinpoint diagnostics, and intuitive LED indicators for immediate feedback. Whether you're working with Ethernet, coaxial, or fiber optic cables, the NetMaster Pro ensures flawless connectivity every time. Built with durability in mind, it’s the perfect tool for maintaining and troubleshooting complex network systems.",
+    thumbnail:
+      "https://res.cloudinary.com/dupzzryrz/image/upload/w_1000,ar_1:1,c_fill,g_auto/v1726676231/tester1_wsblep.jpg",
+    category: "electrical",
+    price: 14.5,
+    stock: 10,
+    isFeatured: false,
+  },
 ];

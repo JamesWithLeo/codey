@@ -32,7 +32,7 @@ export default function CategoryNav() {
   }
   return (
     <section
-      className={`flex gap-2 ${sans.className} border-t pt-2 flex justify-between  px-4 md:px-8 text-xs items-center font-light `}
+      className={`flex gap-2 ${sans.className} md:flex-col  border-t pt-2 flex justify-between  px-4 md:px-8 text-xs items-center font-light `}
     >
       <button
         className="btn btn-circle md:hidden left-0 btn-xs "

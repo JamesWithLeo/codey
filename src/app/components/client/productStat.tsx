@@ -11,10 +11,19 @@ type Product = {
   stock: number;
   brand: string;
   isFeatured: boolean;
+  sales: number;
 };
 
 export default function Stat({ data }: { data: Product[] }) {
-  const product = data;
+  const products = data;
+
+  const totalStock = products.reduce((total, product) => {
+    return total + product.stock;
+  }, 0);
+  const sales = products.reduce(
+    (totalSales, product) => totalSales + product.sales,
+    0,
+  );
   return (
     <>
       <dialog id="modal" className="modal modal-bottom sm:modal-middle">
@@ -34,7 +43,7 @@ export default function Stat({ data }: { data: Product[] }) {
       <div className="stats stats-vertical shadow h-max">
         <div className="stat">
           <div className="stat-title">Total Products</div>
-          <div className="stat-value">{product.length}</div>
+          <div className="stat-value">{products.length}</div>
           <div className="stat-desc"></div>
           <div className="stat-actions">
             <button
@@ -53,13 +62,13 @@ export default function Stat({ data }: { data: Product[] }) {
 
         <div className="stat">
           <div className="stat-title">Total Sales</div>
-          <div className="stat-value">{1392}</div>
+          <div className="stat-value">{sales}</div>
           <div className="stat-desc"></div>
         </div>
 
         <div className="stat">
-          <div className="stat-title">Today Sales</div>
-          <div className="stat-value">{123}</div>
+          <div className="stat-title">Today stock</div>
+          <div className="stat-value">{totalStock}</div>
           <div className="stat-desc"></div>
         </div>
       </div>

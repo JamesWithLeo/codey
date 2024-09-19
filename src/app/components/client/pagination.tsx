@@ -11,10 +11,17 @@ export default function Pagination({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState<number>(() => {
+    const currentPage = searchParams?.get("page");
+    if (currentPage && !isNaN(parseInt(currentPage)))
+      return parseInt(currentPage);
+    else {
+      return 1;
+    }
+  });
   const HandleNext = () => {
-    router.replace(`/?cursor=${nextCursor}`);
-    setPage(page + 1);
+    router.replace(`/?cursor=${nextCursor}&page=${page + 1}`);
+    setPage((current) => current + 1);
   };
 
   const HandleBack = () => {
@@ -22,9 +29,9 @@ export default function Pagination({
     const prevCursor = searchParams?.get("cursor");
     let cursor = 1;
     if (prevCursor) cursor = parseInt(prevCursor, 10) - productLimit;
-    console.log(cursor);
-    router.replace(`/?cursor=${cursor}`);
-    setPage(page - 1);
+    if (page !== 1) setPage((current) => current - 1);
+    if (cursor > 1) router.replace(`/?cursor=${cursor}&page=${page}`);
+    else router.replace(`/?cursor=1&page=${1}`);
   };
 
   return (

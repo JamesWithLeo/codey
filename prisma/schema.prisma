@@ -63,7 +63,7 @@ model order {
   quantity     Int
   total_price  Decimal  @db.Decimal(10, 2)
   isPaid       Boolean  @default(true)
-  status       Status
+  status       Status   @default(pending)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   
@@ -71,4 +71,22 @@ model order {
   user_id      Int
   users        users    @relation("UserToOrders",fields: [user_id], references: [id])
   product      product  @relation("ProductOrders", fields: [product_id], references: [id])
+
+
+orderItems   OrderItem[] @relation("OrderToOrderItems") // New relationship for multiple products
 }
+
+
+model OrderItem {
+  id           Int      @id @unique @default(autoincrement())
+  total_price  Decimal  @db.Decimal(10, 2)
+  quantity     Int
+  isPaid       Boolean  @default(true)
+  status       Status   @default(pending)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  order_id     Int
+  order        order    @relation("OrderToOrderItems", fields: [order_id], references: [id])
+}
+

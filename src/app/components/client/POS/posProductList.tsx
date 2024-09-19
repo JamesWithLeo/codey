@@ -3,13 +3,12 @@ import { Category } from "@prisma/client";
 import PosProductCard from "./posProductCad";
 import { useEffect, useReducer, useState } from "react";
 import PosSelectedProduct from "./posSelectedProductCard";
+import { getSession } from "next-auth/react";
 
 type productType = {
   id: number;
   name: string;
-  category: Category;
   price: number;
-  thumbnail: string;
   brand: string;
   total_price: number;
   quantity: number;
@@ -23,6 +22,14 @@ enum TOTAL_REDUCER {
   increment = "increment",
   decrement = "decrement",
   VOID = "VOID",
+}
+function omit<T extends object, K extends keyof T>(
+  obj: T,
+  keysToRemove: K[],
+): Omit<T, K> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([key]) => !keysToRemove.includes(key as K)),
+  ) as Omit<T, K>;
 }
 export default function PosProductList({
   serializedProduct,
@@ -127,12 +134,28 @@ export default function PosProductList({
       payload: toRemoveProduct.price,
     });
   }
-
-  function HandleCreateReceipt() {
+  function HandleProcess() {
     if (currentTotal !== 0 || selectedProduct.length !== 0) {
-      console.log(currentTotal);
-      console.log(selectedProduct);
+      // console.log(currentTotal);
+      // console.log(selectedProduct);
+      HandleCreateReceipt();
     }
+  }
+  async function HandleCreateReceipt() {
+    const session = await getSession();
+    const toOrderProduct = selectedProduct.map((value) => {
+      return omit(value, ["name", "price", "brand"]);
+    });
+    const response = await fetch("/api/products", {
+      method: "POST",
+      body: JSON.stringify({ orders: toOrderProduct, id: session?.user?.id }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const checkOutProduct = await response.json();
+
+    console.log("checkout:", checkOutProduct);
   }
   function HandleVoid() {
     dispatchProduct({ type: SELECTED_PRODUCT_REDUCER.VOID });
@@ -258,7 +281,7 @@ export default function PosProductList({
           </button>
           <button
             className="btn btn-xs bg-primary"
-            onClick={HandleCreateReceipt}
+            onClick={HandleProcess}
             disabled={selectedProduct.length === 0 || currentTotal === 0}
           >
             Process

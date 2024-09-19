@@ -2,10 +2,8 @@ import { Category } from "@prisma/client";
 type productType = {
   id: number;
   name: string;
-  category: Category;
   price: number;
   brand: string;
-  thumbnail: string;
 
   total_price: number;
   quantity: number;

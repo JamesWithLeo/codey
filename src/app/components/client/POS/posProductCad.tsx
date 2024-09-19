@@ -4,9 +4,7 @@ import Link from "next/link";
 type productType = {
   id: number;
   name: string;
-  category: Category;
   price: number;
-  thumbnail: string;
   brand: string;
 
   total_price: number;

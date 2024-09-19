@@ -11,6 +11,7 @@ import LogoutButton from "./logoutButton";
 import CategoryNav from "./categoryNav";
 import Search from "./search";
 import { auth } from "@/authOptions";
+import AdminButton from "./adminButton";
 
 export default async function Header() {
   const session = await auth();
@@ -80,15 +81,14 @@ export default async function Header() {
               className="dropdown-content shadow-lg menu bg-base-100 rounded-box z-[1] w-52 p-2"
             >
               {session && session.user?.role === "admin" ? (
-                <li>
-                  <Link href={"/admin"}>Admin</Link>
-                </li>
+                <>
+                  <AdminButton />
+                </>
               ) : null}
 
               {!session || !session.user ? (
                 <>
                   <LoginButton />
-                  {/* <SignupButton /> */}
                 </>
               ) : (
                 <li>

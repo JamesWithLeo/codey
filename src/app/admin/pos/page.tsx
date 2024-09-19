@@ -37,6 +37,8 @@ export default async function page() {
         "sales",
         "stock",
         "description",
+        "category",
+        "thumbnail",
       ],
     );
   });

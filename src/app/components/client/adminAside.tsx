@@ -8,16 +8,16 @@ export default function AdminAside() {
   const path = usePathname();
   return (
     <main
-      className={`w-52 flex flex-col h-dvh ${sans.className} border-r border-solid`}
+      className={`w-52 flex flex-col h-dvh ${sans.className} border-r border-solid `}
     >
-      <div className="grid grid-rows-10 w-full h-full group">
+      <div className="grid grid-rows-10 w-full h-full group grid-cols-3">
         <Link
           href={"/admin"}
           className={[
             path === "/admin"
               ? "text-primary border-primary"
               : "border-transparent",
-            "pl-8 items-center hover:bg-gray-100 border-l-4 flex row-start-3",
+            "pl-8 items-center hover:bg-gray-100 border-l-4 flex row-start-3 col-span-3",
           ].join(" ")}
         >
           Dashboard
@@ -28,7 +28,7 @@ export default function AdminAside() {
             path === "/admin/pos"
               ? "text-primary border-primary"
               : "border-transparent",
-            "pl-8 items-center hover:bg-gray-100 border-l-4 flex row-start-4",
+            "pl-8 items-center hover:bg-gray-100 border-l-4 flex row-start-4 col-span-3",
           ].join(" ")}
         >
           Point of sales
@@ -39,7 +39,7 @@ export default function AdminAside() {
             path === "/admin/settings"
               ? "text-primary border-primary"
               : "border-transparent",
-            "items-center hover:bg-gray-100 flex border-l-4  pl-8 row-start-5",
+            "items-center hover:bg-gray-100 flex border-l-4  pl-8 row-start-5 col-span-3",
           ].join(" ")}
         >
           Settings

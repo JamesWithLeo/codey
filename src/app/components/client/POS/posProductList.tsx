@@ -55,7 +55,7 @@ export default function PosProductList({
             ? {
                 ...product,
                 quantity: product.quantity + 1,
-                total_price: (payload.total_price += payload.price),
+                total_price: payload.total_price + payload.price,
               }
             : product,
         );
@@ -158,47 +158,48 @@ export default function PosProductList({
   useEffect(() => {}, [selectedProduct]);
   return (
     <main
-      className="flex justify-between left-0 top-0 gap-4 bg-white w-full h-full"
+      className="flex justify-between md:flex-row flex-col left-0 top-0 md:gap-4 gap-2 bg-white w-full h-full "
       id="main_pos"
     >
-      <section className="w-1/2 gap-2 flex flex-col">
-        <label className="form-control w-full">
-          <div className="label justify-start gap-2">
-            {!isFullscreen ? (
-              <button
-                className="p-1 bg-gray-100 rounded h-max text-contrast"
-                onClick={HandleMaximize}
+      <section className="md:w-1/2 h-2/5 md:h-full gap-2 flex flex-col">
+        <div className="flex gap-2 items-center">
+          <span className="label-text-alt">Product</span>
+          <input
+            className="input input-bordered input-xs w-full"
+            placeholder="Hammer"
+          />
+          {!isFullscreen ? (
+            <button
+              className="p-1 bg-gray-100 rounded h-max text-contrast"
+              onClick={HandleMaximize}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 256 256"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  viewBox="0 0 256 256"
-                >
-                  <path d="M220,48V88a12,12,0,0,1-24,0V60H168a12,12,0,0,1,0-24h40A12,12,0,0,1,220,48ZM88,196H60V168a12,12,0,0,0-24,0v40a12,12,0,0,0,12,12H88a12,12,0,0,0,0-24Zm120-40a12,12,0,0,0-12,12v28H168a12,12,0,0,0,0,24h40a12,12,0,0,0,12-12V168A12,12,0,0,0,208,156ZM88,36H48A12,12,0,0,0,36,48V88a12,12,0,0,0,24,0V60H88a12,12,0,0,0,0-24Z"></path>
-                </svg>
-              </button>
-            ) : (
-              <button
-                className="p-1 bg-gray-200 rounded h-max text-contrast"
-                onClick={HandleMinimize}
+                <path d="M220,48V88a12,12,0,0,1-24,0V60H168a12,12,0,0,1,0-24h40A12,12,0,0,1,220,48ZM88,196H60V168a12,12,0,0,0-24,0v40a12,12,0,0,0,12,12H88a12,12,0,0,0,0-24Zm120-40a12,12,0,0,0-12,12v28H168a12,12,0,0,0,0,24h40a12,12,0,0,0,12-12V168A12,12,0,0,0,208,156ZM88,36H48A12,12,0,0,0,36,48V88a12,12,0,0,0,24,0V60H88a12,12,0,0,0,0-24Z"></path>
+              </svg>
+            </button>
+          ) : (
+            <button
+              className="p-1 bg-gray-200 rounded h-max text-contrast"
+              onClick={HandleMinimize}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 256 256"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  viewBox="0 0 256 256"
-                >
-                  <path d="M148,96V48a12,12,0,0,1,24,0V84h36a12,12,0,0,1,0,24H160A12,12,0,0,1,148,96ZM96,148H48a12,12,0,0,0,0,24H84v36a12,12,0,0,0,24,0V160A12,12,0,0,0,96,148Zm112,0H160a12,12,0,0,0-12,12v48a12,12,0,0,0,24,0V172h36a12,12,0,0,0,0-24ZM96,36A12,12,0,0,0,84,48V84H48a12,12,0,0,0,0,24H96a12,12,0,0,0,12-12V48A12,12,0,0,0,96,36Z"></path>
-                </svg>
-              </button>
-            )}
-            <span className="label-text-alt">Product</span>
-          </div>
-          <input className="input input-bordered" placeholder="Hammer" />
-        </label>
+                <path d="M148,96V48a12,12,0,0,1,24,0V84h36a12,12,0,0,1,0,24H160A12,12,0,0,1,148,96ZM96,148H48a12,12,0,0,0,0,24H84v36a12,12,0,0,0,24,0V160A12,12,0,0,0,96,148Zm112,0H160a12,12,0,0,0-12,12v48a12,12,0,0,0,24,0V172h36a12,12,0,0,0,0-24ZM96,36A12,12,0,0,0,84,48V84H48a12,12,0,0,0,0,24H96a12,12,0,0,0,12-12V48A12,12,0,0,0,96,36Z"></path>
+              </svg>
+            </button>
+          )}
+        </div>
         <div className="border w-full h-full rounded overflow-y-scroll">
           {serializedProduct.map((value) => {
             return (
@@ -212,7 +213,7 @@ export default function PosProductList({
         </div>
       </section>
 
-      <section className="w-1/2 flex flex-col border rounded">
+      <section className="md:w-1/2 h-3/5 md:h-full flex flex-col border rounded">
         <div className="border-b px-2 py-1">
           <span className="grid h-full grid-cols-6 text-xs justify-items-center">
             <div className="col-span-3 w-full h-full">

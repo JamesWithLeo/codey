@@ -1,6 +1,6 @@
 "use client";
 import { Category } from "@prisma/client";
-
+import Link from "next/link";
 type productType = {
   id: number;
   name: string;
@@ -30,7 +30,7 @@ export default function PosProductCard({
   return (
     <>
       <main
-        className="w-full h-20 p-4 justify-between hover:bg-gray-100 flex gap-2"
+        className="w-full h-20 md:p-4 p-2 justify-between hover:bg-gray-100 flex gap-2 text-xs md:text-sm"
         id="main_card"
         onDoubleClick={HandleOpen}
       >
@@ -67,9 +67,12 @@ export default function PosProductCard({
             <button className="btn bg-primary" onClick={HandleAddToTerminal}>
               Add
             </button>
+            <Link href={`/p/${product.id}`} className="btn">
+              view in home page
+            </Link>
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}
-              <button className="btn">Close</button>
+              <button className="btn btn-ghost">Close</button>
             </form>
           </div>
         </div>

@@ -42,7 +42,7 @@ export default async function page() {
   });
 
   return (
-    <main className="w-full h-full p-4">
+    <main className="w-full h-dvh p-4">
       <PosProductList serializedProduct={serializedProduct} />
     </main>
   );

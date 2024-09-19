@@ -24,7 +24,7 @@ export default async function page() {
       {
         ...product,
         price: parseFloat(product.price.toString()),
-        quantity: 0,
+        quantity: 1,
         total_price: parseFloat(product.price.toString()),
       },
       [
@@ -34,6 +34,9 @@ export default async function page() {
         "isFeatured",
         "otherUrl",
         "updatedAt",
+        "sales",
+        "stock",
+        "description",
       ],
     );
   });

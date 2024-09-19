@@ -1,7 +1,7 @@
 "use client";
 import { Category } from "@prisma/client";
 import PosProductCard from "./posProductCad";
-import { useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import PosSelectedProduct from "./posSelectedProductCard";
 
 type productType = {
@@ -10,52 +10,134 @@ type productType = {
   category: Category;
   price: number;
   thumbnail: string;
-  stock: number;
   brand: string;
-
   total_price: number;
   quantity: number;
 };
+enum SELECTED_PRODUCT_REDUCER {
+  increment = "increment",
+  decrement = "decrement",
+  VOID = "VOID",
+}
+enum TOTAL_REDUCER {
+  increment = "increment",
+  decrement = "decrement",
+  VOID = "VOID",
+}
 export default function PosProductList({
   serializedProduct,
 }: {
   serializedProduct: productType[];
 }) {
-  const [selectedProduct, setSelectedProduct] = useState<productType[]>();
+  const [selectedProduct, dispatchProduct] = useReducer(selectedReducer, []);
+  const [currentTotal, dispatchTotal] = useReducer(totalReducer, 0);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
-  function HandleAddToTerminal(product: productType) {
-    setSelectedProduct((prevProducts) => {
-      const existingProduct = prevProducts?.find(
-        (value) => value.id === product.id,
-      );
+  function selectedReducer(
+    state: productType[],
+    action: {
+      type: SELECTED_PRODUCT_REDUCER;
+      payload?: productType;
+    },
+  ) {
+    const { type, payload } = action;
+    switch (type) {
+      case SELECTED_PRODUCT_REDUCER.increment:
+        if (!payload) return state;
 
-      if (existingProduct) {
-        // Map over the products and update the quantity of the matching product
-        return prevProducts?.map((value) =>
-          value.id === product.id
-            ? {
-                ...value,
-                quantity: value.quantity + 1,
-                total_price: value.total_price + value.price,
-              }
-            : value,
+        const existingProduct = state.find(
+          (product) => product.id === payload.id,
         );
-      } else {
-        // If the product is not found, add it to the array with a quantity of 1
-        return [...(prevProducts || []), { ...product, quantity: 1 }];
-      }
+        // add as initial, increment the price and quantity accordingly if existed
+        if (!existingProduct) return [...state, { ...payload }]; // return initial
+        return state.map((product) =>
+          product.id === existingProduct.id
+            ? {
+                ...product,
+                quantity: product.quantity + 1,
+                total_price: (payload.total_price += payload.price),
+              }
+            : product,
+        );
+
+      case SELECTED_PRODUCT_REDUCER.decrement:
+        if (!payload) return state;
+
+        return state.reduce<productType[]>((stayingProduct, product) => {
+          if (product.id === payload.id) {
+            if (product.quantity > 1) {
+              // Reduce quantity but do not remove the product
+              stayingProduct.push({
+                ...product,
+                quantity: product.quantity - 1,
+                total_price: product.total_price - product.price,
+              });
+            }
+            // Optionally handle removing the product if quantity reaches 0
+          } else {
+            stayingProduct.push(product);
+          }
+          return stayingProduct;
+        }, []);
+
+      case SELECTED_PRODUCT_REDUCER.VOID:
+        return [];
+      default:
+        return state;
+    }
+  }
+
+  function totalReducer(
+    state: number,
+    action: { type: TOTAL_REDUCER; payload?: number },
+  ) {
+    const { type, payload } = action;
+    switch (type) {
+      case TOTAL_REDUCER.increment:
+        if (!payload) return state;
+        return state + payload;
+      case TOTAL_REDUCER.decrement:
+        if (!payload) return state;
+        return state - payload;
+      case TOTAL_REDUCER.VOID:
+        return 0;
+      default:
+        return state;
+    }
+  }
+
+  function HandleAddToTerminal(product: productType) {
+    dispatchProduct({
+      type: SELECTED_PRODUCT_REDUCER.increment,
+      payload: product,
+    });
+    dispatchTotal({
+      type: TOTAL_REDUCER.increment,
+      payload: product.price,
     });
   }
-  function HandleRemoveFromTerminal(id: number) {
-    setSelectedProduct((prevProducts) =>
-      (prevProducts || []).filter((product) => product.id !== id),
-    );
-  }
-  function HandleCreateReceipt() {
-    console.log(selectedProduct);
+
+  function HandleRemoveFromTerminal(toRemoveProduct: productType) {
+    dispatchProduct({
+      type: SELECTED_PRODUCT_REDUCER.decrement,
+      payload: toRemoveProduct,
+    });
+    dispatchTotal({
+      type: TOTAL_REDUCER.decrement,
+      payload: toRemoveProduct.price,
+    });
   }
 
+  function HandleCreateReceipt() {
+    if (currentTotal !== 0 || selectedProduct.length !== 0) {
+      console.log(currentTotal);
+      console.log(selectedProduct);
+    }
+  }
+  function HandleVoid() {
+    dispatchProduct({ type: SELECTED_PRODUCT_REDUCER.VOID });
+    dispatchTotal({ type: TOTAL_REDUCER.VOID });
+  }
   function HandleMaximize() {
     setIsFullscreen(true);
     const main_pos = document.getElementById("main_pos") as HTMLElement;
@@ -64,6 +146,7 @@ export default function PosProductList({
     main_pos.style.zIndex = "50";
     main_pos.style.padding = "1rem";
   }
+
   function HandleMinimize() {
     setIsFullscreen(false);
     const main_pos = document.getElementById("main_pos") as HTMLElement;
@@ -72,6 +155,7 @@ export default function PosProductList({
     main_pos.style.position = "relative";
     main_pos.style.padding = "0";
   }
+  useEffect(() => {}, [selectedProduct]);
   return (
     <main
       className="flex justify-between left-0 top-0 gap-4 bg-white w-full h-full"
@@ -148,7 +232,8 @@ export default function PosProductList({
               <PosSelectedProduct
                 key={value.id}
                 product={value}
-                onRemove={HandleRemoveFromTerminal}
+                onIncrement={HandleAddToTerminal}
+                onDecrement={HandleRemoveFromTerminal}
               />
             );
           })}
@@ -159,14 +244,21 @@ export default function PosProductList({
               <h1>total</h1>
             </div>
             <div className="w-full h-full col-start-6">
-              <h1>$100.00</h1>
+              <h1>${currentTotal.toFixed(2)}</h1>
             </div>
           </span>
         </div>
-        <div className="flex flex-col justify-center row-start-11 px-2 py-1">
+        <div className="flex gap-4 justify-end  row-start-11 px-2 py-1">
           <button
-            className="btn self-end btn-xs bg-primary"
+            className="btn btn-xs bg-contrast text-white"
+            onClick={HandleVoid}
+          >
+            void
+          </button>
+          <button
+            className="btn btn-xs bg-primary"
             onClick={HandleCreateReceipt}
+            disabled={selectedProduct.length === 0 || currentTotal === 0}
           >
             Process
           </button>

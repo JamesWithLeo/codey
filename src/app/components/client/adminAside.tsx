@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 
 export default function AdminAside() {
   const path = usePathname();
-  console.log(path);
   return (
     <main
       className={`w-52 flex flex-col h-dvh ${sans.className} border-r border-solid`}

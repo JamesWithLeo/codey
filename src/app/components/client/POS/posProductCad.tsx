@@ -7,7 +7,6 @@ type productType = {
   category: Category;
   price: number;
   thumbnail: string;
-  stock: number;
   brand: string;
 
   total_price: number;

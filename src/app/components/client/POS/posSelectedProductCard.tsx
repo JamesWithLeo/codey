@@ -4,16 +4,20 @@ type productType = {
   name: string;
   category: Category;
   price: number;
+  brand: string;
+  thumbnail: string;
 
   total_price: number;
   quantity: number;
 };
 export default function PosSelectedProduct({
   product,
-  onRemove,
+  onIncrement,
+  onDecrement,
 }: {
   product: productType;
-  onRemove: (id: number) => void;
+  onIncrement: (toAddProduct: productType) => void;
+  onDecrement: (toRemoveProduct: productType) => void;
 }) {
   return (
     <>
@@ -25,9 +29,14 @@ export default function PosSelectedProduct({
           {product.name}
         </h1>
         <h1>{product.quantity}</h1>
-        <h1 className="">{product.total_price}</h1>
+        <h1 className="">{product.total_price.toFixed(2)}</h1>
         <div className="col-start-6 flex items-center justify-end">
-          <button className="text-contrast">
+          <button
+            className="text-contrast"
+            onClick={() => {
+              onIncrement(product);
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -41,7 +50,7 @@ export default function PosSelectedProduct({
           <button
             className="text-contrast"
             onClick={() => {
-              onRemove(product.id);
+              onDecrement(product);
             }}
           >
             <svg

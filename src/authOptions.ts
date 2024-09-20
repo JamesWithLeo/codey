@@ -8,7 +8,6 @@ import type {
 } from "next";
 import { getServerSession } from "next-auth";
 import { prisma } from "./prisma";
-import e from "express";
 
 declare module "next-auth" {
   interface Session {

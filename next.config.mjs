@@ -6,9 +6,8 @@ const nextConfig = {
       { protocol: "https", hostname: "res.cloudinary.com" },
       { protocol: "https", hostname: "picsum.photos" },
       { protocol: "https", hostname: "avatars.githubusercontent.com" },
-    ]
+    ],
   },
-
 };
 
 export default nextConfig;

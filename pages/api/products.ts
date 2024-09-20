@@ -51,12 +51,14 @@ export default async function handler(
       const newItems = orderItems.map((value) => {
         const product_id = value.id;
         const product = omit(value, ["id"]);
-        return { ...product, product_id: product_id, user_id: id };
+        return { ...product, product_id: product_id };
       });
 
-      const productItem = await prisma.order.createMany({
-        skipDuplicates: true,
-        data: newItems,
+      const productItem = await prisma.transaction.create({
+        data: {
+          user_id: id,
+          orderItems: { create: newItems },
+        },
       });
       res.status(200).json({ ok: 1, productItem });
       return;

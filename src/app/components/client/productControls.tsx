@@ -2,6 +2,7 @@
 import BuyConfirmation from "./buyConfirmation";
 import { getSession } from "next-auth/react";
 import { useState } from "react";
+
 type product = {
   id: number;
   name: string;
@@ -23,12 +24,14 @@ export default function ProductControls({ product }: { product: product }) {
 
     const user_id = session.user.id;
     const product_id = product.id;
+    const total_price = Number(product.price) * quantity;
     const newOrder = {
+      total_price,
       user_id,
       product_id,
       quantity,
     };
-    const response = await fetch("/api/orders", {
+    const response = await fetch("/api/order", {
       method: "POST",
       body: JSON.stringify(newOrder),
       headers: {
@@ -36,7 +39,7 @@ export default function ProductControls({ product }: { product: product }) {
       },
     });
     const insertedOrder = await response.json();
-    console.log("purchased", insertedOrder);
+    console.log("purchased:", insertedOrder);
   }
   return (
     <>

@@ -1,6 +1,7 @@
 "use client";
 import { Category } from "@prisma/client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 type productType = {
   id: number;
   name: string;
@@ -17,6 +18,7 @@ export default function PosProductCard({
   product: productType;
   onAdd: (product: productType) => void;
 }) {
+  const router = useRouter();
   function HandleAddToTerminal() {
     onAdd(product);
   }
@@ -65,11 +67,16 @@ export default function PosProductCard({
             <button className="btn bg-primary" onClick={HandleAddToTerminal}>
               Add
             </button>
-            <Link href={`/p/${product.id}`} className="btn">
+            <button
+              onClick={() => {
+                router.replace(`/p/${product.id}`);
+                document.body.style.overflowY = "scroll";
+              }}
+              className="btn"
+            >
               view in home page
-            </Link>
+            </button>
             <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
               <button className="btn btn-ghost">Close</button>
             </form>
           </div>

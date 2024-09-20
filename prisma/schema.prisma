@@ -30,11 +30,11 @@ model users {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt   
   
-  order     order[]  @relation("UserToOrders")
+  order     transaction[]  @relation("UserToOrders")
 }
 
 model product {
-  id          Int      @id @unique()@default(autoincrement())
+  id          Int      @id @unique @default(autoincrement())
   name        String  
   category    Category 
   price       Decimal  @db.Decimal(10, 2)
@@ -49,44 +49,49 @@ model product {
   updatedAt   DateTime @updatedAt
   sales       Int      @default(0)
 
-  order      order[]  @relation("ProductOrders")
+  orderItems  order[]  @relation("ProductOrderItems") // Relates to order items, not directly to orders
 }
 
-enum Status {
+enum ORDER_STATUS {
   pending
+  suspended
   shipped
   delivered
   canceled
+	@@map("Status")
 }
-model order {
+enum TRANSACTION_STATUS {
+  pending
+  suspended
+  completed
+  deleted
+}
+model transaction {
   id           Int      @id @unique @default(autoincrement())
-  quantity     Int
-  total_price  Decimal  @db.Decimal(10, 2)
-  isPaid       Boolean  @default(true)
-  status       Status   @default(pending)
+  status       TRANSACTION_STATUS @default(pending)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  
-  product_id   Int
+
   user_id      Int
-  users        users    @relation("UserToOrders",fields: [user_id], references: [id])
-  product      product  @relation("ProductOrders", fields: [product_id], references: [id])
+  users        users    @relation("UserToOrders", fields: [user_id], references: [id])
 
-
-orderItems   OrderItem[] @relation("OrderToOrderItems") // New relationship for multiple products
+  orderItems   order[] @relation("OrderToOrderItems")
+	@@map("order")
 }
 
+model order {
+  id                  Int            @id @unique @default(autoincrement())
+  total_price         Decimal        @db.Decimal(10, 2)
+  quantity            Int
+  isPaid              Boolean        @default(true)
+  status              ORDER_STATUS   @default(pending)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 
-model OrderItem {
-  id           Int      @id @unique @default(autoincrement())
-  total_price  Decimal  @db.Decimal(10, 2)
-  quantity     Int
-  isPaid       Boolean  @default(true)
-  status       Status   @default(pending)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  product_id          Int
+  product             product        @relation("ProductOrderItems", fields: [product_id], references: [id])
 
-  order_id     Int
-  order        order    @relation("OrderToOrderItems", fields: [order_id], references: [id])
+  transaction_id      Int
+  transaction         transaction    @relation("OrderToOrderItems", fields: [transaction_id], references: [id],onDelete: Cascade)
+	@@map("OrderItem")
 }
-

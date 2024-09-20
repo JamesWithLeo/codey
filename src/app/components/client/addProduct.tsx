@@ -28,13 +28,16 @@ export default function AddProduct() {
     const isFeaturedInput = document.getElementById(
       "isFeaturedInput",
     ) as HTMLInputElement;
-
+    const categoryInput = document.getElementById(
+      "categoryInput",
+    ) as HTMLInputElement;
     nameInput.value = "";
     priceInput.value = "";
     stockInput.value = "";
     brandInput.value = "";
     imageUrlInput.value = "";
     descriptionInput.value = "";
+    categoryInput.value = "";
     isFeaturedInput.checked = false;
     HandleRemoveUrl();
   }
@@ -93,9 +96,9 @@ export default function AddProduct() {
       descriptionInput,
     ];
     const result = requiredInput.every((input, index, inputArray) => {
-      if (!input.value) {
+      if (!input.value || input.value === "") {
         const splited = input.className.split(" ");
-        splited.push("input-error");
+        splited.push("input-error select-error");
         input.className = splited.join(" ");
         return false;
       }
@@ -138,6 +141,12 @@ export default function AddProduct() {
   ) {
     event.currentTarget.className = event.currentTarget.className.replace(
       "input-error",
+      " ",
+    );
+  }
+  function HandleChangeCategory(event: ChangeEvent<HTMLSelectElement>) {
+    event.currentTarget.className = event.currentTarget.className.replace(
+      "select-error",
       " ",
     );
   }
@@ -247,9 +256,11 @@ export default function AddProduct() {
               <span className="label-text-alt">category</span>
             </div>
             <select
-              className="select-bordered select select-sm"
+              className="select-bordered select select-sm "
               id="categoryInput"
+              onChange={HandleChangeCategory}
             >
+              <option value={""} />
               <option value={Category.handtools}>Hand Tools</option>
               <option value={Category.powertools}>Power Tools</option>
               <option value={Category.materials}>Construction Materials</option>
@@ -258,6 +269,7 @@ export default function AddProduct() {
               <option value={Category.fasteners}>Fasteners</option>
               <option value={Category.safetygears}>Safety Gear</option>
               <option value={Category.machineries}>Machinery</option>
+              <option value={Category.others}>Other</option>
             </select>
           </label>
 

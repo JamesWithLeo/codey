@@ -7,6 +7,8 @@ import { ChangeEvent, useState } from "react";
 export default function AddProduct() {
   const [isLoading, setIsloading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isFailed, setIsFailed] = useState<boolean>(false);
+
   function HandleReset() {
     const nameInput = document.getElementById("nameInput") as HTMLInputElement;
     const priceInput = document.getElementById(
@@ -84,7 +86,7 @@ export default function AddProduct() {
     let otherUrl: string[] = [];
     otherUrlInput.childNodes.forEach((input) => {
       const urlInput = input as HTMLInputElement;
-      otherUrl.push(urlInput.value);
+      if (urlInput.value) otherUrl.push(urlInput.value);
     });
     const requiredInput = [
       nameInput,
@@ -107,10 +109,11 @@ export default function AddProduct() {
 
     if (!result) return; // exit function since requirements doesn't met
     setIsloading(true);
+
     const newProduct = JSON.stringify({
       name: name,
-      price: price,
-      stock: stock,
+      price: parseFloat(price),
+      stock: parseInt(stock),
       brand: brand,
       thumbnail: thumbnail,
       category: category,
@@ -119,6 +122,7 @@ export default function AddProduct() {
       isAvailable: isAvailable,
       otherUrl: otherUrl,
     });
+
     const response = await fetch("/api/product/", {
       method: "POST",
       body: newProduct,
@@ -128,12 +132,19 @@ export default function AddProduct() {
     });
     const insertedProduct = await response.json();
     console.log("Inserted Product:", insertedProduct);
-    HandleReset();
+    if (insertedProduct.ok) {
+      HandleReset();
+      setIsloading(false);
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 3000);
+    } else {
+      setIsFailed(true);
+      setTimeout(() => {
+        setIsFailed(false);
+      }, 3000);
+    }
     setIsloading(false);
-    setIsSuccess(true);
-    setTimeout(() => {
-      setIsSuccess(false);
-    }, 3000);
   }
 
   function HandleOnChange(
@@ -170,7 +181,7 @@ export default function AddProduct() {
       {isSuccess ? (
         <div
           role="alert"
-          className="alert shadow-lg fixed left-1/2 w-[96%] -translate-x-1/2  top-4 z-10"
+          className="alert shadow-lg fixed left-1/2 w-[96%] -translate-x-1/2  top-4 z-10 text-primary"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -182,11 +193,28 @@ export default function AddProduct() {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="2"
-              color="#FF8225"
+              color="currentColor"
               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
           <span>New Product Added!</span>
+        </div>
+      ) : null}
+      {isFailed ? (
+        <div
+          role="alert"
+          className="alert shadow-lg fixed left-1/2 w-[96%] -translate-x-1/2  top-4 z-10 text-contrast"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            viewBox="0 0 256 256"
+          >
+            <path d="M165.66,101.66,139.31,128l26.35,26.34a8,8,0,0,1-11.32,11.32L128,139.31l-26.34,26.35a8,8,0,0,1-11.32-11.32L116.69,128,90.34,101.66a8,8,0,0,1,11.32-11.32L128,116.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"></path>
+          </svg>
+          <span>Failed! Error happened during process.</span>
         </div>
       ) : null}
 

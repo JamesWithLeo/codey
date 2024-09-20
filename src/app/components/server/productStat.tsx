@@ -1,4 +1,4 @@
-import Stat from "../client/productStat";
+import Stat from "../client/stat/productStat";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();

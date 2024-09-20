@@ -7,11 +7,11 @@ import Link from "next/link";
 import LoginButton from "../server/loginButton";
 
 import Image from "next/image";
-import LogoutButton from "./logoutButton";
+import LogoutButton from "./button/logoutButton";
 import CategoryNav from "./categoryNav";
 import Search from "./search";
 import { auth } from "@/authOptions";
-import AdminButton from "./adminButton";
+import AdminButton from "./button/adminButton";
 
 export default async function Header() {
   const session = await auth();

@@ -28,7 +28,8 @@ model users {
   email     String   @unique
   username  String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt   
+  updatedAt DateTime @updatedAt 
+  isOnline  Boolean  @default(true)  
   
   order     transaction[]  @relation("UserToOrders")
 }
@@ -66,14 +67,20 @@ enum TRANSACTION_STATUS {
   completed
   deleted
 }
+
+enum TRANSACTION_SOURCE {
+  POS
+  ONLINE
+}
 model transaction {
   id           Int      @id @unique @default(autoincrement())
   status       TRANSACTION_STATUS @default(pending)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  user_id      Int
-  users        users    @relation("UserToOrders", fields: [user_id], references: [id])
+  user_id      Int?
+  users        users?    @relation("UserToOrders", fields: [user_id], references: [id])
+  source       TRANSACTION_SOURCE     @default(ONLINE)
 
   orderItems   order[] @relation("OrderToOrderItems")
 	@@map("order")

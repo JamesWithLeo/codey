@@ -1,5 +1,5 @@
 "use client";
-import AddProduct from "./addProduct";
+import AddProduct from "../button/addProduct";
 
 type Product = {
   id: number;
@@ -40,7 +40,7 @@ export default function Stat({ data }: { data: Product[] }) {
         </form>
       </dialog>
 
-      <div className="stats stats-vertical shadow h-max">
+      <div className="stats stats-horizontal shadow h-36">
         <div className="stat">
           <div className="stat-title">Total Products</div>
           <div className="stat-value">{products.length}</div>

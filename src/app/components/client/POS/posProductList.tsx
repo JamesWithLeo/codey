@@ -146,7 +146,7 @@ export default function PosProductList({
     const toOrderProduct = selectedProduct.map((value) => {
       return omit(value, ["name", "price", "brand"]);
     });
-    const response = await fetch("/api/products", {
+    const response = await fetch("/api/pos", {
       method: "POST",
       body: JSON.stringify({ orders: toOrderProduct, id: session?.user?.id }),
       headers: {
@@ -223,7 +223,7 @@ export default function PosProductList({
             </button>
           )}
         </div>
-        <div className="border w-full h-full rounded overflow-y-scroll">
+        <div className="border w-full h-full rounded overflow-y-scroll to-gray-400 ">
           {serializedProduct.map((value) => {
             return (
               <PosProductCard

@@ -90,6 +90,7 @@ model order {
   id                  Int            @id @unique @default(autoincrement())
   total_price         Decimal        @db.Decimal(10, 2)
   quantity            Int
+  product_name        String         @default("Product not specified use Id instead")
   isPaid              Boolean        @default(true)
   status              ORDER_STATUS   @default(pending)
   createdAt           DateTime       @default(now())

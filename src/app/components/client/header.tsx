@@ -95,9 +95,6 @@ export default async function Header() {
                   <Link href={"/profile"}>Profile</Link>
                 </li>
               )}
-              <li>
-                <h1>Settings</h1>
-              </li>
               {session && session.user ? (
                 <>
                   <div className="divider m-0" />

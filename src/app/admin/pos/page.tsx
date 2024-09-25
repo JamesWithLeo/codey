@@ -3,7 +3,7 @@ import { prisma } from "@/prisma";
 
 async function getProduct() {
   const product = await prisma.product.findMany({
-    where: { isAvailable: true },
+    where: { isAvailable: true, stock: { not: 0 } },
   });
   return product;
 }

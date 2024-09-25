@@ -30,6 +30,37 @@ function isValidProduct(product: any): product is IProduct {
     Object.values(Category).includes(product.category)
   );
 }
+type IUpdateProduct = {
+  id: number;
+  quantity: number;
+};
+function isValidToUpdate(product: any): product is IUpdateProduct {
+  return (
+    typeof product.id === "number" &&
+    !Number.isNaN(product.id) &&
+    typeof product.quantity === "number" &&
+    !Number.isNaN(product.quantity)
+  );
+}
+async function updateStockAndSales({
+  id,
+  newStock,
+  newSales,
+}: {
+  id: number;
+  newStock: number;
+  newSales: number;
+}) {
+  const updatedProduct = await prisma.product.update({
+    where: { id: id },
+    data: { sales: newSales, stock: newStock },
+  });
+  return updatedProduct;
+}
+async function findProduct(id: number) {
+  const product = await prisma.product.findFirst({ where: { id: id } });
+  return product;
+}
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -58,7 +89,38 @@ export default async function handler(
       return res.status(200).json({ ok: 1, product: insertedProduct });
 
     case "PUT":
-      return res.status(200).json({ ok: 1 });
+      const toUpdateProducts = JSON.parse(req.body) as any[];
+      const isValidProducts = toUpdateProducts.map((product) => {
+        return isValidToUpdate(product);
+      });
+      const isValidAll = isValidProducts.every((product) => product === true);
+      if (!isValidAll)
+        return res
+          .status(400)
+          .json({ ok: 0, error: "Update fields contains invalid values" });
+
+      const logs = await Promise.all(
+        toUpdateProducts.map(
+          async (productToModify: { id: number; quantity: number }) => {
+            const { id, quantity } = productToModify;
+
+            const originalProduct = await findProduct(id);
+            if (!originalProduct) return res.status(400).json({ ok: 0 });
+            const newSales = originalProduct.sales + quantity;
+            const newStock = originalProduct.stock - quantity;
+
+            const updatedProduct = await updateStockAndSales({
+              id,
+              newStock,
+              newSales,
+            });
+            return { productToModify, originalProduct, updatedProduct };
+          },
+        ),
+      );
+
+      console.log(logs);
+      return res.status(200).json({ ok: 1, logs });
 
     case "DELETE":
       return res.status(200).json({ ok: 1 });

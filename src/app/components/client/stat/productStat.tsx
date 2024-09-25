@@ -41,7 +41,7 @@ export default function Stat({ data }: { data: Product[] }) {
       </dialog>
 
       <div className="stats stats-horizontal shadow h-36">
-        <div className="stat">
+        <div className="stat p-2 md:p-4">
           <div className="stat-title">Total Products</div>
           <div className="stat-value">{products.length}</div>
           <div className="stat-desc"></div>
@@ -60,13 +60,13 @@ export default function Stat({ data }: { data: Product[] }) {
           </div>
         </div>
 
-        <div className="stat">
+        <div className="stat p-2 md:p-4">
           <div className="stat-title">Total Sales</div>
           <div className="stat-value">{sales}</div>
           <div className="stat-desc"></div>
         </div>
 
-        <div className="stat">
+        <div className="stat p-2 md:p-4">
           <div className="stat-title">Today stock</div>
           <div className="stat-value">{totalStock}</div>
           <div className="stat-desc"></div>

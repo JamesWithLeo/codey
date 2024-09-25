@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-import SkeletonCard from "../components/server/skeletonCard";
 import ProductList from "../components/client/productList";
 import FilterSeachByName from "../components/client/utils/filterSeachProduct";
 

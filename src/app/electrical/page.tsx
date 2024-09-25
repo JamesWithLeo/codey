@@ -9,15 +9,19 @@ export default async function Electrical({
   searchParams: { [key: string]: string };
 }) {
   const query = params.query;
-  const products = FilterSeachByName(query, "electrical");
+  const products = await FilterSeachByName(query, "electrical");
+  const serializedProduct = products.map((product) => {
+    return {
+      ...product,
+      price: product.price.toFixed(2),
+    };
+  });
   return (
-    <main className="min-h-dvh my-2 px-8 items-center flex flex-col">
-      <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-7xl">
-        <Suspense fallback={<SkeletonCard />}>
-          <>
-            <ProductList promise={products} />
-          </>
-        </Suspense>
+    <main className="w-full py-2 h-max flex px-4 md:px-8 flex-col gap-2 items-center justify-center">
+      <div className="h-full w-full flex-col  max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4 min-h-dvh">
+        <>
+          <ProductList data={serializedProduct} />
+        </>
       </div>
     </main>
   );

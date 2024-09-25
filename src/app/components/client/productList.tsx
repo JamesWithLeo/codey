@@ -1,29 +1,57 @@
+"use client";
 import Card from "./card";
-import { use } from "react";
+import { useEffect, useState } from "react";
 import { DM_Sans } from "next/font/google";
-import { product } from "@prisma/client";
+import { Category } from "@prisma/client";
+import Skeleton from "./skeleton";
 const sans = DM_Sans({ style: "normal", subsets: [] });
 
-export default function ProductList({
-  promise,
-}: {
-  promise: Promise<product[]>;
-}) {
-  const products = use(promise); // This will resolve the promise when ready
-
+interface IProduct {
+  id: number;
+  name: string;
+  category: Category;
+  price: string;
+  description: string;
+  thumbnail: string;
+  otherUrl: string[];
+  brand: string;
+  isFeatured: boolean;
+  isAvailable: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  sales: number;
+}
+export default function ProductList({ data }: { data: IProduct[] }) {
+  const products = data;
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [skeletonCount, setSkeletonCount] = useState<number>(0);
+  useEffect(() => {
+    setSkeletonCount(products.length);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  }, []);
   return (
     <>
+      {isLoading
+        ? Array.from({ length: skeletonCount }).map((_, index) => (
+            <Skeleton key={index} />
+          ))
+        : null}
+
       {products.length ? (
         <>
-          {products.map((product: product) => {
-            const productSerialize = {
-              ...product,
-              price: product.price.toString(),
-            };
-            return <Card key={product.id} object={productSerialize} />;
-          })}
+          {!isLoading ? (
+            <>
+              {products.map((product: IProduct) => {
+                return <Card key={product.id} data={product} />;
+              })}
+            </>
+          ) : null}
         </>
-      ) : (
+      ) : null}
+
+      {!products.length ? (
         <div className="h-dvh w-full flex items-center col-span-full flex-col justify-center text-gray-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +64,7 @@ export default function ProductList({
           </svg>
           <h1 className={`${sans.className} font-semibold`}>No result</h1>
         </div>
-      )}
+      ) : null}
     </>
   );
 }

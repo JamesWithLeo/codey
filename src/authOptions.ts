@@ -1,11 +1,13 @@
 import GithubProvider from "next-auth/providers/github";
 import { AuthOptions } from "next-auth";
 import Google from "next-auth/providers/google";
+
 import type {
   GetServerSidePropsContext,
   NextApiRequest,
   NextApiResponse,
 } from "next";
+
 import { getServerSession } from "next-auth";
 import { prisma } from "./prisma";
 
@@ -24,12 +26,14 @@ declare module "next-auth" {
     id: number;
   }
 }
+
 declare module "next-auth/jwt" {
   interface JWT {
     role: "admin" | "user";
     id: number;
   }
 }
+
 const authOptions: AuthOptions = {
   providers: [
     GithubProvider({

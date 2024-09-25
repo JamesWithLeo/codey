@@ -17,3 +17,16 @@ export function isOrderValidForPOS(order: any): order is IOrder {
     typeof order.name === "string"
   );
 }
+export interface ICart {
+  quantity: number;
+  product_id: number;
+}
+
+export function isValidCartItem(item: any): item is ICart {
+  return (
+    typeof item.quantity === "number" &&
+    !Number.isNaN(item.quantity) &&
+    typeof item.product_id === "number" &&
+    !Number.isNaN(item.quantity)
+  );
+}

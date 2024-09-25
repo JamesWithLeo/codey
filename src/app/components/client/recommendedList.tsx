@@ -25,7 +25,7 @@ export default function RecommendedList({
                   ...product,
                   price: product.price.toString(),
                 };
-                return <Card key={product.id} object={productSerialize} />;
+                return <Card key={product.id} data={productSerialize} />;
               })}
             </div>
             <span className="flex flex-col">

@@ -67,8 +67,13 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "GET":
-      const products = await prisma.product.findMany();
-      res.status(200).json({ ok: 1, products });
+      const id = parseInt(req.query.id as string);
+      const selectedProduct = await prisma.product.findFirst({
+        where: { id: id },
+      });
+      if (!selectedProduct) return res.status(400).json({ ok: 0 });
+
+      res.status(200).json({ ok: 1, product: selectedProduct });
       return;
 
     case "POST":
@@ -77,7 +82,7 @@ export default async function handler(
       if (!isValidProduct(product))
         return res
           .status(400)
-          .json({ ok: 0, error: "invalid product", product });
+          .json({ ok: 0, error: "invalid product", product: product });
 
       const price = new Prisma.Decimal(req.body.price);
       const otherProductField = req.body;

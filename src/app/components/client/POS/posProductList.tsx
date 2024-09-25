@@ -2,7 +2,6 @@
 import PosProductCard from "./posProductCad";
 import { useEffect, useReducer, useState } from "react";
 import PosSelectedProduct from "./posSelectedProductCard";
-import { getSession } from "next-auth/react";
 import { omit } from "../utils/omit";
 import { isOrderValidForPOS } from "../utils/validation";
 

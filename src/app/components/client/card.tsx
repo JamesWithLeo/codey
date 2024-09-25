@@ -1,19 +1,24 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Category } from "@prisma/client";
 
-type product = {
+interface IProduct {
   id: number;
   name: string;
-  category: string;
+  category: Category;
   price: string;
   description: string;
   thumbnail: string;
-  stock: number;
+  otherUrl: string[];
   brand: string;
   isFeatured: boolean;
-};
-export default function Card({ object: product }: { object: product }) {
+  isAvailable: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  sales: number;
+}
+export default function Card({ data: product }: { data: IProduct }) {
   const router = useRouter();
   function HandleViewProduct() {
     router.push(`/p/${product.id}/`);

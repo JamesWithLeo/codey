@@ -41,6 +41,18 @@ export default function ProductControls({ product }: { product: product }) {
     const insertedOrder = await response.json();
     console.log("purchased:", insertedOrder);
   }
+  async function HandleAddToCart() {
+    const session = await getSession();
+    if (!session || !session.user) return;
+    const newCartItem = { quantity, product_id: product.id };
+    const user_id = session.user.id;
+    const response = await fetch("/api/cart", {
+      method: "POST",
+      body: JSON.stringify({ user_id, item: newCartItem }),
+    });
+    const item = await response.json();
+    console.log(item);
+  }
   return (
     <>
       <div className="px-4 py-2 w-full flex flex-col gap-2">
@@ -84,7 +96,10 @@ export default function ProductControls({ product }: { product: product }) {
           </div>
         </div>
         <div className="flex gap-2 w-full">
-          <button className="btn w-1/2 sm:w-max border-none shadow">
+          <button
+            className="btn w-1/2 sm:w-max border-none shadow"
+            onClick={HandleAddToCart}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"

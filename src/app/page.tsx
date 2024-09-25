@@ -1,7 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Suspense } from "react";
 import ProductList from "./components/client/productList";
-import SkeletonCard from "./components/server/skeletonCard";
 import Pagination from "./components/client/pagination";
 const prisma = new PrismaClient();
 
@@ -36,18 +34,22 @@ export default async function Page({
   }
 
   const limit = 10;
-  const products = getProduct({ limit: limit, cursor: cursor });
-  const lastCursor = (await products)[9]?.id + 1;
-  const productLength = (await products).length;
+  const products = await getProduct({ limit: limit, cursor: cursor });
+  const serializedProduct = products.map((product) => {
+    return {
+      ...product,
+      price: product.price.toFixed(2),
+    };
+  });
+  const lastCursor = products[9]?.id + 1;
+  const productLength = products.length;
 
   return (
-    <main className="w-full py-2 h-full flex px-4 md:px-8 flex-col gap-2 items-center justify-center">
-      <div className="h-full max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4 min-h-dvh">
-        <Suspense fallback={<SkeletonCard />}>
-          <>
-            <ProductList promise={products} />
-          </>
-        </Suspense>
+    <main className="w-full py-2 h-max flex px-4 md:px-8 flex-col gap-2 items-center justify-center">
+      <div className="h-full w-full flex-col  max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4 min-h-dvh">
+        <>
+          <ProductList data={serializedProduct} />
+        </>
       </div>
       {productLength ? (
         <Pagination isEnd={productLength !== limit} nextCursor={lastCursor} />

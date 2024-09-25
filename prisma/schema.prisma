@@ -11,6 +11,25 @@ enum Role {
   user
   admin
 }
+enum ORDER_STATUS {
+  pending
+  suspended
+  shipped
+  delivered
+  canceled
+	@@map("Status")
+}
+enum TRANSACTION_STATUS {
+  pending
+  suspended
+  completed
+  deleted
+}
+
+enum TRANSACTION_SOURCE {
+  POS
+  ONLINE
+}
 enum Category {
   handtools
   powertools
@@ -32,6 +51,7 @@ model users {
   isOnline  Boolean  @default(true)  
   
   order     transaction[]  @relation("UserToOrders")
+  carts     Cart[]        @relation("UserToCarts")
 }
 
 model product {
@@ -51,27 +71,11 @@ model product {
   sales       Int      @default(0)
 
   orderItems  order[]  @relation("ProductOrderItems") // Relates to order items, not directly to orders
+  cartItems CartItem[] @relation("ProductToCartItems")
+
 }
 
-enum ORDER_STATUS {
-  pending
-  suspended
-  shipped
-  delivered
-  canceled
-	@@map("Status")
-}
-enum TRANSACTION_STATUS {
-  pending
-  suspended
-  completed
-  deleted
-}
 
-enum TRANSACTION_SOURCE {
-  POS
-  ONLINE
-}
 model transaction {
   id           Int      @id @unique @default(autoincrement())
   status       TRANSACTION_STATUS @default(pending)
@@ -90,7 +94,7 @@ model order {
   id                  Int            @id @unique @default(autoincrement())
   total_price         Decimal        @db.Decimal(10, 2)
   quantity            Int
-  product_name        String         @default("Product not specified use Id instead")
+  product_name        String         @default("Product not specified, use id instead")
   isPaid              Boolean        @default(true)
   status              ORDER_STATUS   @default(pending)
   createdAt           DateTime       @default(now())
@@ -102,4 +106,31 @@ model order {
   transaction_id      Int
   transaction         transaction    @relation("OrderToOrderItems", fields: [transaction_id], references: [id],onDelete: Cascade)
 	@@map("OrderItem")
+}
+
+
+model Cart {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  user_id   Int
+  user      users     @relation("UserToCarts", fields: [user_id], references: [id])
+
+
+  cartItems     CartItem[]
+
+}
+
+model CartItem {
+  id                  String            @id @default(cuid())
+  quantity            Int
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  
+  cart_id             String
+  cart                Cart      @relation(fields: [cart_id], references: [id])
+  
+  product_id          Int
+  product             product  @relation("ProductToCartItems", fields: [product_id], references: [id])
 }

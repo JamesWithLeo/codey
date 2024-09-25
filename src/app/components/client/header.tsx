@@ -91,9 +91,14 @@ export default async function Header() {
                   <LoginButton />
                 </>
               ) : (
-                <li>
-                  <Link href={"/profile"}>Profile</Link>
-                </li>
+                <>
+                  <li>
+                    <Link href={"/profile"}>Profile</Link>
+                  </li>
+                  <li>
+                    <Link href={"/cart"}>Cart</Link>
+                  </li>
+                </>
               )}
               {session && session.user ? (
                 <>

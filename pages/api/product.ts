@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Category, Prisma, product } from "@prisma/client";
 import { prisma } from "@/prisma";
+import { isValidToUpdate } from "@/app/components/client/utils/validation";
 
 interface IProduct {
   name: string;
@@ -30,18 +31,7 @@ function isValidProduct(product: any): product is IProduct {
     Object.values(Category).includes(product.category)
   );
 }
-type IUpdateProduct = {
-  id: number;
-  quantity: number;
-};
-function isValidToUpdate(product: any): product is IUpdateProduct {
-  return (
-    typeof product.id === "number" &&
-    !Number.isNaN(product.id) &&
-    typeof product.quantity === "number" &&
-    !Number.isNaN(product.quantity)
-  );
-}
+
 async function updateStockAndSales({
   id,
   newStock,

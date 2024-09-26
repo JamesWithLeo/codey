@@ -14,30 +14,28 @@ export default async function Page({ params }: { params: any }) {
     product = await prisma.product.findUnique({
       where: { id: id },
     });
-    if (!product) {
-      redirect("/p/not-found");
-    }
-  } else {
-    redirect("/p/not-found");
-  }
+    if (!product) redirect("/p/not-found");
+  } else redirect("/p/not-found");
 
   const serializedProduct = { ...product, price: product.price.toFixed(2) };
+
   return (
     <main className="h-full md:px-8 grid gap-2 flex-col items-center pt-2 pb-8">
-      <div className="breadcrumbs text-xs overflow-y-hidden self-start px-4 md:px-0">
-        <ul>
-          <li>
-            <Link href={"/"}>Home</Link>
-          </li>
-          {product && product.category ? (
+      <div className="flex items-center justify-between ">
+        <div className="breadcrumbs text-xs overflow-y-hidden self-start px-4 md:px-0">
+          <ul>
             <li>
-              <Link href={`/${product.category}`}>{product?.category}</Link>
+              <Link href={"/"}>Home</Link>
             </li>
-          ) : null}
-          <li>{product?.name}</li>
-        </ul>
+            {product && product.category ? (
+              <li>
+                <Link href={`/${product.category}`}>{product?.category}</Link>
+              </li>
+            ) : null}
+            <li>{product?.name}</li>
+          </ul>
+        </div>
       </div>
-
       <div className="grid grid-cols-1 grid-rows-3 sm:grid-rows-1 sm:grid-cols-2 flex-col sm:flex-row w-full gap-4 h-full ">
         {product && product.thumbnail ? (
           <div className="flex items-center flex-col px-4">

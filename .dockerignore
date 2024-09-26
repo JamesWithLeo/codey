@@ -1,0 +1,31 @@
+
+
+# Ignore node_modules to avoid copying dependencies into the image
+node_modules
+npm-debug.log
+
+# Ignore local environment files
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore Docker-related files
+Dockerfile
+docker-compose.yml
+
+# Ignore git repository files
+.git
+.gitignore
+
+# Ignore Prisma files that are not necessary
+prisma/migrations
+
+# Ignore other sensitive or unnecessary files
+*.log
+*.DS_Store
+.idea
+.vscode
+coverage

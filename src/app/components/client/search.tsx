@@ -1,5 +1,6 @@
 "use client";
 
+import { Category } from "@prisma/client";
 import { useRouter, usePathname } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -18,20 +19,15 @@ export default function Search() {
     const searchInput = document.getElementById(
       "searchInput",
     ) as HTMLInputElement;
-    const categories = [
-      "handtools",
-      "powertools",
-      "materials",
-      "electrical",
-      "plumbing",
-      "fasteners",
-      "safetygears",
-      "machineries",
-    ];
+
     const search = searchInput.value;
     const splittedPath = path?.split("/");
+    // Handle if the search input is cleared
     if (!search) {
-      if (splittedPath && categories.includes(splittedPath[1])) {
+      if (
+        splittedPath &&
+        Object.values(Category).includes(splittedPath[1] as Category)
+      ) {
         const category = splittedPath[1];
         router.replace(`/${category}`);
       } else {
@@ -40,14 +36,18 @@ export default function Search() {
       HandleSearch.flush();
       return;
     }
-    // check whether category exist. if not, search for all result
-    if (splittedPath && categories.includes(splittedPath[1])) {
+
+    // check whether category is valid. if not, search to all categories
+    if (
+      splittedPath &&
+      Object.values(Category).includes(splittedPath[1] as Category)
+    ) {
       const category = splittedPath[1];
       router.replace(`/${category}?query=${search}`, {
         scroll: true,
       });
     } else {
-      router.replace(`/search?query=${search}`, {
+      router.replace(`/?query=${search}`, {
         scroll: true,
       });
     }

@@ -19,21 +19,15 @@ export default async function Machineries({
     catergory: "machineries",
     searchByName: query,
   });
-  const serializedProduct = products.map((product) => {
-    return {
-      ...product,
-      price: product.price.toFixed(2),
-    };
-  });
 
-  const lastCursor = serializedProduct[9]?.id + 1;
-  const productLength = serializedProduct.length;
+  const lastCursor = products[9]?.id + 1;
+  const productLength = products.length;
 
   return (
     <main className="w-full py-2 h-max flex px-4 md:px-8 flex-col gap-2 items-center justify-center">
       <div className="h-full w-full flex-col  max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4 min-h-dvh">
         <>
-          <ProductList data={serializedProduct} />
+          <ProductList data={products} />
         </>
       </div>
       {productLength ? (

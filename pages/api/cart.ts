@@ -9,24 +9,44 @@ export default async function handler(
   switch (req.method) {
     case "GET":
       return res.status(200).json({ ok: 1 });
+
     case "POST":
       const cartItem = JSON.parse(req.body);
+
       const user_id = cartItem.user_id;
+
       const item = cartItem.item;
+
       const isValidItem = isValidCartItem(item);
       if (!isValidItem)
         return res.status(200).json({ ok: 0, error: "Invalid item" });
-
       const cart = await prisma.cart.findFirst({ where: { user_id: user_id } });
 
       if (cart) {
-        const addedItem = await prisma.cartItem.create({
-          data: {
-            quantity: item.quantity,
-            product_id: item.product_id,
-            cart_id: cart.id,
-          },
+        const existingItem = await prisma.cartItem.findFirst({
+          where: { product_id: item.product_id, cart_id: cart.id },
         });
+        let addedItem;
+        if (!existingItem) {
+          addedItem = await prisma.cartItem.create({
+            data: {
+              quantity: item.quantity,
+              product_id: item.product_id,
+              cart_id: cart.id,
+            },
+          });
+        } else {
+          addedItem = await prisma.cartItem.update({
+            where: {
+              product_id: item.product_id,
+              cart_id: cart.id,
+              id: existingItem?.id,
+            },
+            data: {
+              quantity: { increment: item.quantity + existingItem.quantity },
+            },
+          });
+        }
         return res.status(200).json({ ok: 1, addedItem });
       } else {
         const addedItem = await prisma.cart.create({
@@ -37,11 +57,25 @@ export default async function handler(
             },
           },
         });
+
         return res.status(200).json({ ok: 1, addedItem });
       }
     case "PUT":
-      return res.status(200).json({ ok: 1 });
+      console.log(req.body);
+
+      return res.status(200).json({ ok: 1, body: req.body });
+
     case "DELETE":
-      return res.status(200).json({ ok: 1 });
+      const ids = JSON.parse(req.query.ids as string) as any[];
+      const isValid = ids.every((id) => typeof id === "string");
+
+      if (!isValid) {
+        return res.status(400).json({ ok: 0, error: "contains invalid id" });
+      }
+      console.log(ids);
+      const deletedItem = await prisma.cartItem.deleteMany({
+        where: { id: { in: ids } },
+      });
+      return res.status(200).json({ ok: 1, deletedItem: deletedItem });
   }
 }

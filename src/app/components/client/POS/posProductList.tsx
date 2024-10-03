@@ -3,16 +3,7 @@ import PosProductCard from "./posProductCad";
 import { useEffect, useReducer, useState } from "react";
 import PosSelectedProduct from "./posSelectedProductCard";
 import { omit } from "../utils/omit";
-import { isOrderValidForPOS } from "../utils/validation";
-
-interface productType {
-  id: number;
-  name: string;
-  price: number;
-  brand: string;
-  total_price: number;
-  quantity: number;
-}
+import { isOrderValidForPOS, productType } from "../utils/validation";
 enum SELECTED_PRODUCT_REDUCER {
   increment = "increment",
   decrement = "decrement",
@@ -144,8 +135,17 @@ export default function PosProductList({
 
   async function PostPosOrder() {
     const toOrderProduct = selectedProduct.map((value) => {
+      const product_id = value.id;
+      const product_name = value.name;
+      return {
+        product_id,
+        product_name,
+        total_price: value.total_price,
+        quantity: value.quantity,
+      };
       return omit(value, ["price", "brand"]);
     });
+
     const isValid = toOrderProduct.every((product) =>
       isOrderValidForPOS(product),
     );
@@ -176,6 +176,7 @@ export default function PosProductList({
     const toOrderProduct = selectedProduct.map((value) => {
       return omit(value, ["name", "price", "brand", "total_price"]);
     });
+
     return fetch("/api/product", {
       method: "PUT",
       body: JSON.stringify(toOrderProduct),
@@ -289,7 +290,7 @@ export default function PosProductList({
             <path d="M165.66,101.66,139.31,128l26.35,26.34a8,8,0,0,1-11.32,11.32L128,139.31l-26.34,26.35a8,8,0,0,1-11.32-11.32L116.69,128,90.34,101.66a8,8,0,0,1,11.32-11.32L128,116.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"></path>
           </svg>
           <h1>Unexpected Error!</h1>
-          <div>
+          <div className="flex gap-2">
             <button
               className="btn btn-sm text-sm"
               onClick={() => {

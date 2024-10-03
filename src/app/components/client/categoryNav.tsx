@@ -11,7 +11,8 @@ export default function CategoryNav() {
     path === "/login" ||
     path === "/signup" ||
     path?.startsWith("/p/") ||
-    path?.startsWith("/admin")
+    path?.startsWith("/admin") ||
+    path?.startsWith("/cart")
   )
     return null;
 

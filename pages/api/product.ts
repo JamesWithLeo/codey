@@ -47,10 +47,12 @@ async function updateStockAndSales({
   });
   return updatedProduct;
 }
+
 async function findProduct(id: number) {
   const product = await prisma.product.findFirst({ where: { id: id } });
   return product;
 }
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,

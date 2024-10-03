@@ -1,11 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/prisma";
-
-interface IOrder {
-  id: number;
-  quantity: number;
-  total_price: number;
-}
+import { IOrder } from "@/app/components/client/utils/validation";
 
 function isValidOrder(order: any): order is IOrder {
   return (
@@ -48,16 +43,11 @@ export default async function handler(
       if (!areAllItemsValid) {
         return res.status(400).json({ ok: 0, error: "Invalid order data" });
       }
-      const newItems = orderItems.map((value) => {
-        const product_id = value.id;
-        const product = omit(value, ["id"]);
-        return { ...product, product_id: product_id };
-      });
 
       const productItem = await prisma.transaction.create({
         data: {
           user_id: id,
-          orderItems: { create: newItems },
+          orderItems: { create: orderItems },
         },
       });
       res.status(200).json({ ok: 1, productItem });

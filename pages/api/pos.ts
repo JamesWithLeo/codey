@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/prisma";
 import { TRANSACTION_SOURCE } from "@prisma/client";
-import { omit } from "@/app/components/client/utils/omit";
 import { isOrderValidForPOS } from "@/app/components/client/utils/validation";
 
 export default async function handler(
@@ -22,10 +21,9 @@ export default async function handler(
       }
 
       const newItems = orderItems.map((value) => {
-        const product_id = value.id;
-        const product_name = value.name;
-        const product = omit(value, ["id", "name"]);
-        return { ...product, product_id, product_name };
+        const product_id = value.product_id;
+        const product_name = value.product_name;
+        return { ...value, product_id, product_name };
       });
 
       const productItem = await prisma.transaction.create({

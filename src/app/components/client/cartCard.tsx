@@ -109,7 +109,7 @@ export default function CartCard({
     <>
       {product ? (
         <div
-          className={`max-w-full w-full min-h-32 h-full border-t rounded-sm  ${isMarking && isMarkingForDeletion ? "bg-red-50" : ""} border-gray-100 grid-cols-5 grid`}
+          className={`max-w-full w-full min-h-32 h-full  rounded-sm  ${isMarking && isMarkingForDeletion ? "bg-red-50" : "border-t"} border-gray-100 grid-cols-5 grid`}
           id={cartItem.id}
           onClick={(event) => {
             if (isMarkingForDeletion) {
@@ -134,18 +134,21 @@ export default function CartCard({
           </figure>
 
           <div className="p-2 md:p-4 col-span-2">
-            <Link href={`/p/${product.id}`} className="card-title text-base">
+            <Link
+              href={`/p/${product.id}`}
+              className="card-title text-sm md:text-base"
+            >
               {product?.name}
             </Link>
-            <h1>{product.brand}</h1>
-            <h1>{product.price.toString()}</h1>
+            <h1 className="text-xs md:text-sm">{product.brand}</h1>
+            <h1 className="text-xs md:text-sm">${product.price.toString()}</h1>
           </div>
 
           {isMarkingForDeletion ? null : (
-            <section className="flex items-center justify-center">
-              <div className="flex">
+            <section className="flex items-center  justify-center">
+              <div className="flex flex-col sm:flex-row">
                 <button
-                  className="btn btn-square rounded-r-none btn-xs sm:btn-sm"
+                  className="btn btn-square rounded-b-none sm:rounded-b sm:rounded-r-none btn-xs sm:btn-sm"
                   onClick={HandleIncrementQuantity}
                 >
                   <svg
@@ -162,7 +165,7 @@ export default function CartCard({
                   {quantity}
                 </button>
                 <button
-                  className="btn btn-square btn-xs sm:btn-sm rounded-l-none"
+                  className="btn btn-square btn-xs sm:btn-sm rounded-t-none sm:rounded-t sm:rounded-l-none"
                   onClick={HandleDecrementQuantity}
                   disabled={quantity === 1}
                 >
@@ -181,14 +184,16 @@ export default function CartCard({
           )}
 
           {isMarkingForDeletion ? null : (
-            <section className={`flex items-center flex-col justify-center`}>
+            <section
+              className={`flex items-center flex-col gap-2 text-sm sm:text-base sm:flex-col justify-center`}
+            >
+              <h1>${Number(product.price.toString()) * quantity}</h1>
               <input
                 id={cartItem.product_id.toString()}
                 onChange={HandleSelect}
                 type="checkbox"
-                className="absolute self-end checkbox checkbox-sm "
+                className="sm:absolute sm:self-end checkbox checkbox-sm "
               />
-              <h1>${Number(product.price.toString()) * quantity}</h1>
             </section>
           )}
         </div>

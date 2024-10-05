@@ -26,8 +26,8 @@ export default async function Page() {
 
   const cart = await FetchCart(Auth.user.id);
   return (
-    <main className="w-full py-2 h-full flex px-4 md:px-8 flex-col gap-2 items-center justify-center">
-      <div className="breadcrumbs text-xs self-start">
+    <main className="w-full  h-full flex  flex-col gap-2 items-center justify-center">
+      <div className="breadcrumbs text-xs self-start px-4 md:px-8">
         <ul>
           <li>
             <Link href={"/"}>Home</Link>
@@ -42,7 +42,7 @@ export default async function Page() {
           <CartPanel cartItem={cart} />
         </>
       ) : (
-        <div className="h-dvh w-full max-w-7xl flex-col flex items-center justify-center">
+        <div className="h-dvh w-full max-w-7xl flex-col flex items-center px-4 md:px-8 justify-center">
           <h1 className={` ${sans.className} text-contrast`}>
             Your cart is empty.
           </h1>

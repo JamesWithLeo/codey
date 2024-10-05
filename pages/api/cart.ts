@@ -11,6 +11,7 @@ export default async function handler(
       return res.status(200).json({ ok: 1 });
 
     case "POST":
+      const cartLimit = 10;
       const cartItem = JSON.parse(req.body);
 
       const user_id = cartItem.user_id;
@@ -23,6 +24,18 @@ export default async function handler(
       const cart = await prisma.cart.findFirst({ where: { user_id: user_id } });
 
       if (cart) {
+        const isFullCart = await prisma.cartItem.findMany({
+          where: { cart_id: cart.id },
+          take: cartLimit,
+        });
+        if (isFullCart.length === cartLimit) {
+          return res.status(200).json({
+            ok: 0,
+            maxCart: true,
+            error:
+              "It looks like your cart is full! How about reviewing your items or finalizing your order?",
+          });
+        }
         const existingItem = await prisma.cartItem.findFirst({
           where: { product_id: item.product_id, cart_id: cart.id },
         });

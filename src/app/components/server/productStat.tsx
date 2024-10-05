@@ -1,3 +1,4 @@
+import React from "react";
 import Stat from "../client/stat/productStat";
 import { PrismaClient } from "@prisma/client";
 

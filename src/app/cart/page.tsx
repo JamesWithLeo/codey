@@ -2,6 +2,7 @@ import { auth } from "@/authOptions";
 import { prisma } from "@/prisma";
 import { redirect } from "next/navigation";
 import { DM_Sans } from "next/font/google";
+import React from "react";
 import Link from "next/link";
 import CartPanel from "../components/client/cartPanel";
 const sans = DM_Sans({ style: "normal", subsets: [] });

@@ -1,9 +1,7 @@
 "use client";
 import { DM_Sans } from "next/font/google";
 const sans = DM_Sans({ style: "normal", subsets: [] });
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import Search from "./search";
 export default function CategoryNav() {
   const router = useRouter();
   const path = usePathname();

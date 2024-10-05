@@ -1,4 +1,3 @@
-import Stat from "../components/client/stat/userStat";
 import ProductStat from "../components/server/productStat";
 import UserStat from "../components/server/userStat";
 

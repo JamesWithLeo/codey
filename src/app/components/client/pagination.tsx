@@ -1,6 +1,6 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const categories = [
   "handtools",

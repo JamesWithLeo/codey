@@ -1,6 +1,7 @@
 "use client";
 import BuyConfirmation from "./buyConfirmation";
 import { getSession } from "next-auth/react";
+import React from "react";
 import { useState } from "react";
 
 type product = {
@@ -17,6 +18,7 @@ type product = {
 
 export default function ProductControls({ product }: { product: product }) {
   const [quantity, setQuantity] = useState<number>(1);
+  const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
 
   async function HandlePurchase() {
     const session = await getSession();
@@ -51,10 +53,54 @@ export default function ProductControls({ product }: { product: product }) {
       body: JSON.stringify({ user_id, item: newCartItem }),
     });
     const item = await response.json();
+    if (item.ok) {
+      setIsAddedToCart(true);
+      setTimeout(() => {
+        setIsAddedToCart(false);
+      }, 5000);
+    }
     console.log(item);
   }
   return (
     <>
+      {isAddedToCart ? (
+        <div
+          role="alert"
+          className="alert shadow-lg text-primary z-10 fixed bottom-8 right-4 w-max"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            className="h-6 w-6 shrink-0 stroke-current"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <span>Item added to cart! </span>
+          <button
+            className="btn btn-square btn-xs"
+            onClick={() => {
+              setIsAddedToCart(false);
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="#000000"
+              viewBox="0 0 256 256"
+            >
+              <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path>
+            </svg>
+          </button>
+        </div>
+      ) : null}
+
       <div className="px-4 py-2 w-full flex flex-col gap-2">
         <div className="flex">
           <div className="border rounded-md flex items-center gap-1 p-1">

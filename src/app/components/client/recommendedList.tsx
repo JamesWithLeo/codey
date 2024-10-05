@@ -1,5 +1,5 @@
 import { Category, product } from "@prisma/client";
-import { use } from "react";
+import React, { use } from "react";
 import Card from "./card";
 import Link from "next/link";
 

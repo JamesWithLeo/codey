@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import Card from "./card";
 import { useEffect, useState } from "react";
 import { DM_Sans } from "next/font/google";

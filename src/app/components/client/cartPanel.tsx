@@ -3,7 +3,7 @@ import { CartItem } from "@prisma/client";
 import { useReducer, useState } from "react";
 import CartCard from "./cartCard";
 import { productType } from "./utils/validation";
-import { useRouter } from "next/navigation";
+import React from "react";
 
 enum SELECTED_ORDER_REDUCER {
   increment = "increment",
@@ -74,8 +74,6 @@ export default function CartPanel({
 }: {
   cartItem: CartItem[] | null;
 }) {
-  const router = useRouter();
-
   const [orders, dispatchOrder] = useReducer(selectedOrderReducer, []);
   const [isMarkingForDeletion, setIsMarkingForDeletion] =
     useState<boolean>(false);
@@ -122,8 +120,11 @@ export default function CartPanel({
       const deletedResponse = await response.json();
       if (deletedResponse.ok) {
         setIsMarkingForDeletion(false);
+        markForDeleteIds.forEach((id) => {
+          const cartItem = document.getElementById(id);
+          cartItem?.remove();
+        });
         setMarkForDeleteIds([]);
-        router.refresh();
       } else {
         console.log(deletedResponse);
       }

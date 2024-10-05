@@ -1,6 +1,6 @@
 "use client";
 
-import { getSession, useSession } from "next-auth/react";
+import React from "react";
 import Image from "next/image";
 type product = {
   id: number;

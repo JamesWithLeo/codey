@@ -1,4 +1,5 @@
-import { Category, product } from "@prisma/client";
+import { Category } from "@/src/generated/prisma/enums";
+import { product } from "@/src/generated/prisma/client";
 import React, { use } from "react";
 import ProductCard from "./ProductCard";
 import Link from "next/link";

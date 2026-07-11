@@ -1,5 +1,5 @@
 import { prisma } from "@/src/prisma";
-import { Category } from "@prisma/client";
+import { Category } from "@/src/generated/prisma/enums";
 import React, { Suspense } from "react";
 import RecommendedList from "../client/recommendedList";
 

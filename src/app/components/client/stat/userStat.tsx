@@ -1,6 +1,6 @@
 "use client";
 
-import { users } from "@prisma/client";
+import { users } from "@/src/generated/prisma/client";
 import { use } from "react";
 
 export default function Stat({ data }: { data: Promise<users[]> }) {

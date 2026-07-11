@@ -1,6 +1,6 @@
 import { Category } from "@/src/generated/prisma/enums";
+import { Prisma } from "@/src/generated/prisma/client";
 import { prisma } from "@/src/prisma";
-import { Prisma } from "@prisma/client";
 
 export default async function FilterSeachByName({
   searchByName,
@@ -26,7 +26,7 @@ export default async function FilterSeachByName({
   if (searchByName && searchByName.trim() !== "") {
     whereClause.name = {
       contains: searchByName.trim(),
-      mode: "insensitive", // 🎯 Only evaluated when text actually exists!
+      mode: "insensitive", // Only evaluated when text actually exists!
     };
   }
 
@@ -38,7 +38,7 @@ export default async function FilterSeachByName({
   // 3. Fire the query bounded safely by your limit boundary
   const filteredProducts = await prisma.product.findMany({
     where: whereClause,
-    take: limit || 20,
+    take: limit || defaultLimit,
     orderBy: {
       id: "asc",
     },

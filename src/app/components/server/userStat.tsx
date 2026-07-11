@@ -1,5 +1,4 @@
 import { prisma } from "@/src/prisma";
-import React from "react";
 import Stat from "../client/stat/userStat";
 
 export default function UserStat() {

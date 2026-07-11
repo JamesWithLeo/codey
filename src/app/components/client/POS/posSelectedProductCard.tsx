@@ -1,4 +1,3 @@
-import { Category } from "@prisma/client";
 type productType = {
   id: number;
   name: string;

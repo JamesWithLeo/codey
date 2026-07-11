@@ -1,9 +1,8 @@
 "use client";
-import { CartItem } from "@prisma/client";
+import { CartItem } from "@/src/generated/prisma/client";
 import { useReducer, useState } from "react";
 import CartCard from "./cartCard";
 import { productType } from "./utils/validation";
-import React from "react";
 
 enum SELECTED_ORDER_REDUCER {
   increment = "increment",

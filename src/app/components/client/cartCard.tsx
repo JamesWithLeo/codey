@@ -1,6 +1,6 @@
 "use client";
 
-import { CartItem, product } from "@prisma/client";
+import { product, CartItem } from "@/src/generated/prisma/client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";

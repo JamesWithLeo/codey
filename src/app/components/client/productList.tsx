@@ -1,10 +1,7 @@
 "use client";
-import React from "react";
 import ProductCard from "./ProductCard";
-import { useEffect, useState } from "react";
 import { DM_Sans } from "next/font/google";
-import { Category } from "@prisma/client";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Category } from "@/src/generated/prisma/client";
 import {
   Card,
   CardContent,

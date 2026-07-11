@@ -6,7 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { productType } from "./utils/validation";
-import React from "react";
 
 export default function CartCard({
   cartItem,

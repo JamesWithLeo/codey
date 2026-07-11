@@ -1,4 +1,4 @@
-import { prisma } from "@/prisma";
+import { prisma } from "@/src/prisma";
 import React from "react";
 import Stat from "../client/stat/userStat";
 

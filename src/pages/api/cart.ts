@@ -1,5 +1,5 @@
-import { isValidCartItem } from "@/components/client/utils/validation";
-import { prisma } from "@/prisma";
+import { isValidCartItem } from "@/src/app/components/client/utils/validation";
+import { prisma } from "@/src/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(

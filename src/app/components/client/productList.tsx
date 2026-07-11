@@ -1,37 +1,17 @@
 "use client";
 import ProductCard from "./ProductCard";
 import { DM_Sans } from "next/font/google";
-import { Category } from "@/src/generated/prisma/client";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { product } from "@/src/generated/prisma/client";
 const sans = DM_Sans({ style: "normal", subsets: [] });
+import { CLIENT_PRODUCT } from "@/src/types";
 
-interface IProduct {
-  id: number;
-  name: string;
-  category: Category;
-  price: string;
-  description: string;
-  thumbnail: string;
-  otherUrl: string[];
-  brand: string;
-  isFeatured: boolean;
-  isAvailable: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  sales: number;
-}
-export default function ProductList({ data }: { data: IProduct[] }) {
+export default function ProductList({ data }: { data: CLIENT_PRODUCT[] }) {
   const products = data;
   return (
     <>
       {products.length ? (
         <>
-          {products.map((product: IProduct) => {
+          {products.map((product: CLIENT_PRODUCT) => {
             return <ProductCard key={product.id} data={product} />;
           })}
         </>

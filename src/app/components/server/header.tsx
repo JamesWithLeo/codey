@@ -1,17 +1,14 @@
 import { DM_Serif_Display } from "next/font/google";
-import React from "react";
 const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
   weight: ["400"],
 });
 import Link from "next/link";
-import LoginButton from "./loginButton";
 
 import Image from "next/image";
 import LogoutButton from "../client/button/logoutButton";
 import CategoryNav from "../client/categoryNav";
 import Search from "../client/search";
-// import { auth } from "@/authOptions";
 import { auth } from "../../../authOptions";
 
 import AdminButton from "../client/button/adminButton";
@@ -27,7 +24,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
 
 export default async function Header() {
   const session = await auth();

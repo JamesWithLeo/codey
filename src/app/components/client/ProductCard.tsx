@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Category } from "@/src/generated/prisma/enums";
 import { getSession } from "next-auth/react";
 import { useState } from "react";
 import {
@@ -14,24 +13,13 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { CLIENT_PRODUCT } from "@/src/types";
 
-interface IProduct {
-  id: number;
-  name: string;
-  category: Category;
-  price: string;
-  description: string;
-  thumbnail: string;
-  otherUrl: string[];
-  brand: string;
-  isFeatured: boolean;
-  isAvailable: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  sales: number;
-}
-
-export default function ProductCard({ data: product }: { data: IProduct }) {
+export default function ProductCard({
+  data: product,
+}: {
+  data: CLIENT_PRODUCT;
+}) {
   const router = useRouter();
   const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
   const [isAddingToCart, setIsAddingToCart] = useState<boolean>(false);

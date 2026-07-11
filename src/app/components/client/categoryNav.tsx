@@ -1,18 +1,14 @@
 "use client";
 import { DM_Sans } from "next/font/google";
 const sans = DM_Sans({ style: "normal", subsets: [] });
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 export default function CategoryNav() {
   const router = useRouter();
   const path = usePathname();
-  if (
-    path === "/login" ||
-    path === "/signup" ||
-    path?.startsWith("/p/") ||
-    path?.startsWith("/admin") ||
-    path?.startsWith("/cart")
-  )
-    return null;
+  const searchParams = useSearchParams();
+
+  // 2. Use the reactive hook instead of window.location.search
+  const tab = searchParams?.get("tab") || "";
 
   function HandleNext() {
     const categoriesContainer = document.getElementById(
@@ -28,6 +24,25 @@ export default function CategoryNav() {
     ) as HTMLDivElement;
 
     categoriesContainer.scrollBy({ behavior: "smooth", left: -150 });
+  }
+
+  function HandleCategoryClick(tab?: string) {
+    // 1. Grab all current query parameters (?limit=20&searchByName=drill, etc.)
+    const params = new URLSearchParams(window.location.search);
+
+    // 2. Update or set the active category parameter
+    if (tab) {
+      params.set("tab", tab);
+    } else {
+      params.delete("tab"); // Clears the filter if an "All Products" option is clicked
+    }
+
+    // 3. Reset pagination markers so you don't get trapped on an empty page index
+    params.delete("page");
+    params.delete("cursor");
+    console.log("Navigating to:", `${path}?${params.toString()}`);
+    // 4. Update the router string safely without losing the limit state
+    router.replace(`${path}?${params.toString()}`);
   }
   return (
     <section
@@ -54,7 +69,7 @@ export default function CategoryNav() {
       >
         <span
           className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
-          onClick={() => router.replace("/")}
+          onClick={() => HandleCategoryClick()}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +86,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              path === "/"
+              tab === ""
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2",
@@ -83,7 +98,7 @@ export default function CategoryNav() {
 
         <span
           className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
-          onClick={() => router.replace("/handtools")}
+          onClick={() => HandleCategoryClick("handtools")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +112,7 @@ export default function CategoryNav() {
           <h1
             id="handTools"
             className={[
-              path === "/handtools"
+              tab === "handtools"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",
@@ -109,7 +124,7 @@ export default function CategoryNav() {
 
         <span
           className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
-          onClick={() => router.replace("/powertools")}
+          onClick={() => HandleCategoryClick("powertools")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +138,7 @@ export default function CategoryNav() {
           <h1
             id="handTools"
             className={[
-              path === "/powertools"
+              tab === "powertools"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",
@@ -135,7 +150,7 @@ export default function CategoryNav() {
 
         <span
           className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
-          onClick={() => router.replace("/materials")}
+          onClick={() => HandleCategoryClick("materials")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -148,7 +163,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              path === "/materials"
+              tab === "materials"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 text-center",
@@ -160,7 +175,7 @@ export default function CategoryNav() {
 
         <span
           className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
-          onClick={() => router.replace("/electrical")}
+          onClick={() => HandleCategoryClick("electrical")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -173,7 +188,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              path === "/electrical" ? "border-primary" : "border-white",
+              tab === "electrical" ? "border-primary" : "border-white",
               "border-b-2 ",
             ].join(" ")}
           >
@@ -183,7 +198,7 @@ export default function CategoryNav() {
 
         <span
           className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
-          onClick={() => router.replace("/plumbing")}
+          onClick={() => HandleCategoryClick("plumbing")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -196,7 +211,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              path === "/plumbing"
+              tab === "plumbing"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",
@@ -208,7 +223,7 @@ export default function CategoryNav() {
 
         <span
           className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
-          onClick={() => router.replace("/fasteners")}
+          onClick={() => HandleCategoryClick("fasteners")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -221,7 +236,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              path === "/fasteners"
+              tab === "fasteners"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",
@@ -233,7 +248,7 @@ export default function CategoryNav() {
 
         <span
           className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
-          onClick={() => router.replace("/safetygears")}
+          onClick={() => HandleCategoryClick("safetygears")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -246,7 +261,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              path === "/safetygears"
+              tab === "safetygears"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",
@@ -258,7 +273,7 @@ export default function CategoryNav() {
 
         <span
           className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
-          onClick={() => router.replace("/machineries")}
+          onClick={() => HandleCategoryClick("machineries")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -271,7 +286,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              path === "/machineries"
+              tab === "machineries"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",
@@ -283,7 +298,7 @@ export default function CategoryNav() {
 
         <span
           className={`group flex items-center flex-col justify-between cursor-pointer text-gray-500 hover:bg-gray-100 rounded px-2`}
-          onClick={() => router.replace("/others")}
+          onClick={() => HandleCategoryClick("others")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -296,7 +311,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              path === "/others"
+              tab === "others"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",

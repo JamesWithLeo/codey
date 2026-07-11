@@ -1,6 +1,7 @@
 import ProductList from "./components/client/productList";
 import ProductPagination from "./components/client/ProductPagination";
 import FilterSeachByName from "./components/client/utils/filterSeachProduct";
+import { Category } from "@/src/generated/prisma/enums";
 
 export default async function Page({
   searchParams,
@@ -12,10 +13,18 @@ export default async function Page({
 
   const currentCursor = parseInt(query.cursor);
   const nextCursor = Number.isNaN(currentCursor) ? 1 : currentCursor;
-  const limit = Number.isNaN(query.limit) ? parseInt(query.limit) : LIMIT;
+
+  const currentLimit = parseInt(query.limit);
+  const limit = Number.isNaN(currentLimit) ? LIMIT : currentLimit;
+
+  const rawCategory = query.tab;
+  const category = Object.values(Category).includes(rawCategory as Category)
+    ? (rawCategory as Category)
+    : undefined;
 
   const products = await FilterSeachByName({
     searchByName: query.searchByName,
+    category: category,
     cursor: nextCursor,
     limit: limit,
     defaultLimit: LIMIT,
@@ -26,7 +35,7 @@ export default async function Page({
 
   return (
     <div className="w-full bg-base-300  py-2 h-max flex px-4 md:px-8 flex-col gap-2 items-center justify-center">
-      <div className=" w-full h-min py-4   max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2  md:gap-4 ">
+      <div className=" w-full h-min py-4 min-h-screen   max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2  md:gap-4 ">
         <>
           <ProductList data={products} />
         </>

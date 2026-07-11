@@ -57,19 +57,27 @@ export default function ProductPagination({
   };
 
   const HandleNext = () => {
-    const category = pathname?.split("/")[1];
-    const baseUrl =
-      category && categories.includes(category) ? `/${category}` : "";
-    return `${baseUrl}/?cursor=${nextCursor}&page=${page + 1}&limit=${itemsPerPage}`;
+    // 1. Create a copy of all current URL params (keeps your current category and search name!)
+    const params = new URLSearchParams();
+
+    // 2. Set the moving parts for the next page
+    params.set("cursor", nextCursor.toString());
+    params.set("page", (page + 1).toString());
+    params.set("limit", itemsPerPage);
+
+    // 3. Keep the current plain pathname (e.g., "/") and attach the safe query string
+    return `${pathname}?${params.toString()}`;
   };
 
   const HandleBack = (firstProductIdOnCurrentPage: number) => {
-    const category = pathname?.split("/")[1];
-    const baseUrl =
-      category && categories.includes(category) ? `/${category}` : "";
+    const params = new URLSearchParams(searchParams?.toString());
     const prevPage = Math.max(1, page - 1);
 
-    return `${baseUrl}/?cursor=${firstProductIdOnCurrentPage}&page=${prevPage}&limit=${itemsPerPage}`;
+    params.set("cursor", firstProductIdOnCurrentPage.toString());
+    params.set("page", prevPage.toString());
+    params.set("limit", itemsPerPage);
+
+    return `${pathname}?${params.toString()}`;
   };
 
   return (

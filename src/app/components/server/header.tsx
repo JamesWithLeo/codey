@@ -15,26 +15,79 @@ import Search from "../client/search";
 import { auth } from "../../../authOptions";
 
 import AdminButton from "../client/button/adminButton";
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
 
 export default async function Header() {
   const session = await auth();
 
   return (
     <header
-      className={`w-full itsm sticky top-0 bg-white z-10 max-h-32 justify-center flex flex-col `}
+      className={`w-full  sticky top-0 bg-white z-10 max-h-32 justify-center flex flex-col `}
     >
       <section className="flex justify-center w-full flex-col items-center px-4 md:px-8 h-16">
-        <div className="max-w-7xl flex w-full justify-between items-center">
+        <div className="max-w-7xl grid grid-cols-3 w-full justify-between items-center">
           <Link
             className={`text-2xl sm:text-3xl ${dmSerif.className} text-gray-600`}
             href={"/"}
           >
             Hardware
           </Link>
-          <div className=" sm:block">
+          <div className="  place-self-center">
             <Search />
           </div>
-          <div className="dropdown sm:block dropdown-end w-max h-max">
+          <div className="dropdown sm:block place-self-end dropdown-end w-max h-max">
+            <DropdownMenu closeParentOnEsc>
+              <DropdownMenuTrigger
+                className={" px-4 "}
+                render={<Button size={"lg"} className={"rounded-3xl "} />}
+              >
+                <Menu size={32} strokeWidth={3} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent side="bottom">
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>Account</DropdownMenuLabel>
+                  {/* <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem>Billing</DropdownMenuItem> */}
+
+                  {!session || !session.user ? (
+                    <DropdownMenuItem>
+                      <Link href={"/login"}>Login or sign up</Link>
+                    </DropdownMenuItem>
+                  ) : (
+                    <>
+                      <DropdownMenuItem>
+                        <Link href={"/profile"}>Profile</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Link href={"/cart"}>Cart</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <LogoutButton />
+                      </DropdownMenuGroup>
+                    </>
+                  )}
+                </DropdownMenuGroup>
+                {/* <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>Team</DropdownMenuItem>
+                  <DropdownMenuItem>Subscription</DropdownMenuItem>
+                </DropdownMenuGroup> */}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            {/* 
             <div
               tabIndex={0}
               role="button"
@@ -79,6 +132,7 @@ export default async function Header() {
                 />
               )}
             </div>
+
             <ul
               tabIndex={0}
               className="dropdown-content shadow-lg menu bg-base-100 rounded-box z-1c w-52 p-2"
@@ -109,7 +163,7 @@ export default async function Header() {
                   <LogoutButton />
                 </>
               ) : null}
-            </ul>
+            </ul> */}
           </div>
         </div>
       </section>

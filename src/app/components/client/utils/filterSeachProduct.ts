@@ -7,11 +7,13 @@ export default async function FilterSeachByName({
   category,
   limit,
   cursor,
+  defaultLimit = 15,
 }: {
   searchByName?: string;
   category?: Category;
   limit: number;
   cursor?: number | string;
+  defaultLimit?: number;
 }) {
   const whereClause: Prisma.productWhereInput = {};
 
@@ -36,7 +38,7 @@ export default async function FilterSeachByName({
   // 3. Fire the query bounded safely by your limit boundary
   const filteredProducts = await prisma.product.findMany({
     where: whereClause,
-    take: limit || 10,
+    take: limit || 20,
     orderBy: {
       id: "asc",
     },

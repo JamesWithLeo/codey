@@ -7,24 +7,21 @@ export default async function Page({
 }: {
   searchParams: Promise<{ [key: string]: string }>;
 }) {
-  const LIMIT = 10;
+  const LIMIT = 15;
   const query = await searchParams;
 
   const currentCursor = parseInt(query.cursor);
   const nextCursor = Number.isNaN(currentCursor) ? 1 : currentCursor;
-  const direction =
-    query.direction === "forward" || query.direction === "backward"
-      ? query.direction
-      : "forward";
+  const limit = Number.isNaN(query.limit) ? parseInt(query.limit) : LIMIT;
 
   const products = await FilterSeachByName({
     searchByName: query.searchByName,
-    // direction: direction,
     cursor: nextCursor,
-    limit: LIMIT,
+    limit: limit,
+    defaultLimit: LIMIT,
   });
 
-  const lastCursor = products[9]?.id;
+  const lastCursor = products[limit - 1]?.id;
   const productLength = products.length;
 
   return (
@@ -36,9 +33,9 @@ export default async function Page({
       </div>
       {productLength ? (
         <ProductPagination
-          isEnd={productLength !== LIMIT}
+          isEnd={productLength !== limit}
           nextCursor={lastCursor}
-          limit={LIMIT}
+          limit={limit}
         />
       ) : null}
     </div>

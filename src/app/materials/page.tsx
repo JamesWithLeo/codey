@@ -1,7 +1,6 @@
-import React from "react";
-import Pagination from "../components/client/pagination";
 import ProductList from "../components/client/productList";
 import FilterSeachByName from "../components/client/utils/filterSeachProduct";
+import ProductPagination from "../components/client/ProductPagination";
 
 export default async function Materials({
   searchParams,
@@ -15,7 +14,7 @@ export default async function Materials({
 
   const products = await FilterSeachByName({
     searchByName: query,
-    catergory: "materials",
+    category: "materials",
     cursor: nextCursor,
     limit: LIMIT,
   });
@@ -31,7 +30,7 @@ export default async function Materials({
         </>
       </div>
       {productLength ? (
-        <Pagination
+        <ProductPagination
           isEnd={productLength !== LIMIT}
           nextCursor={lastCursor}
           limit={LIMIT}

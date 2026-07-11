@@ -1,7 +1,6 @@
-import React from "react";
-import Pagination from "../components/client/pagination";
 import ProductList from "../components/client/productList";
 import FilterSeachByName from "../components/client/utils/filterSeachProduct";
+import ProductPagination from "../components/client/ProductPagination";
 
 export default async function Plumbing({
   searchParams,
@@ -15,7 +14,7 @@ export default async function Plumbing({
   const query = searchParams.query;
   const products = await FilterSeachByName({
     searchByName: query,
-    catergory: "plumbing",
+    category: "plumbing",
     cursor: nextCursor,
     limit: LIMIT,
   });
@@ -32,7 +31,7 @@ export default async function Plumbing({
       </div>
 
       {productLength ? (
-        <Pagination
+        <ProductPagination
           isEnd={productLength !== LIMIT}
           nextCursor={lastCursor}
           limit={LIMIT}

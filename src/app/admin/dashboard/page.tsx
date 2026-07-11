@@ -1,5 +1,4 @@
-const prisma = new PrismaClient();
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/prisma";
 
 export default async function Dashboard() {
   const users = await prisma.users.findMany();

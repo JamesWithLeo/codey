@@ -1,10 +1,16 @@
 "use client";
 import React from "react";
-import Card from "./card";
+import ProductCard from "./ProductCard";
 import { useEffect, useState } from "react";
 import { DM_Sans } from "next/font/google";
 import { Category } from "@prisma/client";
-import Skeleton from "./skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 const sans = DM_Sans({ style: "normal", subsets: [] });
 
 interface IProduct {
@@ -24,31 +30,13 @@ interface IProduct {
 }
 export default function ProductList({ data }: { data: IProduct[] }) {
   const products = data;
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [skeletonCount, setSkeletonCount] = useState<number>(0);
-  useEffect(() => {
-    setSkeletonCount(products.length);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }, []);
   return (
     <>
-      {isLoading
-        ? Array.from({ length: skeletonCount }).map((_, index) => (
-            <Skeleton key={index} />
-          ))
-        : null}
-
       {products.length ? (
         <>
-          {!isLoading ? (
-            <>
-              {products.map((product: IProduct) => {
-                return <Card key={product.id} data={product} />;
-              })}
-            </>
-          ) : null}
+          {products.map((product: IProduct) => {
+            return <ProductCard key={product.id} data={product} />;
+          })}
         </>
       ) : null}
 

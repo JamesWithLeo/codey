@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/prisma";
-import { IOrder } from "@/app/components/client/utils/validation";
+import { IOrder } from "@/components/client/utils/validation";
 
 function isValidOrder(order: any): order is IOrder {
   return (

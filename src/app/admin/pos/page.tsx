@@ -1,4 +1,4 @@
-import PosProductList from "@/app/components/client/POS/posProductList";
+import PosProductList from "@/components/client/POS/posProductList";
 import { prisma } from "@/prisma";
 
 async function getProduct() {

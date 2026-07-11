@@ -1,7 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Category, Prisma, product } from "@prisma/client";
+// import { Category, Prisma, product } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
+import { Category } from "@/generated/prisma/enums";
+
 import { prisma } from "@/prisma";
-import { isValidToUpdate } from "@/app/components/client/utils/validation";
+import { isValidToUpdate } from "@/components/client/utils/validation";
 
 interface IProduct {
   name: string;

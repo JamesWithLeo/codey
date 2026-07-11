@@ -1,0 +1,44 @@
+enum Category {
+  handtools
+  powertools
+  materials
+  electrical
+  plumbing
+  fasteners
+  safetygears
+  machineries
+  others
+}
+
+model product {
+  id          Int      @id @unique @default(autoincrement())
+  name        String
+  category    Category
+  price       Decimal  @db.Decimal(10, 2)
+  description String
+  thumbnail   String
+  otherUrl    String[] @default([])
+  stock       Int
+  brand       String
+  isFeatured  Boolean  @default(false)
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  sales       Int      @default(0)
+
+  orderItems order[]    @relation("ProductOrderItems")
+  cartItems  CartItem[] @relation("ProductToCartItems")
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cart_id String
+  cart    Cart   @relation(fields: [cart_id], references: [id])
+
+  product_id Int
+  product    product @relation("ProductToCartItems", fields: [product_id], references: [id])
+}

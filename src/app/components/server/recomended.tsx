@@ -1,4 +1,4 @@
-import { prisma } from "@/prisma";
+import { prisma } from "@/src/prisma";
 import { Category } from "@prisma/client";
 import React, { Suspense } from "react";
 import RecommendedList from "../client/recommendedList";

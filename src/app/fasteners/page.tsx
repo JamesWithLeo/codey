@@ -1,6 +1,5 @@
-import React from "react";
 import ProductList from "../components/client/productList";
-import Pagination from "../components/client/pagination";
+import ProductPagination from "../components/client/ProductPagination";
 import FilterSeachByName from "../components/client/utils/filterSeachProduct";
 
 export default async function Fasteners({
@@ -13,7 +12,7 @@ export default async function Fasteners({
   const cursor = parseInt(searchParams.cursor);
   const nextCursor = Number.isNaN(cursor) ? 1 : cursor;
   const products = await FilterSeachByName({
-    catergory: "fasteners",
+    category: "fasteners",
     cursor: nextCursor,
     searchByName: query,
     limit: LIMIT,
@@ -31,7 +30,7 @@ export default async function Fasteners({
       </div>
 
       {productLength ? (
-        <Pagination
+        <ProductPagination
           isEnd={productLength !== LIMIT}
           nextCursor={lastCursor}
           limit={LIMIT}

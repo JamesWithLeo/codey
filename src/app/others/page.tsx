@@ -1,7 +1,6 @@
-import React from "react";
-import Pagination from "../components/client/pagination";
-import FilterSeachByName from "../components/client/utils/filterSeachProduct";
 import ProductList from "../components/client/productList";
+import FilterSeachByName from "../components/client/utils/filterSeachProduct";
+import ProductPagination from "../components/client/ProductPagination";
 
 export default async function Others({
   searchParams,
@@ -15,7 +14,7 @@ export default async function Others({
 
   const products = await FilterSeachByName({
     searchByName: query,
-    catergory: "others",
+    category: "others",
     cursor: nextCursor,
     limit: LIMIT,
   });
@@ -31,7 +30,7 @@ export default async function Others({
         </>
       </div>
       {productLength ? (
-        <Pagination
+        <ProductPagination
           isEnd={productLength !== LIMIT}
           nextCursor={lastCursor}
           limit={LIMIT}

@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "@/src/app/globals.css";
+
 import Header from "./components/server/header";
 import Footer from "./components/client/footer";
+import { Inter } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "Hardware",
@@ -14,7 +19,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      data-theme="bumblebee"
+      className={cn("font-sans", inter.variable)}
+    >
       <body>
         <Header />
         {children}

@@ -1,7 +1,6 @@
-import React from "react";
-import Pagination from "../components/client/pagination";
 import ProductList from "../components/client/productList";
 import FilterSeachByName from "../components/client/utils/filterSeachProduct";
+import ProductPagination from "../components/client/ProductPagination";
 
 export default async function HandTools({
   searchParams,
@@ -16,7 +15,7 @@ export default async function HandTools({
 
   const products = await FilterSeachByName({
     searchByName: query,
-    catergory: "handtools",
+    category: "handtools",
     cursor: nextCursor,
     limit: limit,
   });
@@ -30,7 +29,7 @@ export default async function HandTools({
         <ProductList data={products} />
       </div>
 
-      <Pagination
+      <ProductPagination
         isEnd={productLength !== limit}
         nextCursor={lastCursor}
         limit={limit}

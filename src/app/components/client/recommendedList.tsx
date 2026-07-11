@@ -1,6 +1,6 @@
 import { Category, product } from "@prisma/client";
 import React, { use } from "react";
-import Card from "./card";
+import ProductCard from "./ProductCard";
 import Link from "next/link";
 
 export default function RecommendedList({
@@ -25,7 +25,7 @@ export default function RecommendedList({
                   ...product,
                   price: product.price.toString(),
                 };
-                return <Card key={product.id} data={productSerialize} />;
+                return <ProductCard key={product.id} data={productSerialize} />;
               })}
             </div>
             <span className="flex flex-col">

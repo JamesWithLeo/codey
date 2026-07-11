@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import AdminAside from "../components/client/adminAside";
+import AdminAside from "../../components/client/adminAside";
 import { auth } from "@/authOptions";
 import { redirect } from "next/navigation";
 

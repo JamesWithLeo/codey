@@ -1,20 +1,24 @@
 import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import React from "react";
-import { prisma } from "@/prisma";
+import { prisma } from "@/src/prisma";
 import { Inter_Tight } from "next/font/google";
-import Recomended from "@/app/components/server/recomended";
-import ProductControls from "@/app/components/client/productControls";
+import Recomended from "../../components/server/recomended";
+import ProductControls from "../../components/client/productControls";
 const inter = Inter_Tight({ subsets: ["latin"], weight: ["300"] });
 
-export default async function Page({ params }: { params: any }) {
-  const id = parseInt(params.id);
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ [key: string]: string }>;
+}) {
+  const id = parseInt((await params).id);
   let product;
   if (!isNaN(id)) {
     product = await prisma.product.findUnique({
       where: { id: id },
     });
+    console.log(product);
     if (!product) redirect("/p/not-found");
   } else redirect("/p/not-found");
 

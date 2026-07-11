@@ -1,7 +1,6 @@
-import React from "react";
 import ProductList from "../components/client/productList";
 import FilterSeachByName from "../components/client/utils/filterSeachProduct";
-import Pagination from "../components/client/pagination";
+import ProductPagination from "../components/client/ProductPagination";
 
 export default async function SafetyGears({
   searchParams,
@@ -14,7 +13,7 @@ export default async function SafetyGears({
 
   const query = searchParams.query;
   const products = await FilterSeachByName({
-    catergory: "safetygears",
+    category: "safetygears",
     searchByName: query,
     limit: LIMIT,
     cursor: nextCursor,
@@ -31,7 +30,7 @@ export default async function SafetyGears({
       </div>
 
       {productLength ? (
-        <Pagination
+        <ProductPagination
           isEnd={productLength !== LIMIT}
           nextCursor={lastCursor}
           limit={LIMIT}

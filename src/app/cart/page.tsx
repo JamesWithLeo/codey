@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { DM_Sans } from "next/font/google";
 import React from "react";
 import Link from "next/link";
-import CartPanel from "../components/client/cartPanel";
+import CartPanel from "../../components/client/cartPanel";
 const sans = DM_Sans({ style: "normal", subsets: [] });
 
 async function FetchCart(uid: number) {

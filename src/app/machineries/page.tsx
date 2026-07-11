@@ -1,7 +1,6 @@
-import React from "react";
-import Pagination from "../components/client/pagination";
 import ProductList from "../components/client/productList";
 import FilterSeachByName from "../components/client/utils/filterSeachProduct";
+import ProductPagination from "../components/client/ProductPagination";
 
 export default async function Machineries({
   searchParams,
@@ -17,7 +16,7 @@ export default async function Machineries({
   const products = await FilterSeachByName({
     cursor: nextCursor,
     limit: LIMIT,
-    catergory: "machineries",
+    category: "machineries",
     searchByName: query,
   });
 
@@ -32,7 +31,7 @@ export default async function Machineries({
         </>
       </div>
       {productLength ? (
-        <Pagination
+        <ProductPagination
           isEnd={productLength !== LIMIT}
           nextCursor={lastCursor}
           limit={LIMIT}

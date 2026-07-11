@@ -11,7 +11,9 @@ import Image from "next/image";
 import LogoutButton from "../client/button/logoutButton";
 import CategoryNav from "../client/categoryNav";
 import Search from "../client/search";
-import { auth } from "@/authOptions";
+// import { auth } from "@/authOptions";
+import { auth } from "../../../authOptions";
+
 import AdminButton from "../client/button/adminButton";
 
 export default async function Header() {
@@ -79,7 +81,7 @@ export default async function Header() {
             </div>
             <ul
               tabIndex={0}
-              className="dropdown-content shadow-lg menu bg-base-100 rounded-box z-[1] w-52 p-2"
+              className="dropdown-content shadow-lg menu bg-base-100 rounded-box z-1c w-52 p-2"
             >
               {session && session.user?.role === "admin" ? (
                 <>

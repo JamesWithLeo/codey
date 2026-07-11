@@ -1,7 +1,6 @@
-import React from "react";
 import ProductList from "../components/client/productList";
-import Pagination from "../components/client/pagination";
 import FilterSeachByName from "../components/client/utils/filterSeachProduct";
+import ProductPagination from "../components/client/ProductPagination";
 
 export default async function PowerTools({
   searchParams,
@@ -15,7 +14,7 @@ export default async function PowerTools({
   const nextCursor = Number.isNaN(currentCursor) ? 1 : currentCursor;
 
   const products = await FilterSeachByName({
-    catergory: "powertools",
+    category: "powertools",
     searchByName: query,
     limit: LIMIT,
     cursor: nextCursor,
@@ -32,7 +31,7 @@ export default async function PowerTools({
         </>
       </div>
       {productLength ? (
-        <Pagination
+        <ProductPagination
           isEnd={productLength !== LIMIT}
           nextCursor={lastCursor}
           limit={LIMIT}

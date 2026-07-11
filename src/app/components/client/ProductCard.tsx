@@ -5,7 +5,16 @@ import { useRouter } from "next/navigation";
 import { Category } from "@prisma/client";
 import { getSession } from "next-auth/react";
 import { useState } from "react";
-import Link from "next/link";
+import {
+  Card,
+  CardAction,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 interface IProduct {
   id: number;
@@ -23,7 +32,7 @@ interface IProduct {
   sales: number;
 }
 
-export default function Card({ data: product }: { data: IProduct }) {
+export default function ProductCard({ data: product }: { data: IProduct }) {
   const router = useRouter();
   const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
   const [isAddingToCart, setIsAddingToCart] = useState<boolean>(false);
@@ -37,7 +46,7 @@ export default function Card({ data: product }: { data: IProduct }) {
 
     const session = await getSession();
     if (!session || !session?.user) {
-      router.replace("/login");
+      router.push("/login");
       return;
     }
 
@@ -164,38 +173,52 @@ export default function Card({ data: product }: { data: IProduct }) {
         </div>
       ) : null}
 
-      <section
-        className="card card-compact w-full max-h-96 h-full border rounded-sm hover:shadow-md border-gray-100 "
-        id={product.id.toString()}
+      <Card
+        className="group relative w-full   max-w-sm  h-min overflow-hidden  m-0  hover:shadow-md"
         onClick={(event) => {
-          if ((event.target as HTMLElement).id !== product.id.toString()) {
+          // Safe target check to ensure clicking the button doesn't trigger the card navigation
+          if ((event.target as HTMLElement).tagName !== "BUTTON") {
             HandleViewProduct();
           }
         }}
       >
-        <figure>
+        {/* Container for the image mimicking the overlay style */}
+        <div className="relative aspect-square w-full overflow-hidden ">
           <Image
             src={product.thumbnail}
-            width={1000}
-            height={1000}
-            alt=""
+            width={600}
+            height={600}
+            alt={product.name}
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             priority
           />
-        </figure>
-        <div className="p-2 md:p-4">
-          <h1 className="card-title md:text-md">{product.name}</h1>
-          <h1>${parseFloat(product.price).toFixed(2)}</h1>
-          <div className="card-actions justify-end ">
-            <button
-              className={`btn h-8 btn-xs ${isAddingToCart ? "cursor-progress" : ""}`}
-              onClick={HandleAddToCart}
-              id={product.id.toString()}
-            >
-              Add to cart
-            </button>
-          </div>
         </div>
-      </section>
+
+        <CardHeader className="">
+          <CardAction>
+            <Badge>${product.price}</Badge>
+          </CardAction>
+          <CardTitle className="line-clamp-1  text-sm md:text-base">
+            {product.name.toUpperCase()}
+          </CardTitle>
+          <CardDescription className="text-xs line-clamp-3  leading-4 tracking-tighter  text-zinc-500">
+            {product.description}
+          </CardDescription>
+        </CardHeader>
+
+        <CardFooter className=" ">
+          <Button
+            variant={"secondary"}
+            className={`w-full ${isAddingToCart ? "cursor-progress" : ""}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              HandleAddToCart();
+            }}
+          >
+            Add to cart
+          </Button>
+        </CardFooter>
+      </Card>
     </>
   );
 }

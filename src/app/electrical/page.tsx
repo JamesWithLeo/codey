@@ -1,7 +1,6 @@
-import React from "react";
-import Pagination from "../components/client/pagination";
 import ProductList from "../components/client/productList";
 import FilterSeachByName from "../components/client/utils/filterSeachProduct";
+import ProductPagination from "../components/client/ProductPagination";
 
 export default async function Electrical({
   searchParams,
@@ -16,7 +15,7 @@ export default async function Electrical({
   const products = await FilterSeachByName({
     searchByName: query,
     limit: LIMIT,
-    catergory: "electrical",
+    category: "electrical",
     cursor: nextCursor,
   });
 
@@ -30,7 +29,7 @@ export default async function Electrical({
         </>
       </div>
       {productLength ? (
-        <Pagination
+        <ProductPagination
           isEnd={productLength !== LIMIT}
           nextCursor={lastCursor}
           limit={LIMIT}

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import AdminAside from "../../components/client/adminAside";
-import { auth } from "@/authOptions";
+import AdminAside from "@/src//app/components/client/adminAside";
+import { auth } from "@/src/authOptions";
 import { redirect } from "next/navigation";
 
 export default async function AdminLayout({

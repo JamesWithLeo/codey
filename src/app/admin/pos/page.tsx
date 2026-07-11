@@ -1,5 +1,5 @@
-import PosProductList from "@/components/client/POS/posProductList";
-import { prisma } from "@/prisma";
+import PosProductList from "@/src/app/components/client/POS/posProductList";
+import { prisma } from "@/src/prisma";
 
 async function getProduct() {
   const product = await prisma.product.findMany({

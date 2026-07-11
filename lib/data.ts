@@ -1,4 +1,4 @@
-import type { Category } from "../generated/prisma/enums";
+import type { Category } from "@/src/generated/prisma/enums";
 
 type productType = {
   name: string;

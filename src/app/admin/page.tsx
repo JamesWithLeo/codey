@@ -1,5 +1,5 @@
-import ProductStat from "../../components/server/productStat";
-import UserStat from "../../components/server/userStat";
+import ProductStat from "@/src/app/components/server/productStat";
+import UserStat from "@/src/app/components/server/userStat";
 
 export default async function AdminPage() {
   return (

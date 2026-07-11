@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "@/prisma";
-// import { TRANSACTION_SOURCE } from "@prisma/client";
-import { TRANSACTION_SOURCE } from "@/generated/prisma/enums";
-import { isOrderValidForPOS } from "@/components/client/utils/validation";
+import { prisma } from "@/src/prisma";
+import { TRANSACTION_SOURCE } from "@/src/generated/prisma/enums";
+import { isOrderValidForPOS } from "@/src/app/components/client/utils/validation";
 
 export default async function handler(
   req: NextApiRequest,

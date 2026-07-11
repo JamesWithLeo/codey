@@ -1,6 +1,4 @@
 "use client";
-import { Category } from "@prisma/client";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 type productType = {
   id: number;

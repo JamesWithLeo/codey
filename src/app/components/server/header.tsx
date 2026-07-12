@@ -1,3 +1,5 @@
+"use client";
+
 import { DM_Serif_Display } from "next/font/google";
 const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
@@ -5,11 +7,11 @@ const dmSerif = DM_Serif_Display({
 });
 import Link from "next/link";
 
-import Image from "next/image";
 import LogoutButton from "../client/button/logoutButton";
 import CategoryNav from "../client/categoryNav";
 import Search from "../client/search";
 import { auth } from "../../../authOptions";
+import type { Session } from "next-auth";
 
 import AdminButton from "../client/button/adminButton";
 import { Menu } from "lucide-react";
@@ -24,9 +26,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePathname } from "next/navigation";
 
-export default async function Header() {
-  const session = await auth();
+export default function Header({ session }: { session: Session | null }) {
+  const pathname = usePathname();
+
+  const pathSegments = pathname?.split("/").filter(Boolean);
+
+  let activeCategory = "";
+  if (Array.isArray(pathSegments) && pathSegments.length > 0) {
+    const isProductPage = pathSegments[0] === "products";
+    const categories = isProductPage ? pathSegments.slice(1) : [];
+    activeCategory = categories[0] || "";
+  }
 
   return (
     <header
@@ -164,7 +176,7 @@ export default async function Header() {
         </div>
       </section>
 
-      <CategoryNav />
+      <CategoryNav activeCategory={activeCategory} />
     </header>
   );
 }

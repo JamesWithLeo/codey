@@ -1,13 +1,15 @@
 "use client";
 import { DM_Sans } from "next/font/google";
 const sans = DM_Sans({ style: "normal", subsets: [] });
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-export default function CategoryNav() {
+import { useRouter, useSearchParams } from "next/navigation";
+export default function CategoryNav({
+  activeCategory,
+}: {
+  activeCategory: string;
+}) {
   const router = useRouter();
-  const path = usePathname();
   const searchParams = useSearchParams();
 
-  // 2. Use the reactive hook instead of window.location.search
   const tab = searchParams?.get("tab") || "";
 
   function HandleNext() {
@@ -27,23 +29,18 @@ export default function CategoryNav() {
   }
 
   function HandleCategoryClick(tab?: string) {
-    // 1. Grab all current query parameters (?limit=20&searchByName=drill, etc.)
     const params = new URLSearchParams(window.location.search);
 
-    // 2. Update or set the active category parameter
-    if (tab) {
-      params.set("tab", tab);
-    } else {
-      params.delete("tab"); // Clears the filter if an "All Products" option is clicked
-    }
-
-    // 3. Reset pagination markers so you don't get trapped on an empty page index
+    // 3. Reset pagination states
     params.delete("page");
     params.delete("cursor");
-    console.log("Navigating to:", `${path}?${params.toString()}`);
-    // 4. Update the router string safely without losing the limit state
-    router.replace(`${path}?${params.toString()}`);
+    if (tab) {
+      router.replace(`/products/${tab}/?${params.toString()}`);
+    } else {
+      router.replace(`/products/?${params.toString()}`);
+    }
   }
+
   return (
     <section
       className={`flex gap-2 ${sans.className} md:flex-col  border-t pt-2 flex justify-between  px-4 md:px-8 text-xs items-center font-light `}
@@ -86,7 +83,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              tab === ""
+              activeCategory === ""
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2",
@@ -112,7 +109,7 @@ export default function CategoryNav() {
           <h1
             id="handTools"
             className={[
-              tab === "handtools"
+              activeCategory === "handtools"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",
@@ -138,7 +135,7 @@ export default function CategoryNav() {
           <h1
             id="handTools"
             className={[
-              tab === "powertools"
+              activeCategory === "powertools"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",
@@ -163,7 +160,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              tab === "materials"
+              activeCategory === "materials"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 text-center",
@@ -188,7 +185,9 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              tab === "electrical" ? "border-primary" : "border-white",
+              activeCategory === "electrical"
+                ? "border-primary"
+                : "border-white",
               "border-b-2 ",
             ].join(" ")}
           >
@@ -211,7 +210,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              tab === "plumbing"
+              activeCategory === "plumbing"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",
@@ -236,7 +235,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              tab === "fasteners"
+              activeCategory === "fasteners"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",
@@ -261,7 +260,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              tab === "safetygears"
+              activeCategory === "safetygears"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",
@@ -286,7 +285,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              tab === "machineries"
+              activeCategory === "machineries"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",
@@ -311,7 +310,7 @@ export default function CategoryNav() {
           </svg>
           <h1
             className={[
-              tab === "others"
+              activeCategory === "others"
                 ? "border-primary"
                 : "border-white group-hover:border-gray-100",
               "border-b-2 ",

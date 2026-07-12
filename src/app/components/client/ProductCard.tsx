@@ -188,7 +188,7 @@ export default function ProductCard({
           <CardTitle className="line-clamp-1  text-sm md:text-base">
             {product.name.toUpperCase()}
           </CardTitle>
-          <CardDescription className="text-xs line-clamp-3  leading-4 tracking-tighter  text-zinc-500">
+          <CardDescription className="text-xs w-full line-clamp-3  leading-4 tracking-tighter  text-zinc-500">
             {product.description}
           </CardDescription>
         </CardHeader>

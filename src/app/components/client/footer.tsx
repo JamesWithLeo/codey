@@ -8,8 +8,8 @@ const ubuntu = Ubuntu({
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-zinc-100 border-t border-zinc-400/60 text-sm h-max">
-      <div className="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-3 md:divide-x md:divide-zinc-400/60">
+    <footer className="w-full bg-zinc-100 border-t border-zinc-300/60 text-sm h-max">
+      <div className="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-3 md:divide-x md:divide-zinc-300/60">
         <div className="px-6 md:px-12 py-10 flex flex-col gap-4">
           <h2
             className={`text-xs font-semibold tracking-wider text-zinc-400 uppercase ${ubuntu.className}`}
@@ -89,13 +89,13 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="w-full h-px bg-zinc-400/60" />
+      <div className="w-full h-px bg-zinc-300/60" />
 
       <div className="flex w-full items-center justify-center py-6 bg-zinc-100">
         <span className="text-xs text-zinc-400 tracking-wide">
           Developed by{" "}
           <Link
-            href="https://jameswithleo.github.io/Portfolio"
+            href="https://jamesleoocampo.vercel.app"
             className="text-zinc-400 font-medium hover:text-amber-500 hover:underline hover:underline-offset-4 transition-colors duration-200"
           >
             James Leo Ocampo

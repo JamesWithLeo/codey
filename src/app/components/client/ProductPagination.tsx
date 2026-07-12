@@ -81,7 +81,7 @@ export default function ProductPagination({
   };
 
   return (
-    <div className="grid md:grid-cols-3 grid-cols-2 w-full max-w-7xl   gap-8 md:gap-6  ">
+    <div className="grid md:grid-cols-3 grid-cols-2 w-full max-w-7xl  pb-4  gap-8 md:gap-6  ">
       <div aria-hidden="true" className="hidden md:block" />
       <Pagination className="flex-1 justify-center ">
         <PaginationContent>
@@ -129,6 +129,7 @@ export default function ProductPagination({
           </SelectTrigger>
           <SelectContent align="start">
             <SelectGroup>
+              <SelectItem value="10">10</SelectItem>
               <SelectItem value="15">15</SelectItem>
               <SelectItem value="20">20</SelectItem>
               <SelectItem value="30">30</SelectItem>

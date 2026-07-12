@@ -5,6 +5,7 @@ import Header from "./components/server/header";
 import Footer from "./components/client/footer";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { auth } from "../authOptions";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -18,6 +19,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth(); // Fetch the session data
   return (
     <html
       lang="en"
@@ -25,7 +27,7 @@ export default async function RootLayout({
       className={cn("font-sans", inter.variable)}
     >
       <body>
-        <Header />
+        <Header session={session} />
         {children}
         <Footer />
       </body>

@@ -25,7 +25,7 @@ export default function ProductCard({
   const [isAddingToCart, setIsAddingToCart] = useState<boolean>(false);
   const [errorCart, setErrorCart] = useState<string | null>(null);
   function HandleViewProduct() {
-    router.push(`/p/${product.id}/`);
+    router.push(`/products/${product.category}/${product.id}/`);
   }
 
   async function HandleAddToCart() {

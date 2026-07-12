@@ -1,4 +1,5 @@
 "use client";
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   Pagination,
@@ -19,91 +20,84 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const categories = [
-  "handtools",
-  "powertools",
-  "materials",
-  "electrical",
-  "plumbing",
-  "fasteners",
-  "safetygears",
-  "machineries",
-];
 export default function ProductPagination({
   isEnd,
+  firstCursor,
   nextCursor,
-  limit,
   defaultLimit = 15,
 }: {
   isEnd: boolean;
-  nextCursor: number;
-  limit: number;
+  firstCursor?: number;
+  nextCursor?: number;
   defaultLimit?: number;
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
+
   const rawPage = searchParams?.get("page");
-  const page = rawPage && !Number.isNaN(rawPage) ? parseInt(rawPage) : 1;
+  const page =
+    rawPage && !Number.isNaN(parseInt(rawPage)) ? parseInt(rawPage) : 1;
   const itemsPerPage = searchParams?.get("limit") || defaultLimit.toString();
 
   const handleLimitChange = (newLimit: string) => {
     const params = new URLSearchParams(searchParams?.toString());
     params.set("limit", newLimit);
     params.delete("page");
-    params.delete("cursor");
+    params.delete("cursor"); // Reset back to page 1 on limit modification
 
     router.push(`${pathname}?${params.toString()}`);
   };
 
   const HandleNext = () => {
-    // 1. Create a copy of all current URL params (keeps your current category and search name!)
-    const params = new URLSearchParams();
+    if (!nextCursor || isEnd) return "#";
 
-    // 2. Set the moving parts for the next page
+    // Clone existing params so search strings / category slugs are preserved!
+    const params = new URLSearchParams(searchParams?.toString());
+
     params.set("cursor", nextCursor.toString());
     params.set("page", (page + 1).toString());
     params.set("limit", itemsPerPage);
 
-    // 3. Keep the current plain pathname (e.g., "/") and attach the safe query string
     return `${pathname}?${params.toString()}`;
   };
 
-  const HandleBack = (firstProductIdOnCurrentPage: number) => {
+  const HandleBack = () => {
     const params = new URLSearchParams(searchParams?.toString());
     const prevPage = Math.max(1, page - 1);
 
-    params.set("cursor", firstProductIdOnCurrentPage.toString());
-    params.set("page", prevPage.toString());
-    params.set("limit", itemsPerPage);
+    if (prevPage === 1) {
+      // Cleanest practice: If moving back to page 1, wipe the cursor state out.
+      // This forces Prisma to pull cleanly from the top of your search results stack.
+      params.delete("cursor");
+      params.delete("page");
+    } else if (firstCursor) {
+      params.set("cursor", firstCursor.toString());
+      params.set("page", prevPage.toString());
+    }
 
     return `${pathname}?${params.toString()}`;
   };
 
   return (
-    <div className="grid md:grid-cols-3 grid-cols-2 w-full max-w-7xl  pb-4  gap-8 md:gap-6  ">
+    <div className="grid md:grid-cols-3 grid-cols-2 w-full max-w-7xl pb-4 gap-8 md:gap-6">
       <div aria-hidden="true" className="hidden md:block" />
-      <Pagination className="flex-1 justify-center ">
+
+      <Pagination className="flex-1 justify-center">
         <PaginationContent>
-          {page !== 1 && (
-            <>
-              <PaginationItem>
-                <PaginationPrevious href={HandleBack(1)} />
-              </PaginationItem>
-              {isEnd && (
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              )}
-            </>
+          {page > 1 && (
+            <PaginationItem>
+              <PaginationPrevious href={HandleBack()} />
+            </PaginationItem>
           )}
+
           <PaginationItem>
             <PaginationLink href="#" isActive>
               {page}
             </PaginationLink>
           </PaginationItem>
 
-          {!isEnd && (
+          {!isEnd && nextCursor && (
             <>
               <PaginationItem>
                 <PaginationEllipsis />
@@ -115,7 +109,8 @@ export default function ProductPagination({
           )}
         </PaginationContent>
       </Pagination>
-      <Field orientation="horizontal" className="w-max  place-self-end">
+
+      <Field orientation="horizontal" className="w-max place-self-end">
         <FieldLabel htmlFor="select-items-per-page" className="text-nowrap">
           Items per page
         </FieldLabel>
@@ -133,9 +128,7 @@ export default function ProductPagination({
               <SelectItem value="15">15</SelectItem>
               <SelectItem value="20">20</SelectItem>
               <SelectItem value="30">30</SelectItem>
-              <SelectItem value="40">40</SelectItem>
               <SelectItem value="50">50</SelectItem>
-              <SelectItem value="100">100</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>

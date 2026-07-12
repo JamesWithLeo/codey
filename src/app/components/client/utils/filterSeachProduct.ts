@@ -24,18 +24,28 @@ export default async function FilterSeachByName({
 
   // 2. Safe handling for Name Search (Bypasses the strict undefined block crash)
   if (searchByName && searchByName.trim() !== "") {
-    whereClause.name = {
-      contains: searchByName.trim(),
-      mode: "insensitive", // Only evaluated when text actually exists!
-    };
+    const words = searchByName.trim().split(/\s+/);
+
+    // 2. Map those words into an array of Prisma 'contains' filters
+    whereClause.AND = words.map((word) => ({
+      name: {
+        contains: word,
+        mode: "insensitive",
+      },
+    }));
   }
 
   const parsedCursor =
     typeof cursor === "string" ? parseInt(cursor, 10) : cursor;
-  const hasValidCursor =
-    parsedCursor !== undefined && !isNaN(parsedCursor) && parsedCursor > 0;
 
-  // 3. Fire the query bounded safely by your limit boundary
+  const isFreshSearch = !!(searchByName && searchByName.trim() !== "");
+
+  const hasValidCursor =
+    parsedCursor !== undefined &&
+    !isNaN(parsedCursor) &&
+    parsedCursor > 1 &&
+    !isFreshSearch;
+
   const filteredProducts = await prisma.product.findMany({
     where: whereClause,
     take: limit || defaultLimit,

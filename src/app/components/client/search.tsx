@@ -24,17 +24,18 @@ export default function Search() {
     ) as HTMLInputElement;
 
     const search = searchInput.value;
-    const splittedPath = path?.split("/");
+    const splittedPath = path?.split("/") || []; // [ "", "products", "category", "productId"]
+
     // Handle if the search input is cleared
+    const category = splittedPath[2];
     if (!search) {
       if (
         splittedPath &&
-        Object.values(Category).includes(splittedPath[1] as Category)
+        Object.values(Category).includes(category as Category)
       ) {
-        const category = splittedPath[1];
-        router.replace(`/${category}`);
+        router.replace(`/products/${category}`);
       } else {
-        router.replace("/");
+        router.replace("/products");
       }
       HandleSearch.flush();
       return;
@@ -42,15 +43,14 @@ export default function Search() {
 
     // check whether category is valid. if not, search to all categories
     if (
-      splittedPath &&
-      Object.values(Category).includes(splittedPath[1] as Category)
+      splittedPath.length >= 2 &&
+      Object.values(Category).includes(category as Category)
     ) {
-      const category = splittedPath[1];
-      router.replace(`/${category}?query=${search}`, {
+      router.replace(`/products/${category}?query=${search}`, {
         scroll: true,
       });
     } else {
-      router.replace(`/?query=${search}`, {
+      router.replace(`/products/?query=${search}`, {
         scroll: true,
       });
     }

@@ -104,15 +104,18 @@ export default async function Page({
   const limit = Number.isNaN(currentLimit) ? LIMIT : currentLimit;
 
   const products = await FilterSeachByName({
-    searchByName: query.searchByName,
+    searchByName: query.query,
     category: matchingCategoryEnum,
     cursor: nextCursor,
     limit: limit,
     defaultLimit: LIMIT,
   });
 
-  const lastCursor = products[limit - 1]?.id;
+  const firstCursor = products.length > 0 ? products[0].id : undefined;
   const productLength = products.length;
+  const lastCursor =
+    products.length > 0 ? products[products.length - 1].id : undefined;
+  const isEnd = products.length < limit; // If we retrieved fewer items than the limit, we hit the end!
 
   return (
     <div className="w-full bg-base-300 py-2 h-max flex px-4 md:px-8 flex-col gap-2 items-center justify-center">
@@ -121,9 +124,9 @@ export default async function Page({
       </div>
       {productLength ? (
         <ProductPagination
-          isEnd={productLength !== limit}
+          isEnd={isEnd}
+          firstCursor={firstCursor}
           nextCursor={lastCursor}
-          limit={limit}
         />
       ) : null}
     </div>

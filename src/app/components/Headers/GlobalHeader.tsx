@@ -21,10 +21,9 @@ const dmSerif = DM_Serif_Display({
   weight: ["400"],
 });
 export default function GlobalHeader({ session }: { session: Session | null }) {
-  // const path = usePathname();
   const router = useRouter();
   return (
-    <section className="flex sticky top-0 z-10 bg-white justify-center w-full flex-col items-center px-4 md:px-8 h-16">
+    <section className="flex sticky top-0 z-30 bg-white justify-center w-full flex-col items-center px-4 md:px-8 h-16">
       <div className="max-w-7xl grid grid-cols-3 w-full justify-between items-center">
         <Link
           className={`text-2xl sm:text-3xl ${dmSerif.className} text-gray-600`}

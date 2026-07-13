@@ -38,7 +38,7 @@ export default async function RootLayout({
         <GlobalHeader session={session} />
         {children}
         {modal}
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );

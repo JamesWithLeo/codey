@@ -8,9 +8,6 @@ export default function CategoryNav({
   activeCategory: string;
 }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const tab = searchParams?.get("tab") || "";
 
   function HandleNext() {
     const categoriesContainer = document.getElementById(

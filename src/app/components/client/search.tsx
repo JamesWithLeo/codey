@@ -2,74 +2,75 @@
 
 import { Input } from "@/components/ui/input";
 import { Category } from "../../../generated/prisma/enums";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
 export default function Search() {
   const router = useRouter();
-  const path = usePathname();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  function HandleEnter() {
-    document.addEventListener("keypress", (event) => {
-      if (event.key === "Enter") {
-        HandleSearch();
-      }
-    });
-  }
-  const HandleSearch = useDebouncedCallback(() => {
-    const searchInput = document.getElementById(
-      "searchInput",
-    ) as HTMLInputElement;
+  // Initialize state directly from the URL so it stays perfectly synced
+  const [value, setValue] = useState(searchParams?.get("query") || "");
 
-    const search = searchInput.value;
-    const splittedPath = path?.split("/") || []; // [ "", "products", "category", "productId"]
+  // Update input if URL changes externally (e.g., clearing search)
+  useEffect(() => {
+    setValue(searchParams?.get("query") || "");
+  }, [searchParams]);
 
-    // Handle if the search input is cleared
+  const handleSearch = useDebouncedCallback((term: string) => {
+    const params = new URLSearchParams(searchParams?.toString());
+    const splittedPath = pathname?.split("/") || [];
     const category = splittedPath[2];
-    if (!search) {
-      if (
-        splittedPath &&
-        Object.values(Category).includes(category as Category)
-      ) {
-        router.replace(`/products/${category}`);
-      } else {
-        router.replace("/products");
-      }
-      HandleSearch.flush();
-      return;
+
+    if (term) {
+      params.set("query", term);
+    } else {
+      params.delete("query");
     }
 
-    // check whether category is valid. if not, search to all categories
-    if (
+    // Always reset pagination when search criteria changes!
+    params.delete("cursor");
+    params.delete("page");
+
+    // Determine target path based on valid Prisma category enum
+    const isValidCategory =
       splittedPath.length >= 2 &&
-      Object.values(Category).includes(category as Category)
-    ) {
-      router.replace(`/products/${category}?query=${search}`, {
-        scroll: true,
-      });
-    } else {
-      router.replace(`/products/?query=${search}`, {
-        scroll: true,
-      });
+      Object.values(Category).includes(category as Category);
+    const targetPath = isValidCategory ? `/products/${category}` : "/products";
+
+    router.replace(`${targetPath}?${params.toString()}`, { scroll: true });
+  }, 500); // 500ms is standard and feels snappier than 1000ms
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setValue(val);
+    handleSearch(val);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch.flush(); // Instantly execute search without waiting for debounce
     }
-  }, 1000);
+  };
 
   return (
-    <ButtonGroup className=" hidden sm:flex rounded-full h-8 input input-bordered after: items-center px-0">
+    <ButtonGroup className="hidden sm:flex rounded-full h-8 input input-bordered items-center px-0">
       <Input
-        onFocus={HandleEnter}
-        className=" h-full px-2"
+        className="h-full px-2"
         placeholder="Search"
-        id="searchInput"
-        onChange={HandleSearch}
+        value={value}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
       />
       <Button
-        variant={"outline"}
-        size={"lg"}
+        variant="outline"
+        size="lg"
         className="p-2 flex items-center justify-center"
-        onClick={HandleSearch}
+        onClick={() => handleSearch.flush()}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

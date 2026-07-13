@@ -27,8 +27,8 @@ export default function ProductPagination({
   defaultLimit = 15,
 }: {
   isEnd: boolean;
-  firstCursor?: number;
-  nextCursor?: number;
+  firstCursor?: number | string;
+  nextCursor?: number | string;
   defaultLimit?: number;
 }) {
   const pathname = usePathname();
@@ -40,43 +40,49 @@ export default function ProductPagination({
     rawPage && !Number.isNaN(parseInt(rawPage)) ? parseInt(rawPage) : 1;
   const itemsPerPage = searchParams?.get("limit") || defaultLimit.toString();
 
-  const handleLimitChange = (newLimit: string) => {
+  // Helper function to build and execute the navigation cleanly
+  const navigateWithParams = (
+    updateParams: (params: URLSearchParams) => void,
+  ) => {
     const params = new URLSearchParams(searchParams?.toString());
-    params.set("limit", newLimit);
-    params.delete("page");
-    params.delete("cursor"); // Reset back to page 1 on limit modification
-
+    updateParams(params);
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  const HandleNext = () => {
-    if (!nextCursor || isEnd) return "#";
-
-    // Clone existing params so search strings / category slugs are preserved!
-    const params = new URLSearchParams(searchParams?.toString());
-
-    params.set("cursor", nextCursor.toString());
-    params.set("page", (page + 1).toString());
-    params.set("limit", itemsPerPage);
-
-    return `${pathname}?${params.toString()}`;
+  const handleLimitChange = (newLimit: string) => {
+    navigateWithParams((params) => {
+      params.set("limit", newLimit);
+      params.delete("page");
+      params.delete("cursor"); // Reset back to page 1 on limit modification
+    });
   };
 
-  const HandleBack = () => {
-    const params = new URLSearchParams(searchParams?.toString());
+  const handleNextPage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!nextCursor || isEnd) return;
+
+    navigateWithParams((params) => {
+      params.set("cursor", nextCursor.toString());
+      params.set("page", (page + 1).toString());
+      params.set("limit", itemsPerPage);
+    });
+  };
+
+  const handleBackPage = (e: React.MouseEvent) => {
+    e.preventDefault();
     const prevPage = Math.max(1, page - 1);
 
-    if (prevPage === 1) {
-      // Cleanest practice: If moving back to page 1, wipe the cursor state out.
-      // This forces Prisma to pull cleanly from the top of your search results stack.
-      params.delete("cursor");
-      params.delete("page");
-    } else if (firstCursor) {
-      params.set("cursor", firstCursor.toString());
-      params.set("page", prevPage.toString());
-    }
-
-    return `${pathname}?${params.toString()}`;
+    navigateWithParams((params) => {
+      if (prevPage === 1) {
+        // Wipe cursor state cleanly out to pull from the top of the search result stack
+        params.delete("cursor");
+        params.delete("page");
+      } else if (firstCursor) {
+        // Approach A: Send back the first item's ID as the marker for the prior data window
+        params.set("cursor", firstCursor.toString());
+        params.set("page", prevPage.toString());
+      }
+    });
   };
 
   return (
@@ -87,7 +93,7 @@ export default function ProductPagination({
         <PaginationContent>
           {page > 1 && (
             <PaginationItem>
-              <PaginationPrevious href={HandleBack()} />
+              <PaginationPrevious href="#" onClick={handleBackPage} />
             </PaginationItem>
           )}
 
@@ -103,7 +109,7 @@ export default function ProductPagination({
                 <PaginationEllipsis />
               </PaginationItem>
               <PaginationItem>
-                <PaginationNext href={HandleNext()} />
+                <PaginationNext href="#" onClick={handleNextPage} />
               </PaginationItem>
             </>
           )}
@@ -129,6 +135,7 @@ export default function ProductPagination({
               <SelectItem value="20">20</SelectItem>
               <SelectItem value="30">30</SelectItem>
               <SelectItem value="50">50</SelectItem>
+              <SelectItem value="100">100</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>

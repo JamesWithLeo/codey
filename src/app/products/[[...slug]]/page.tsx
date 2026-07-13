@@ -54,7 +54,7 @@ export default async function Page({
       if (!product) notFound();
 
       return (
-        <div className="w-full max-w-7xl min-h-screen mx-auto p-6 bg-white   mt-6">
+        <div className="w-full max-w-7xl min-h-screen mx-auto p-6 bg-white mt-6">
           <div className="grid grid-cols-2">
             <div className="flex items-center flex-col px-4">
               <Image
@@ -90,15 +90,15 @@ export default async function Page({
   // ==========================================
   // VIEW B & C: PRODUCTS LIST (ALL OR FILTERED)
   // ==========================================
-
-  // If there's a slug, validate and find the matching category enum
-
   if (matchingCategoryEnum === undefined && categorySegment) {
     notFound();
   }
 
   const currentCursor = parseInt(query.cursor);
-  const nextCursor = Number.isNaN(currentCursor) ? 1 : currentCursor;
+  const rawCursor = Number.isNaN(currentCursor) ? undefined : currentCursor;
+
+  const rawPage = parseInt(query.page);
+  const page = Number.isNaN(rawPage) ? 1 : rawPage; // 👈 Extract page parameter safely
 
   const currentLimit = parseInt(query.limit);
   const limit = Number.isNaN(currentLimit) ? LIMIT : currentLimit;
@@ -106,27 +106,30 @@ export default async function Page({
   const products = await FilterSeachByName({
     searchByName: query.query,
     category: matchingCategoryEnum,
-    cursor: nextCursor,
-    limit: limit,
+    cursor: rawCursor,
+    page: page, // 👈 Pass the trackable page number down
+    limit: limit + 1,
     defaultLimit: LIMIT,
   });
 
-  const firstCursor = products.length > 0 ? products[0].id : undefined;
-  const productLength = products.length;
-  const lastCursor =
-    products.length > 0 ? products[products.length - 1].id : undefined;
-  const isEnd = products.length < limit; // If we retrieved fewer items than the limit, we hit the end!
-
+  // The rest of your slicing rules and cursors stay exactly the same!
+  const hasMore = products.length > limit;
+  const visibleProducts = hasMore ? products.slice(0, limit) : products;
+  const firstCursor = visibleProducts[0]?.id;
+  const nextCursor = hasMore ? products[products.length - 1]?.id : undefined;
+  const isEnd = !hasMore;
   return (
     <div className="w-full bg-base-300 py-2 h-max flex px-4 md:px-8 flex-col gap-2 items-center justify-center">
       <div className="w-full h-min py-4 min-h-screen max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4">
-        <ProductList data={products} />
+        {/* FIX 1: Pass visibleProducts instead of raw products */}
+        <ProductList data={visibleProducts} />
       </div>
-      {productLength ? (
+      {/* FIX 2: Check visibleProducts length instead of raw products length */}
+      {visibleProducts.length ? (
         <ProductPagination
           isEnd={isEnd}
           firstCursor={firstCursor}
-          nextCursor={lastCursor}
+          nextCursor={nextCursor}
         />
       ) : null}
     </div>

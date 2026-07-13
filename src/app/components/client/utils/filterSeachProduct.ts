@@ -7,26 +7,28 @@ export default async function FilterSeachByName({
   category,
   limit,
   cursor,
+  page = 1,
   defaultLimit = 15,
 }: {
   searchByName?: string;
   category?: Category;
   limit: number;
   cursor?: number | string;
+  page?: number;
   defaultLimit?: number;
 }) {
   const whereClause: Prisma.productWhereInput = {};
+  const currentLimit = limit || defaultLimit;
 
-  // 1. Safe handling for Category
+  // 1. Filter by Category
   if (category) {
     whereClause.category = category;
   }
 
-  // 2. Safe handling for Name Search (Bypasses the strict undefined block crash)
-  if (searchByName && searchByName.trim() !== "") {
+  // 2. Filter by Search Query
+  const isSearching = !!(searchByName && searchByName.trim() !== "");
+  if (isSearching) {
     const words = searchByName.trim().split(/\s+/);
-
-    // 2. Map those words into an array of Prisma 'contains' filters
     whereClause.AND = words.map((word) => ({
       name: {
         contains: word,
@@ -37,33 +39,28 @@ export default async function FilterSeachByName({
 
   const parsedCursor =
     typeof cursor === "string" ? parseInt(cursor, 10) : cursor;
+  const hasValidCursor = parsedCursor !== undefined && !isNaN(parsedCursor);
 
-  const isFreshSearch = !!(searchByName && searchByName.trim() !== "");
-
-  const hasValidCursor =
-    parsedCursor !== undefined &&
-    !isNaN(parsedCursor) &&
-    parsedCursor > 1 &&
-    !isFreshSearch;
-
-  const filteredProducts = await prisma.product.findMany({
+  // 3. Hybrid Strategy Selection
+  let queryOptions: Prisma.productFindManyArgs = {
     where: whereClause,
-    take: limit || defaultLimit,
-    orderBy: {
-      id: "asc",
-    },
-    ...(hasValidCursor
-      ? {
-          cursor: { id: parsedCursor },
-          skip: 1,
-        }
-      : {}),
-  });
+    take: currentLimit,
+    orderBy: { id: "asc" },
+  };
 
-  return filteredProducts.map((product) => {
-    return {
-      ...product,
-      price: product.price ? Number(product.price).toFixed(2) : "0.00",
-    };
-  });
+  // If the user is searching text OR navigating pages beyond page 1,
+  // offset pagination ensures that going backward is mathematically perfect.
+  if (isSearching || page > 1) {
+    queryOptions.skip = (page - 1) * currentLimit;
+  } else if (hasValidCursor) {
+    queryOptions.cursor = { id: parsedCursor };
+    queryOptions.skip = 1;
+  }
+
+  const filteredProducts = await prisma.product.findMany(queryOptions);
+
+  return filteredProducts.map((product) => ({
+    ...product,
+    price: product.price ? Number(product.price).toFixed(2) : "0.00",
+  }));
 }

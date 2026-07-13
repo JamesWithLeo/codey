@@ -5,30 +5,29 @@ const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
   weight: ["400"],
 });
-import Link from "next/link";
-
-import LogoutButton from "../client/button/logoutButton";
+// import Link from "next/link";
+// import LogoutButton from "../client/button/logoutButton";
 import CategoryNav from "../client/categoryNav";
-import Search from "../client/search";
-import { auth } from "../../../authOptions";
-import type { Session } from "next-auth";
+// import Search from "../client/search";
+// import { auth } from "../../../authOptions";
+// import type { Session } from "next-auth";
 
-import AdminButton from "../client/button/adminButton";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
+// import AdminButton from "../client/button/adminButton";
+// import { Menu } from "lucide-react";
+// import { Button } from "@/components/ui/button";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuGroup,
+//   DropdownMenuItem,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 import { usePathname } from "next/navigation";
 
-export default function Header({ session }: { session: Session | null }) {
+export default function Header() {
   const pathname = usePathname();
 
   const pathSegments = pathname?.split("/").filter(Boolean);

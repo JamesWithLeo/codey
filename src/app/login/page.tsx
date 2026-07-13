@@ -3,7 +3,7 @@
 import { DM_Sans } from "next/font/google";
 import Link from "next/link";
 const sans = DM_Sans({ subsets: [] });
-import { signIn } from "next-auth/react";
+import signIn from "@/lib/sign-in";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -11,6 +11,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 
 export default function LoginPage() {
+  const handleLogin = async () => {
+    const { data, error } = await signIn();
+    console.log(data, error);
+  };
   return (
     <div className={`flex flex-col items-center h-dvh gap-4  justify-center`}>
       <section className="max-w-sm flex flex-col gap-2 w-full h-max px-2 sm:px-0">
@@ -51,17 +55,11 @@ export default function LoginPage() {
           </Button>
 
           <Separator />
-          <button
-            className="font-normal btn"
-            onClick={() => signIn("github", { callbackUrl: "/" })}
-          >
-            continue with github
-          </button>
           <Button
             className="font-normal btn"
             variant={"secondary"}
             size={"lg"}
-            onClick={() => signIn("google", { callbackUrl: "/" })}
+            onClick={handleLogin}
           >
             continue with google
           </Button>

@@ -7,5 +7,5 @@ export default async function Page({
   searchParams: Promise<{ [key: string]: string }>;
   params: Promise<{ slug?: string[] }>;
 }) {
-  redirect("/products");
+  return null;
 }

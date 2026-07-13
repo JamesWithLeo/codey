@@ -11,12 +11,16 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { signIn } from "next-auth/react";
+import signIn from "@/lib/sign-in";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const handleLogin = async () => {
+    const { data, error } = await signIn();
+    console.log(data, error);
+  };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
@@ -66,7 +70,8 @@ export function LoginForm({
               </FieldSeparator>
               <Field className="flex w-full">
                 <Button
-                  onClick={() => signIn("google", { callbackUrl: "/" })}
+                  // onClick={() => signIn("google", { callbackUrl: "/" })}
+                  onClick={handleLogin}
                   variant="outline"
                   className={"w-full"}
                   size={"lg"}

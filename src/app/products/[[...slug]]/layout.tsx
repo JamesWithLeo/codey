@@ -1,16 +1,18 @@
-import { auth } from "@/src/authOptions";
-import Header from "../../components/server/header";
+// import { auth } from "@/src/authOptions";
+import { authClient } from "@/lib/auth-client";
+import Header from "../../components/Headers/ProductHeader";
 
 export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  // const session = await auth();
+  const { data: session, error } = await authClient.getSession();
   return (
     <>
       <div className="">
-        <Header session={session} />
+        <Header />
         {children}
       </div>
     </>

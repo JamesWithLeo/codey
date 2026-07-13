@@ -4,7 +4,7 @@ export const authClient = createAuthClient({
   baseURL: "http://localhost:3000",
 });
 
-export const { signIn, signUp, useSession } = createAuthClient();
+export const { signIn, signUp, useSession, signOut } = createAuthClient();
 
 // Extract and export the type
 export type Session = typeof authClient.$Infer.Session;

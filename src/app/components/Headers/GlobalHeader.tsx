@@ -1,6 +1,7 @@
+"use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Home, Menu, User2, ShoppingBasket } from "lucide-react";
 import LogoutButton from "../client/button/logoutButton";
 import Search from "../client/search";
 import {
@@ -14,11 +15,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DM_Serif_Display } from "next/font/google";
 import { Session } from "@/lib/auth-client";
+import { usePathname, useRouter } from "next/navigation";
 const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
   weight: ["400"],
 });
 export default function GlobalHeader({ session }: { session: Session | null }) {
+  // const path = usePathname();
+  const router = useRouter();
   return (
     <section className="flex sticky top-0 z-10 bg-white justify-center w-full flex-col items-center px-4 md:px-8 h-16">
       <div className="max-w-7xl grid grid-cols-3 w-full justify-between items-center">
@@ -60,11 +64,32 @@ export default function GlobalHeader({ session }: { session: Session | null }) {
                   </>
                 ) : (
                   <>
-                    <DropdownMenuItem>
-                      <Link href={"/profile"}>Profile</Link>
+                    <DropdownMenuItem
+                      className={"cursor-pointer"}
+                      onClick={() => {
+                        router.push("/products");
+                      }}
+                    >
+                      <Home />
+                      Home
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link href={"/cart"}>Cart</Link>
+                    <DropdownMenuItem
+                      className={"cursor-pointer"}
+                      onClick={() => {
+                        router.push("/profile");
+                      }}
+                    >
+                      <User2 />
+                      Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className={"cursor-pointer"}
+                      onClick={() => {
+                        router.push("/cart");
+                      }}
+                    >
+                      <ShoppingBasket />
+                      Cart
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>

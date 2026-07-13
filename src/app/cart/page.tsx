@@ -1,13 +1,13 @@
-import { auth } from "@/src/authOptions";
 import { prisma } from "@/src/prisma";
 import { redirect } from "next/navigation";
 import { DM_Sans } from "next/font/google";
-import React from "react";
 import Link from "next/link";
 import CartPanel from "@/src/app/components/client/cartPanel";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 const sans = DM_Sans({ style: "normal", subsets: [] });
 
-async function FetchCart(uid: number) {
+async function FetchCart(uid: string) {
   const cart = await prisma.cart.findFirst({ where: { user_id: uid } });
   if (!cart) return null;
   const cart_id = cart.id;
@@ -21,10 +21,14 @@ async function FetchCart(uid: number) {
 }
 
 export default async function Page() {
-  const Auth = await auth();
-  if (!Auth || !Auth?.user) redirect("/");
+  const AuthSession = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
+  // const Auth = await auth();
+  const { session, user } = { ...AuthSession };
+  if (!session || !user) redirect("/");
 
-  const cart = await FetchCart(Auth.user.id);
+  const cart = await FetchCart(user.id);
   return (
     <main className="w-full  h-full flex  flex-col gap-2 items-center justify-center">
       <div className="breadcrumbs text-xs self-start px-4 md:px-8">

@@ -26,10 +26,10 @@ export type Category = (typeof Category)[keyof typeof Category]
 
 export const ORDER_STATUS = {
   pending: 'pending',
-  suspended: 'suspended',
   shipped: 'shipped',
   delivered: 'delivered',
-  canceled: 'canceled'
+  canceled: 'canceled',
+  suspended: 'suspended'
 } as const
 
 export type ORDER_STATUS = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS]

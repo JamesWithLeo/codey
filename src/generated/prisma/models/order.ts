@@ -46,39 +46,39 @@ export type OrderMinAggregateOutputType = {
   id: number | null
   total_price: runtime.Decimal | null
   quantity: number | null
-  product_name: string | null
   isPaid: boolean | null
   status: $Enums.ORDER_STATUS | null
   createdAt: Date | null
   updatedAt: Date | null
   product_id: number | null
   transaction_id: number | null
+  product_name: string | null
 }
 
 export type OrderMaxAggregateOutputType = {
   id: number | null
   total_price: runtime.Decimal | null
   quantity: number | null
-  product_name: string | null
   isPaid: boolean | null
   status: $Enums.ORDER_STATUS | null
   createdAt: Date | null
   updatedAt: Date | null
   product_id: number | null
   transaction_id: number | null
+  product_name: string | null
 }
 
 export type OrderCountAggregateOutputType = {
   id: number
   total_price: number
   quantity: number
-  product_name: number
   isPaid: number
   status: number
   createdAt: number
   updatedAt: number
   product_id: number
   transaction_id: number
+  product_name: number
   _all: number
 }
 
@@ -103,39 +103,39 @@ export type OrderMinAggregateInputType = {
   id?: true
   total_price?: true
   quantity?: true
-  product_name?: true
   isPaid?: true
   status?: true
   createdAt?: true
   updatedAt?: true
   product_id?: true
   transaction_id?: true
+  product_name?: true
 }
 
 export type OrderMaxAggregateInputType = {
   id?: true
   total_price?: true
   quantity?: true
-  product_name?: true
   isPaid?: true
   status?: true
   createdAt?: true
   updatedAt?: true
   product_id?: true
   transaction_id?: true
+  product_name?: true
 }
 
 export type OrderCountAggregateInputType = {
   id?: true
   total_price?: true
   quantity?: true
-  product_name?: true
   isPaid?: true
   status?: true
   createdAt?: true
   updatedAt?: true
   product_id?: true
   transaction_id?: true
+  product_name?: true
   _all?: true
 }
 
@@ -229,13 +229,13 @@ export type OrderGroupByOutputType = {
   id: number
   total_price: runtime.Decimal
   quantity: number
-  product_name: string
   isPaid: boolean
   status: $Enums.ORDER_STATUS
   createdAt: Date
   updatedAt: Date
   product_id: number
   transaction_id: number
+  product_name: string
   _count: OrderCountAggregateOutputType | null
   _avg: OrderAvgAggregateOutputType | null
   _sum: OrderSumAggregateOutputType | null
@@ -265,13 +265,13 @@ export type orderWhereInput = {
   id?: Prisma.IntFilter<"order"> | number
   total_price?: Prisma.DecimalFilter<"order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFilter<"order"> | number
-  product_name?: Prisma.StringFilter<"order"> | string
   isPaid?: Prisma.BoolFilter<"order"> | boolean
   status?: Prisma.EnumORDER_STATUSFilter<"order"> | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeFilter<"order"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"order"> | Date | string
   product_id?: Prisma.IntFilter<"order"> | number
   transaction_id?: Prisma.IntFilter<"order"> | number
+  product_name?: Prisma.StringFilter<"order"> | string
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.productWhereInput>
   transaction?: Prisma.XOR<Prisma.TransactionScalarRelationFilter, Prisma.transactionWhereInput>
 }
@@ -280,13 +280,13 @@ export type orderOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   total_price?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
-  product_name?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   product_id?: Prisma.SortOrder
   transaction_id?: Prisma.SortOrder
+  product_name?: Prisma.SortOrder
   product?: Prisma.productOrderByWithRelationInput
   transaction?: Prisma.transactionOrderByWithRelationInput
 }
@@ -298,13 +298,13 @@ export type orderWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.orderWhereInput | Prisma.orderWhereInput[]
   total_price?: Prisma.DecimalFilter<"order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFilter<"order"> | number
-  product_name?: Prisma.StringFilter<"order"> | string
   isPaid?: Prisma.BoolFilter<"order"> | boolean
   status?: Prisma.EnumORDER_STATUSFilter<"order"> | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeFilter<"order"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"order"> | Date | string
   product_id?: Prisma.IntFilter<"order"> | number
   transaction_id?: Prisma.IntFilter<"order"> | number
+  product_name?: Prisma.StringFilter<"order"> | string
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.productWhereInput>
   transaction?: Prisma.XOR<Prisma.TransactionScalarRelationFilter, Prisma.transactionWhereInput>
 }, "id" | "id">
@@ -313,13 +313,13 @@ export type orderOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   total_price?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
-  product_name?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   product_id?: Prisma.SortOrder
   transaction_id?: Prisma.SortOrder
+  product_name?: Prisma.SortOrder
   _count?: Prisma.orderCountOrderByAggregateInput
   _avg?: Prisma.orderAvgOrderByAggregateInput
   _max?: Prisma.orderMaxOrderByAggregateInput
@@ -334,23 +334,23 @@ export type orderScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"order"> | number
   total_price?: Prisma.DecimalWithAggregatesFilter<"order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntWithAggregatesFilter<"order"> | number
-  product_name?: Prisma.StringWithAggregatesFilter<"order"> | string
   isPaid?: Prisma.BoolWithAggregatesFilter<"order"> | boolean
   status?: Prisma.EnumORDER_STATUSWithAggregatesFilter<"order"> | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"order"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"order"> | Date | string
   product_id?: Prisma.IntWithAggregatesFilter<"order"> | number
   transaction_id?: Prisma.IntWithAggregatesFilter<"order"> | number
+  product_name?: Prisma.StringWithAggregatesFilter<"order"> | string
 }
 
 export type orderCreateInput = {
   total_price: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
-  product_name?: string
   isPaid?: boolean
   status?: $Enums.ORDER_STATUS
   createdAt?: Date | string
   updatedAt?: Date | string
+  product_name?: string
   product: Prisma.productCreateNestedOneWithoutOrderItemsInput
   transaction: Prisma.transactionCreateNestedOneWithoutOrderItemsInput
 }
@@ -359,23 +359,23 @@ export type orderUncheckedCreateInput = {
   id?: number
   total_price: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
-  product_name?: string
   isPaid?: boolean
   status?: $Enums.ORDER_STATUS
   createdAt?: Date | string
   updatedAt?: Date | string
   product_id: number
   transaction_id: number
+  product_name?: string
 }
 
 export type orderUpdateInput = {
   total_price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  product_name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumORDER_STATUSFieldUpdateOperationsInput | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  product_name?: Prisma.StringFieldUpdateOperationsInput | string
   product?: Prisma.productUpdateOneRequiredWithoutOrderItemsNestedInput
   transaction?: Prisma.transactionUpdateOneRequiredWithoutOrderItemsNestedInput
 }
@@ -384,49 +384,49 @@ export type orderUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   total_price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  product_name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumORDER_STATUSFieldUpdateOperationsInput | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   product_id?: Prisma.IntFieldUpdateOperationsInput | number
   transaction_id?: Prisma.IntFieldUpdateOperationsInput | number
+  product_name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type orderCreateManyInput = {
   id?: number
   total_price: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
-  product_name?: string
   isPaid?: boolean
   status?: $Enums.ORDER_STATUS
   createdAt?: Date | string
   updatedAt?: Date | string
   product_id: number
   transaction_id: number
+  product_name?: string
 }
 
 export type orderUpdateManyMutationInput = {
   total_price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  product_name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumORDER_STATUSFieldUpdateOperationsInput | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  product_name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type orderUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   total_price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  product_name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumORDER_STATUSFieldUpdateOperationsInput | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   product_id?: Prisma.IntFieldUpdateOperationsInput | number
   transaction_id?: Prisma.IntFieldUpdateOperationsInput | number
+  product_name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type OrderListRelationFilter = {
@@ -443,13 +443,13 @@ export type orderCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   total_price?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
-  product_name?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   product_id?: Prisma.SortOrder
   transaction_id?: Prisma.SortOrder
+  product_name?: Prisma.SortOrder
 }
 
 export type orderAvgOrderByAggregateInput = {
@@ -464,26 +464,26 @@ export type orderMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   total_price?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
-  product_name?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   product_id?: Prisma.SortOrder
   transaction_id?: Prisma.SortOrder
+  product_name?: Prisma.SortOrder
 }
 
 export type orderMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   total_price?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
-  product_name?: Prisma.SortOrder
   isPaid?: Prisma.SortOrder
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   product_id?: Prisma.SortOrder
   transaction_id?: Prisma.SortOrder
+  product_name?: Prisma.SortOrder
 }
 
 export type orderSumOrderByAggregateInput = {
@@ -585,11 +585,11 @@ export type EnumORDER_STATUSFieldUpdateOperationsInput = {
 export type orderCreateWithoutProductInput = {
   total_price: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
-  product_name?: string
   isPaid?: boolean
   status?: $Enums.ORDER_STATUS
   createdAt?: Date | string
   updatedAt?: Date | string
+  product_name?: string
   transaction: Prisma.transactionCreateNestedOneWithoutOrderItemsInput
 }
 
@@ -597,12 +597,12 @@ export type orderUncheckedCreateWithoutProductInput = {
   id?: number
   total_price: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
-  product_name?: string
   isPaid?: boolean
   status?: $Enums.ORDER_STATUS
   createdAt?: Date | string
   updatedAt?: Date | string
   transaction_id: number
+  product_name?: string
 }
 
 export type orderCreateOrConnectWithoutProductInput = {
@@ -638,23 +638,23 @@ export type orderScalarWhereInput = {
   id?: Prisma.IntFilter<"order"> | number
   total_price?: Prisma.DecimalFilter<"order"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFilter<"order"> | number
-  product_name?: Prisma.StringFilter<"order"> | string
   isPaid?: Prisma.BoolFilter<"order"> | boolean
   status?: Prisma.EnumORDER_STATUSFilter<"order"> | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeFilter<"order"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"order"> | Date | string
   product_id?: Prisma.IntFilter<"order"> | number
   transaction_id?: Prisma.IntFilter<"order"> | number
+  product_name?: Prisma.StringFilter<"order"> | string
 }
 
 export type orderCreateWithoutTransactionInput = {
   total_price: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
-  product_name?: string
   isPaid?: boolean
   status?: $Enums.ORDER_STATUS
   createdAt?: Date | string
   updatedAt?: Date | string
+  product_name?: string
   product: Prisma.productCreateNestedOneWithoutOrderItemsInput
 }
 
@@ -662,12 +662,12 @@ export type orderUncheckedCreateWithoutTransactionInput = {
   id?: number
   total_price: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
-  product_name?: string
   isPaid?: boolean
   status?: $Enums.ORDER_STATUS
   createdAt?: Date | string
   updatedAt?: Date | string
   product_id: number
+  product_name?: string
 }
 
 export type orderCreateOrConnectWithoutTransactionInput = {
@@ -700,22 +700,22 @@ export type orderCreateManyProductInput = {
   id?: number
   total_price: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
-  product_name?: string
   isPaid?: boolean
   status?: $Enums.ORDER_STATUS
   createdAt?: Date | string
   updatedAt?: Date | string
   transaction_id: number
+  product_name?: string
 }
 
 export type orderUpdateWithoutProductInput = {
   total_price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  product_name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumORDER_STATUSFieldUpdateOperationsInput | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  product_name?: Prisma.StringFieldUpdateOperationsInput | string
   transaction?: Prisma.transactionUpdateOneRequiredWithoutOrderItemsNestedInput
 }
 
@@ -723,46 +723,46 @@ export type orderUncheckedUpdateWithoutProductInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   total_price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  product_name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumORDER_STATUSFieldUpdateOperationsInput | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transaction_id?: Prisma.IntFieldUpdateOperationsInput | number
+  product_name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type orderUncheckedUpdateManyWithoutProductInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   total_price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  product_name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumORDER_STATUSFieldUpdateOperationsInput | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transaction_id?: Prisma.IntFieldUpdateOperationsInput | number
+  product_name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type orderCreateManyTransactionInput = {
   id?: number
   total_price: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
-  product_name?: string
   isPaid?: boolean
   status?: $Enums.ORDER_STATUS
   createdAt?: Date | string
   updatedAt?: Date | string
   product_id: number
+  product_name?: string
 }
 
 export type orderUpdateWithoutTransactionInput = {
   total_price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  product_name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumORDER_STATUSFieldUpdateOperationsInput | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  product_name?: Prisma.StringFieldUpdateOperationsInput | string
   product?: Prisma.productUpdateOneRequiredWithoutOrderItemsNestedInput
 }
 
@@ -770,24 +770,24 @@ export type orderUncheckedUpdateWithoutTransactionInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   total_price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  product_name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumORDER_STATUSFieldUpdateOperationsInput | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   product_id?: Prisma.IntFieldUpdateOperationsInput | number
+  product_name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type orderUncheckedUpdateManyWithoutTransactionInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   total_price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
-  product_name?: Prisma.StringFieldUpdateOperationsInput | string
   isPaid?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.EnumORDER_STATUSFieldUpdateOperationsInput | $Enums.ORDER_STATUS
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   product_id?: Prisma.IntFieldUpdateOperationsInput | number
+  product_name?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -796,13 +796,13 @@ export type orderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   id?: boolean
   total_price?: boolean
   quantity?: boolean
-  product_name?: boolean
   isPaid?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   product_id?: boolean
   transaction_id?: boolean
+  product_name?: boolean
   product?: boolean | Prisma.productDefaultArgs<ExtArgs>
   transaction?: boolean | Prisma.transactionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["order"]>
@@ -811,13 +811,13 @@ export type orderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   id?: boolean
   total_price?: boolean
   quantity?: boolean
-  product_name?: boolean
   isPaid?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   product_id?: boolean
   transaction_id?: boolean
+  product_name?: boolean
   product?: boolean | Prisma.productDefaultArgs<ExtArgs>
   transaction?: boolean | Prisma.transactionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["order"]>
@@ -826,13 +826,13 @@ export type orderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   id?: boolean
   total_price?: boolean
   quantity?: boolean
-  product_name?: boolean
   isPaid?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   product_id?: boolean
   transaction_id?: boolean
+  product_name?: boolean
   product?: boolean | Prisma.productDefaultArgs<ExtArgs>
   transaction?: boolean | Prisma.transactionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["order"]>
@@ -841,16 +841,16 @@ export type orderSelectScalar = {
   id?: boolean
   total_price?: boolean
   quantity?: boolean
-  product_name?: boolean
   isPaid?: boolean
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   product_id?: boolean
   transaction_id?: boolean
+  product_name?: boolean
 }
 
-export type orderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "total_price" | "quantity" | "product_name" | "isPaid" | "status" | "createdAt" | "updatedAt" | "product_id" | "transaction_id", ExtArgs["result"]["order"]>
+export type orderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "total_price" | "quantity" | "isPaid" | "status" | "createdAt" | "updatedAt" | "product_id" | "transaction_id" | "product_name", ExtArgs["result"]["order"]>
 export type orderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   product?: boolean | Prisma.productDefaultArgs<ExtArgs>
   transaction?: boolean | Prisma.transactionDefaultArgs<ExtArgs>
@@ -874,13 +874,13 @@ export type $orderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     id: number
     total_price: runtime.Decimal
     quantity: number
-    product_name: string
     isPaid: boolean
     status: $Enums.ORDER_STATUS
     createdAt: Date
     updatedAt: Date
     product_id: number
     transaction_id: number
+    product_name: string
   }, ExtArgs["result"]["order"]>
   composites: {}
 }
@@ -1309,13 +1309,13 @@ export interface orderFieldRefs {
   readonly id: Prisma.FieldRef<"order", 'Int'>
   readonly total_price: Prisma.FieldRef<"order", 'Decimal'>
   readonly quantity: Prisma.FieldRef<"order", 'Int'>
-  readonly product_name: Prisma.FieldRef<"order", 'String'>
   readonly isPaid: Prisma.FieldRef<"order", 'Boolean'>
   readonly status: Prisma.FieldRef<"order", 'ORDER_STATUS'>
   readonly createdAt: Prisma.FieldRef<"order", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"order", 'DateTime'>
   readonly product_id: Prisma.FieldRef<"order", 'Int'>
   readonly transaction_id: Prisma.FieldRef<"order", 'Int'>
+  readonly product_name: Prisma.FieldRef<"order", 'String'>
 }
     
 

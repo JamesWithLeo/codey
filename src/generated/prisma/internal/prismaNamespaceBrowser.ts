@@ -55,7 +55,6 @@ export const ModelName = {
   CartItem: 'CartItem',
   transaction: 'transaction',
   order: 'order',
-  users: 'users',
   Cart: 'Cart',
   User: 'User',
   Session: 'Session',
@@ -113,10 +112,10 @@ export type CartItemScalarFieldEnum = (typeof CartItemScalarFieldEnum)[keyof typ
 
 export const TransactionScalarFieldEnum = {
   id: 'id',
-  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   user_id: 'user_id',
+  status: 'status',
   source: 'source'
 } as const
 
@@ -127,29 +126,16 @@ export const OrderScalarFieldEnum = {
   id: 'id',
   total_price: 'total_price',
   quantity: 'quantity',
-  product_name: 'product_name',
   isPaid: 'isPaid',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   product_id: 'product_id',
-  transaction_id: 'transaction_id'
+  transaction_id: 'transaction_id',
+  product_name: 'product_name'
 } as const
 
 export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
-
-
-export const UsersScalarFieldEnum = {
-  id: 'id',
-  role: 'role',
-  email: 'email',
-  username: 'username',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  isOnline: 'isOnline'
-} as const
-
-export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
 
 
 export const CartScalarFieldEnum = {
@@ -169,7 +155,11 @@ export const UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   image: 'image',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  role: 'role',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  isOnline: 'isOnline'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]

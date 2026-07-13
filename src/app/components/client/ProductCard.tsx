@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { getSession } from "next-auth/react";
+// import { getSession } from "next-auth/react";
 import { useState } from "react";
 import {
   Card,
@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CLIENT_PRODUCT } from "@/src/types";
+import { useSession } from "@/lib/auth-client";
 
 export default function ProductCard({
   data: product,
@@ -24,6 +25,8 @@ export default function ProductCard({
   const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
   const [isAddingToCart, setIsAddingToCart] = useState<boolean>(false);
   const [errorCart, setErrorCart] = useState<string | null>(null);
+  const { data, error } = useSession();
+  const { session, user } = { ...data };
 
   function HandleViewProduct() {
     router.push(`/products/${product.category}/${product.id}/`);
@@ -32,8 +35,7 @@ export default function ProductCard({
   async function HandleAddToCart() {
     if (isAddingToCart) return;
 
-    const session = await getSession();
-    if (!session || !session?.user) {
+    if (!data?.session || !user) {
       router.push("/login", { scroll: false });
       return;
     }
@@ -42,7 +44,7 @@ export default function ProductCard({
     const newCartItem = { quantity: 1, product_id: product.id };
     const response = await fetch("/api/cart", {
       method: "POST",
-      body: JSON.stringify({ user_id: session.user.id, item: newCartItem }),
+      body: JSON.stringify({ user_id: user.id, item: newCartItem }),
     });
     const item = await response.json();
 

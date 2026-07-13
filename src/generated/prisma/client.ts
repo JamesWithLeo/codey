@@ -62,11 +62,6 @@ export type transaction = Prisma.transactionModel
  */
 export type order = Prisma.orderModel
 /**
- * Model users
- * 
- */
-export type users = Prisma.usersModel
-/**
  * Model Cart
  * 
  */

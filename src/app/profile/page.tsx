@@ -1,12 +1,17 @@
-import { getServerSession } from "next-auth";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default async function ProfilePage() {
-  const session = await getServerSession();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
   const user = session?.user;
-  console.log(session);
+  if (!session || !user) redirect("/login");
+
   return (
     <main className="w-full h-dvh flex flex-col items-center justify-center">
-      {user ? <h1>{user?.name}</h1> : null}
+      <h1>{user.name}</h1>
     </main>
   );
 }

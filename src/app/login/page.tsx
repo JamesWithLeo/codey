@@ -30,7 +30,7 @@ export default function LoginPage() {
           placeholder="Enter your password"
         />
         <div className="  items-center justify-between flex gap-2 ">
-          <FieldGroup className=" text-nowrap w-min  ">
+          <FieldGroup className=" text-xs text-nowrap w-min  ">
             <Field orientation="horizontal">
               <FieldLabel htmlFor="terms-checkbox-basic">
                 Remember me
@@ -51,12 +51,12 @@ export default function LoginPage() {
           </Button>
 
           <Separator />
-          {/* <button
-          className="font-normal btn"
-          onClick={() => signIn("github", { callbackUrl: "/" })}
-        >
-          continue with github
-        </button> */}
+          <button
+            className="font-normal btn"
+            onClick={() => signIn("github", { callbackUrl: "/" })}
+          >
+            continue with github
+          </button>
           <Button
             className="font-normal btn"
             variant={"secondary"}

@@ -24,6 +24,7 @@ export default function ProductCard({
   const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
   const [isAddingToCart, setIsAddingToCart] = useState<boolean>(false);
   const [errorCart, setErrorCart] = useState<string | null>(null);
+
   function HandleViewProduct() {
     router.push(`/products/${product.category}/${product.id}/`);
   }
@@ -33,7 +34,7 @@ export default function ProductCard({
 
     const session = await getSession();
     if (!session || !session?.user) {
-      router.push("/login");
+      router.push("/login", { scroll: false });
       return;
     }
 

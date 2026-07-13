@@ -1,7 +1,6 @@
 "use client";
 import ProductCard from "./ProductCard";
 import { DM_Sans } from "next/font/google";
-import { product } from "@/src/generated/prisma/client";
 const sans = DM_Sans({ style: "normal", subsets: [] });
 import { CLIENT_PRODUCT } from "@/src/types";
 

@@ -1,6 +1,6 @@
 import { authClient } from "@/lib/auth-client"; //import the auth client
 
-export default async function signIn() {
+export default async function signInWithGoogle() {
   const { data, error } = await authClient.signIn.social({
     /**
      * The social provider ID

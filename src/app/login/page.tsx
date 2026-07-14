@@ -3,7 +3,7 @@
 import { DM_Sans } from "next/font/google";
 import Link from "next/link";
 const sans = DM_Sans({ subsets: [] });
-import signIn from "@/lib/sign-in";
+import signInWithGoogle from "@/lib/sign-in";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -12,7 +12,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 
 export default function LoginPage() {
   const handleLogin = async () => {
-    const { data, error } = await signIn();
+    const { data, error } = await signInWithGoogle();
     console.log(data, error);
   };
   return (

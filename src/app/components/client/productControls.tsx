@@ -1,8 +1,6 @@
 "use client";
 import { useSession } from "@/lib/auth-client";
 import BuyConfirmation from "./buyConfirmation";
-// import { getSession } from "next-auth/react";
-import React from "react";
 import { useState } from "react";
 
 type product = {

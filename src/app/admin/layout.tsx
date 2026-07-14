@@ -1,15 +1,19 @@
 import { ReactNode } from "react";
 import AdminAside from "@/src//app/components/client/adminAside";
-import { auth } from "@/src/authOptions";
+
 import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 export default async function AdminLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  const session = await auth();
-  if (session?.user?.role !== "admin") redirect("/");
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
+  if (session?.user.role !== "admin") redirect("/");
   return (
     <main className="flex items-center h-dvh justify-center border-t md:drawer-open">
       <div className="drawer lg:drawer-open h-dvh">

@@ -11,14 +11,14 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import signIn from "@/lib/sign-in";
+import signInWithGoogle from "@/lib/sign-in";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const handleLogin = async () => {
-    const { data, error } = await signIn();
+    const { data, error } = await signInWithGoogle();
     console.log(data, error);
   };
   return (

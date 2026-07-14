@@ -1,6 +1,6 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import signInWithGoogle from "@/lib/sign-in";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,6 +17,10 @@ export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const handleSignup = async () => {
+    const { data, error } = await signInWithGoogle();
+    console.log(data, error);
+  };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
@@ -83,7 +87,7 @@ export function SignupForm({
                   variant="outline"
                   size={"lg"}
                   type="button"
-                  onClick={() => signIn("google", { callbackUrl: "/" })}
+                  onClick={handleSignup}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path

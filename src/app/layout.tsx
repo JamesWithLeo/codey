@@ -30,7 +30,7 @@ export default async function RootLayout({
     <html
       lang="en"
       data-theme="bumblebee"
-      className={cn("font-sans", inter.variable)}
+      className={cn("font-sans ", inter.variable)}
       data-scroll-behavior="smooth"
     >
       <body>

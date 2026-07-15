@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CLIENT_PRODUCT } from "@/src/types";
 import { useSession } from "@/lib/auth-client";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function ProductCard({
   data: product,
@@ -164,7 +165,7 @@ export default function ProductCard({
       ) : null}
 
       <Card
-        className="group relative w-full   max-w-sm  h-min overflow-hidden  m-0  hover:shadow-md"
+        className="group relative w-full    max-w-sm  h-min overflow-hidden  m-0  hover:shadow-md"
         onClick={(event) => {
           // Safe target check to ensure clicking the button doesn't trigger the card navigation
           if ((event.target as HTMLElement).tagName !== "BUTTON") {
@@ -173,7 +174,27 @@ export default function ProductCard({
         }}
       >
         {/* Container for the image mimicking the overlay style */}
-        <div className="relative aspect-square w-full overflow-hidden ">
+        <div className="relative aspect-square  w-full overflow-hidden ">
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              HandleAddToCart();
+            }}
+            size={"icon-lg"}
+            variant={"secondary"}
+            className={"absolute right-2 top-2 z-10"}
+          >
+            {isAddingToCart ? (
+              <Spinner />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                <path
+                  fill="#52525c"
+                  d="M0 72C0 58.7 10.7 48 24 48L69.3 48C96.4 48 119.6 67.4 124.4 94L124.8 96L312 96L312 198.1L281 167.1C271.6 157.7 256.4 157.7 247.1 167.1C237.8 176.5 237.7 191.7 247.1 201L319.1 273C328.5 282.4 343.7 282.4 353 273L425 201C434.4 191.6 434.4 176.4 425 167.1C415.6 157.8 400.4 157.7 391.1 167.1L360.1 198.1L360.1 96L537.5 96C557.5 96 572.6 114.2 568.9 133.9L537.8 299.8C532.1 330.1 505.7 352 474.9 352L171.3 352L176.4 380.3C178.5 391.7 188.4 400 200 400L456 400C469.3 400 480 410.7 480 424C480 437.3 469.3 448 456 448L200.1 448C165.3 448 135.5 423.1 129.3 388.9L77.2 102.6C76.5 98.8 73.2 96 69.3 96L24 96C10.7 96 0 85.3 0 72zM160 528C160 501.5 181.5 480 208 480C234.5 480 256 501.5 256 528C256 554.5 234.5 576 208 576C181.5 576 160 554.5 160 528zM384 528C384 501.5 405.5 480 432 480C458.5 480 480 501.5 480 528C480 554.5 458.5 576 432 576C405.5 576 384 554.5 384 528z"
+                />
+              </svg>
+            )}
+          </Button>
           <Image
             src={product.thumbnail}
             width={600}
@@ -184,19 +205,19 @@ export default function ProductCard({
           />
         </div>
 
-        <CardHeader className="">
+        <CardHeader className="pb-4">
           <CardAction>
-            <Badge>${product.price}</Badge>
+            <Badge className="text-md">${product.price}</Badge>
           </CardAction>
           <CardTitle className="line-clamp-1  text-sm md:text-base">
             {product.name.toUpperCase()}
           </CardTitle>
-          <CardDescription className="text-xs w-full line-clamp-3  leading-4 tracking-tighter  text-zinc-500">
+          <CardDescription className="text-xs w-full line-clamp-3  text-balance text-ellipsis    leading-4 tracking-tighter  text-zinc-500">
             {product.description}
           </CardDescription>
         </CardHeader>
 
-        <CardFooter className=" ">
+        {/* <CardFooter className=" ">
           <Button
             variant={"secondary"}
             className={`w-full ${isAddingToCart ? "cursor-progress" : ""}`}
@@ -207,7 +228,7 @@ export default function ProductCard({
           >
             Add to cart
           </Button>
-        </CardFooter>
+        </CardFooter> */}
       </Card>
     </>
   );

@@ -1,9 +1,9 @@
 "use client";
 
-import { users } from "@/src/generated/prisma/client";
+import { User } from "@/src/generated/prisma/client";
 import { use } from "react";
 
-export default function Stat({ data }: { data: Promise<users[]> }) {
+export default function Stat({ data }: { data: Promise<User[]> }) {
   const users = use(data);
   const active = users.filter((user) => user.isOnline);
   return (

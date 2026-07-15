@@ -122,7 +122,7 @@ export default function CartCard({
   return (
     <Card
       id={cartItem.id}
-      className={`relative max-w-full w-full min-h-32 transition-all rounded-md overflow-hidden   items-center grid grid-cols-4 p-2 gap-4 cursor-pointer select-none ${
+      className={`relative  p-2 max-w-full w-full min-h-32  transition-all rounded-md overflow-hidden   items-center grid grid-cols-4   lg:p-4 lg:gap-4 gap-1 text-xs cursor-pointer select-none ${
         isMarking && isMarkingForDeletion
           ? "bg-destructive/10 border border-destructive"
           : ""
@@ -138,15 +138,15 @@ export default function CartCard({
       }}
     >
       {/* Product Image section */}
-      <div className="grid grid-cols-1 bg-amber-200  ml-2  max-w-32  grid-rows-1   col-span-1">
+      <div className="grid grid-cols-1 relative    max-w-32  grid-rows-1   col-span-1">
         <Checkbox
           id={`check-${product.id}`}
           checked={isSelected}
           onCheckedChange={(checked) => HandleSelect(!!checked)}
-          className="h-5 w-5  absolute ml-2 mt-2 rounded-sm border-muted-foreground/60 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+          className={`h-5 w-5  absolute left-2 top-2  rounded-sm border-muted-foreground/60 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground ${isMarkingForDeletion && "hidden "}`}
         />
         <Image
-          className="object-contain max-h-32 w-full max-w-full rounded-sm "
+          className="object-contain md:max-h-32  max-h-20 w-full max-w-full rounded-sm "
           src={product?.thumbnail ?? ""}
           width={200}
           height={200}
@@ -156,10 +156,10 @@ export default function CartCard({
       </div>
 
       {/* Description Header Text layout info */}
-      <CardHeader className="p-0 flex flex-col h-full col-span-2 ">
+      <div className="p-0 w-full flex flex-col h-full col-span-2 ">
         <div>
           <h1
-            className=" font-bold  leading-tight line-clamp-2 uppercase hover:underline underline-offset-2"
+            className=" font-bold  leading-tight lg:text-base text-sm  line-clamp-2 uppercase hover:underline underline-offset-2"
             onClick={() => {
               router.push(productLink);
             }}
@@ -167,7 +167,7 @@ export default function CartCard({
             {product?.name}
           </h1>
         </div>
-        <div className="flex  items-center space-x-4 text-sm font-medium">
+        <div className="flex flex-wrap items-center space-x-4 text-sm font-medium">
           <code className="text-muted-foreground">{product.brand}</code>
 
           <Separator orientation="vertical" className="h-4" />
@@ -183,26 +183,23 @@ export default function CartCard({
           </Badge>
         </div>
         <div className="h-full  flex items-end">
-          <p className="text-lg   font-light text-foreground/80">
+          <p className="lg:text-lg text-xs   font-light text-foreground/80">
             ${Number(product.price).toFixed(2)}
           </p>
         </div>
-      </CardHeader>
+      </div>
 
       {/* Quantity adjustment buttons container grid */}
 
       {/* Totals displaying alongside selection checkboxes layout block */}
-      <div
-        className="flex flex-col justify-between  items-end w-full h-full  col-span-1"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="flex flex-col justify-between  items-end w-full h-full  col-span-1">
         <CardContent
           className="p-0 flex flex-col items-center sm:items-end justify-center col-span-1 "
           onClick={(e) => e.stopPropagation()}
         >
           {isMarkingForDeletion ? null : (
             <>
-              <h2 className="text-base font-bold text-foreground">
+              <h2 className="text-sm lg:text-base font-bold text-foreground">
                 ${(Number(product.price.toString()) * quantity).toFixed(2)}
               </h2>
               <h1 className="text-xs text-zinc-500">Quanity:{quantity}</h1>
@@ -214,21 +211,21 @@ export default function CartCard({
             <Button
               // variant="ghost"
               variant={"secondary"}
-              size="icon-sm"
+              size="icon-xs"
               className="h-full w-8 "
               onClick={HandleDecrementQuantity}
               disabled={quantity === 1}
             >
-              <Minus className="h-3 w-3" />
+              <Minus className="h-2 w-2" />
             </Button>
-            <h1 className={"w-8 "}>{quantity}</h1>
+            <h1 className={"w-8 text-xs"}>{quantity}</h1>
             <Button
               variant="secondary"
-              size="icon-sm"
+              size="icon-xs"
               className="h-full w-8"
               onClick={HandleIncrementQuantity}
             >
-              <Plus className="h-3 w-3" />
+              <Plus className="h-2 w-2" />
             </Button>
           </div>
         )}

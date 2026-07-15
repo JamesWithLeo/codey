@@ -122,7 +122,7 @@ export default function CartPanel({
   }
 
   async function HandleDeleteSelect() {
-    if (isMarkingForDeletion && markForDeleteIds.length) {
+    if (isMarkingForDeletion && markForDeleteIds.length >= 1) {
       setIsDeleting(true);
       const response = await fetch(
         `/api/cart/?ids=${JSON.stringify(markForDeleteIds)}`,
@@ -144,14 +144,9 @@ export default function CartPanel({
 
   return (
     <div className="w-full max-w-7xl ">
-      {/* MAIN CONTAINER FIX: 
-        On mobile, we enforce a locked structural viewport height (h-[calc(100vh-4rem)]) 
-        and turn off global browser scrolling so components partition correctly. 
-      */}
-      <section className="flex flex-col lg:grid lg:grid-cols-[2fr_min-content_1fr] h-[calc(100vh-6rem)] lg:h-auto gap-4 overflow-hidden  lg:overflow-visible">
-        {/* PRODUCT COLUMN FIX: Grows to fill remaining space on mobile and scrolls internally */}
-        <section className="flex-1 flex flex-col gap-2 min-h-0 overflow-y-auto lg:overflow-visible  pr-1">
-          <div className="flex h-min justify-between items-center sticky top-0 bg-background z-20 pb-2">
+      <section className="flex flex-col lg:grid lg:grid-cols-[2fr_min-content_1fr] h-[calc(100vh-6rem)]  gap-4 overflow-hidden   lg:overflow-scroll">
+        <section className="flex-1 flex flex-col pr-2   overflow-y-auto lg:overflow-y-scroll  ">
+          <div className="flex h-min justify-between items-center sticky top-0  py-2 bg-background z-10 ">
             <h1 className="font-semibold text-lg">
               {cart?.length} {cart?.length <= 1 ? "item" : "items"}
             </h1>
@@ -193,7 +188,7 @@ export default function CartPanel({
             </div>
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4   ">
             {cart && cart.length
               ? cart.map((item) => (
                   <CartCard
@@ -214,9 +209,8 @@ export default function CartPanel({
         <Separator orientation="vertical" className="hidden lg:block" />
 
         {/* ORDER SUMMARY CHECKOUT CONTAINER FIX: Locks permanently to viewport bottom on mobile */}
-        {/* div className="w-full sticky bottom-0 left-0 bg-background pt-2 pb-4 lg:pb-0 lg:pt-0 lg:relative lg:bottom-auto z-30 border-t lg:border-t-0 shadow-[0_-8px_24px_-12px_rgba(0,0,0,0.12)] lg:shadow-none"> */}
-        <div className="w-full sticky bottom-0  left-0  lg:bottom-auto z-20  ">
-          <Card className="w-full lg:sticky lg:top-17 flex flex-col  overflow-hidden ">
+        <div className="w-full sticky bottom-0  left-0  lg:bottom-auto z-0  ">
+          <Card className="w-full lg:sticky lg:top-0 flex flex-col  overflow-hidden ">
             {/* Hidden header on mobile to maximize room for items list */}
             <CardHeader className=" px-4 bg-muted/40 border-b hidden sm:block">
               <CardTitle className="text-base font-bold tracking-tight text-foreground">

@@ -40,8 +40,8 @@ export default async function Page() {
 
   const cart = await FetchCart(user.id);
   return (
-    <div className="w-full flex lg:min-h-dvh items-start px-4 md:px-8   justify-center  ">
-      <div className="w-full h-full   flex max-w-7xl  flex-col gap-2 items-center justify-center">
+    <div className="w-full flex   lg:min-h-dvh items-start    justify-center  ">
+      <div className="w-full h-full  gap-0  flex max-w-7xl  flex-col  items-center justify-center">
         <div className="breadcrumbs  self-start   ">
           <Breadcrumb>
             <BreadcrumbList>

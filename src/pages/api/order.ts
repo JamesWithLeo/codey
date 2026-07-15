@@ -32,6 +32,9 @@ export default async function handler(
 
     case "POST":
       const order = req.body as IOrder;
+      const id = req.body.id;
+      if (!id || Number.isNaN(id))
+        return res.status(400).json({ ok: 0, error: "Invalid id" });
 
       if (!isValidOrder(order))
         return res
@@ -40,7 +43,7 @@ export default async function handler(
 
       const insertedOrder = await prisma.transaction.create({
         data: {
-          user_id: order.user_id,
+          user_id: id,
           orderItems: {
             create: [
               {

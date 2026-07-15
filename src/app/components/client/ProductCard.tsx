@@ -205,13 +205,15 @@ export default function ProductCard({
           />
         </div>
 
-        <CardHeader className="pb-4">
-          <CardAction>
-            <Badge className="text-md">${product.price}</Badge>
-          </CardAction>
-          <CardTitle className="line-clamp-1  text-sm md:text-base">
-            {product.name.toUpperCase()}
-          </CardTitle>
+        <CardHeader className="pb-4 flex flex-col">
+          <div className="flex w-full gap-1 flex-col lg:flex-row  ">
+            <CardTitle className="line-clamp-1 flex-1  row-start-1 col-start-1  text-sm md:text-base">
+              {product.name.toUpperCase()}
+            </CardTitle>
+            <CardAction className="">
+              <Badge className="text-md">${product.price}</Badge>
+            </CardAction>
+          </div>
           <CardDescription className="text-xs w-full line-clamp-3  text-balance text-ellipsis    leading-4 tracking-tighter  text-zinc-500">
             {product.description}
           </CardDescription>

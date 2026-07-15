@@ -42,16 +42,26 @@ export default async function Page({
     if (!isValidCategory && !isProductDetailView) {
       notFound();
     }
+
     if (isProductDetailView) {
       const productId = parseInt(lastSegment, 10);
+
+      // 1. Safe parsing guard (highly recommended)
+      if (isNaN(productId)) {
+        notFound();
+      }
+
+      // 2. Query strictly by the unique primary key (id)
       const product = await prisma.product.findUnique({
         where: {
           id: productId,
-          category: matchingCategoryEnum,
         },
       });
 
-      if (!product) notFound();
+      // 3. Fallback: Verify record exists AND its category matches the URL route state
+      if (!product || product.category !== matchingCategoryEnum) {
+        notFound();
+      }
 
       return (
         <div className="w-full max-w-7xl min-h-screen mx-auto p-6 bg-white mt-6">

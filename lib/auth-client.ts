@@ -4,11 +4,14 @@ import { inferAdditionalFields } from "better-auth/client/plugins";
 
 export const authClient = createAuthClient({
   /** The base URL of the server (optional if you're using the same domain) */
-  baseURL: "http://localhost:3000",
+  baseURL:
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : process.env.BETTER_AUTH_URL,
   plugins: [inferAdditionalFields<typeof auth>()],
 });
 
-export const { signIn, signUp, useSession, signOut } = createAuthClient();
+export const { signIn, signUp, useSession, signOut } = authClient;
 
 // Extract and export the type
 export type Session = typeof authClient.$Infer.Session;

@@ -32,11 +32,9 @@ export default async function handler(
       return;
 
     case "POST":
-      const id =
-        !Number.isNaN(parseInt(req.body.id)) && typeof req.body.id === "number"
-          ? parseInt(req.body.id)
-          : null;
-      if (!id) return res.status(400).json({ ok: 1, error: "Invalid id" });
+      const id = req.body.id;
+      if (!id || typeof id !== "string")
+        return res.status(400).json({ ok: 1, error: "Invalid id" });
 
       const orderItems = req.body.orders as any[];
       const areAllItemsValid = orderItems.every(isValidOrder);

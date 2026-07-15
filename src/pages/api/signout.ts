@@ -5,11 +5,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const id = parseInt(req.body.id);
-  if (!id || Number.isNaN(id))
-    return res.status(400).json({ ok: 0, error: "Invalid id" });
+  const id = req.body.id;
+  if (!id || typeof id !== "string")
+    return res.status(400).json({ ok: 1, error: "Invalid id" });
 
-  const user = await prisma.users.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: id },
   });
 
@@ -17,7 +17,7 @@ export default async function handler(
     return res.status(404).json({ ok: 0, error: "User not found" });
   }
 
-  const updatedUser = await prisma.users.update({
+  const updatedUser = await prisma.user.update({
     where: { id: id },
     data: {
       isOnline: false,

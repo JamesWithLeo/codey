@@ -4,8 +4,10 @@ import { inferAdditionalFields } from "better-auth/client/plugins";
 
 export const authClient = createAuthClient({
   /** The base URL of the server (optional if you're using the same domain) */
-
-  baseUrl: process.env.BETTER_AUTH_URL,
+  baseURL:
+    process.env.NODE_ENV === "development"
+      ? process.env.BETTER_AUTH_URL
+      : "http://localhost:3000",
   plugins: [inferAdditionalFields<typeof auth>()],
 });
 

@@ -1198,7 +1198,9 @@ export const UserScalarFieldEnum = {
   role: 'role',
   firstName: 'firstName',
   lastName: 'lastName',
-  isOnline: 'isOnline'
+  isOnline: 'isOnline',
+  location: 'location',
+  phoneNumber: 'phoneNumber'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]

@@ -5,6 +5,17 @@ import { Category } from "@/src/generated/prisma/enums";
 import { notFound } from "next/navigation";
 import { prisma } from "@/src/prisma";
 import Image from "next/image";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { Button } from "@/components/ui/button";
+import {
+  ChevronLeft,
+  ChevronLeftSquare,
+  ChevronRight,
+  Minus,
+  MinusIcon,
+  Plus,
+} from "lucide-react";
+import ProductView from "../../components/Product/ProductView";
 
 export default async function Page({
   searchParams,
@@ -64,35 +75,10 @@ export default async function Page({
       }
 
       return (
-        <div className="w-full max-w-7xl min-h-screen mx-auto p-6 bg-white mt-6">
-          <div className="grid grid-cols-2">
-            <div className="flex items-center flex-col px-4">
-              <Image
-                src={product.thumbnail}
-                alt={`${product.name} Thumbnail`}
-                height={200}
-                width={200}
-                priority
-                className="w-full lg:w-80 h-max sm:w-60 max-w-52 sm:max-w-80"
-              />
-            </div>
-            <div>
-              <span className="text-xs font-semibold uppercase text-amber-600 tracking-wider">
-                {slug.slice(0, -1).join(" > ") || "Products"}
-              </span>
-              <h1 className="text-3xl font-bold text-gray-800 mt-2">
-                {product.name}
-              </h1>
-              <p className="text-2xl font-semibold text-gray-900 mt-1">
-                ${product.price.toFixed(2)}
-              </p>
-
-              <div className="mt-6 text-sm leading-relaxed text-justify border-t pt-4 text-gray-600">
-                {product.description}
-              </div>
-            </div>
-          </div>
-        </div>
+        <ProductView
+          slug={slug}
+          product={{ ...product, price: product.price.toFixed(2) }}
+        />
       );
     }
   }

@@ -15,17 +15,20 @@ import { Input } from "@/components/ui/input";
 
 export function SignupForm({
   className,
+  isFullPage = false,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div"> & { isFullPage?: boolean }) {
   const handleSignup = async () => {
     const { data, error } = await signInWithGoogle();
     console.log(data, error);
   };
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden p-0">
-        <CardContent className="grid p-4 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+    <div className={cn("grid flex-col gap-6    ", className)} {...props}>
+      <Card className="overflow-hidden  p-0 h-full">
+        <CardContent className="grid p-4  h-full    md:grid-cols-2">
+          <form
+            className={`p-6 md:p-8 space-y-4  ${isFullPage && "max-w-md place-self-center"}`}
+          >
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Create your account</h1>
@@ -102,6 +105,13 @@ export function SignupForm({
                 Already have an account? <a href="/login">Login </a>
               </FieldDescription>
             </FieldGroup>
+            {isFullPage && (
+              <FieldDescription className="px-6   text-center">
+                By clicking continue, you agree to our{" "}
+                <a href="#">Terms of Service</a> and{" "}
+                <a href="#">Privacy Policy</a>.
+              </FieldDescription>
+            )}
           </form>
           <div className="relative hidden bg-muted md:block">
             <img
@@ -112,10 +122,13 @@ export function SignupForm({
           </div>
         </CardContent>
       </Card>
-      <FieldDescription className="px-6 text-white text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </FieldDescription>
+
+      {!isFullPage && (
+        <FieldDescription className="px-6 text-white text-center">
+          By clicking continue, you agree to our{" "}
+          <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        </FieldDescription>
+      )}
     </div>
   );
 }

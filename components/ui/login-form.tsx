@@ -15,17 +15,22 @@ import signInWithGoogle from "@/lib/sign-in";
 
 export function LoginForm({
   className,
+  isFullPage = false,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div"> & { isFullPage?: boolean }) {
   const handleLogin = async () => {
     const { data, error } = await signInWithGoogle();
     console.log(data, error);
   };
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden p-0">
-        <CardContent className="grid p-4 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+    <div className={cn("flex flex-col gap-6 ", className)} {...props}>
+      <Card
+        className={`overflow-hidden h-full p-0 ${isFullPage && "border-0"}`}
+      >
+        <CardContent className="grid  p-4 h-full md:grid-cols-2">
+          <form
+            className={`p-6 md:p-8 ${isFullPage && "space-y-4 max-w-md w-full place-self-center "}`}
+          >
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -70,7 +75,6 @@ export function LoginForm({
               </FieldSeparator>
               <Field className="flex w-full">
                 <Button
-                  // onClick={() => signIn("google", { callbackUrl: "/" })}
                   onClick={handleLogin}
                   variant="outline"
                   className={"w-full"}
@@ -90,20 +94,29 @@ export function LoginForm({
                 Don&apos;t have an account? <a href="/signup">Sign up</a>
               </FieldDescription>
             </FieldGroup>
+            {isFullPage && (
+              <FieldDescription className="px-6  text-center">
+                By clicking continue, you agree to our{" "}
+                <a href="#">Terms of Service</a> and{" "}
+                <a href="#">Privacy Policy</a>.
+              </FieldDescription>
+            )}
           </form>
           <div className="relative hidden bg-muted md:block">
             <img
-              src="/auth-design-6.jpg"
+              src="/auth-design-7.jpg"
               alt="Image"
-              className="absolute inset-0 h-full w-full  object-fit "
+              className="absolute inset-0 saturate-90 h-full w-full   object-bottom   object-cover "
             />
           </div>
         </CardContent>
       </Card>
-      <FieldDescription className="px-6 text-white text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </FieldDescription>
+      {!isFullPage && (
+        <FieldDescription className="px-6 text-white text-center">
+          By clicking continue, you agree to our{" "}
+          <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        </FieldDescription>
+      )}
     </div>
   );
 }

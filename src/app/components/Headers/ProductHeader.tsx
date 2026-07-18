@@ -41,7 +41,7 @@ export default function Header() {
 
   return (
     <header
-      className={`w-full  sticky top-16 bg-white z-10 max-h-32 justify-center flex flex-col `}
+      className={`w-full  sticky top-16 bg-white z-20 max-h-32 justify-center flex flex-col `}
     >
       {/* <section className="flex justify-center w-full flex-col items-center px-4 md:px-8 h-16">
         <div className="max-w-7xl grid grid-cols-3 w-full justify-between items-center">

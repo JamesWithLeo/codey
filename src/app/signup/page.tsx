@@ -1,3 +1,5 @@
+import { SignupForm } from "@/components/ui/signup-form";
+
 export default function Page() {
-  return <h1>Full page sign</h1>;
+  return <SignupForm isFullPage={true} className=" h-[calc(100vh-4rem)] " />;
 }

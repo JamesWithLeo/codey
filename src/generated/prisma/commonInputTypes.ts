@@ -178,13 +178,6 @@ export type EnumTRANSACTION_STATUSFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumTRANSACTION_STATUSFilter<$PrismaModel> | $Enums.TRANSACTION_STATUS
 }
 
-export type EnumTRANSACTION_SOURCEFilter<$PrismaModel = never> = {
-  equals?: $Enums.TRANSACTION_SOURCE | Prisma.EnumTRANSACTION_SOURCEFieldRefInput<$PrismaModel>
-  in?: $Enums.TRANSACTION_SOURCE[] | Prisma.ListEnumTRANSACTION_SOURCEFieldRefInput<$PrismaModel>
-  notIn?: $Enums.TRANSACTION_SOURCE[] | Prisma.ListEnumTRANSACTION_SOURCEFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumTRANSACTION_SOURCEFilter<$PrismaModel> | $Enums.TRANSACTION_SOURCE
-}
-
 export type SortOrderInput = {
   sort: Prisma.SortOrder
   nulls?: Prisma.NullsOrder
@@ -216,33 +209,6 @@ export type EnumTRANSACTION_STATUSWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTRANSACTION_STATUSFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTRANSACTION_STATUSFilter<$PrismaModel>
-}
-
-export type EnumTRANSACTION_SOURCEWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.TRANSACTION_SOURCE | Prisma.EnumTRANSACTION_SOURCEFieldRefInput<$PrismaModel>
-  in?: $Enums.TRANSACTION_SOURCE[] | Prisma.ListEnumTRANSACTION_SOURCEFieldRefInput<$PrismaModel>
-  notIn?: $Enums.TRANSACTION_SOURCE[] | Prisma.ListEnumTRANSACTION_SOURCEFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumTRANSACTION_SOURCEWithAggregatesFilter<$PrismaModel> | $Enums.TRANSACTION_SOURCE
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumTRANSACTION_SOURCEFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumTRANSACTION_SOURCEFilter<$PrismaModel>
-}
-
-export type EnumORDER_STATUSFilter<$PrismaModel = never> = {
-  equals?: $Enums.ORDER_STATUS | Prisma.EnumORDER_STATUSFieldRefInput<$PrismaModel>
-  in?: $Enums.ORDER_STATUS[] | Prisma.ListEnumORDER_STATUSFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ORDER_STATUS[] | Prisma.ListEnumORDER_STATUSFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumORDER_STATUSFilter<$PrismaModel> | $Enums.ORDER_STATUS
-}
-
-export type EnumORDER_STATUSWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ORDER_STATUS | Prisma.EnumORDER_STATUSFieldRefInput<$PrismaModel>
-  in?: $Enums.ORDER_STATUS[] | Prisma.ListEnumORDER_STATUSFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ORDER_STATUS[] | Prisma.ListEnumORDER_STATUSFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumORDER_STATUSWithAggregatesFilter<$PrismaModel> | $Enums.ORDER_STATUS
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumORDER_STATUSFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumORDER_STATUSFilter<$PrismaModel>
 }
 
 export type EnumRoleFilter<$PrismaModel = never> = {
@@ -459,13 +425,6 @@ export type NestedEnumTRANSACTION_STATUSFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumTRANSACTION_STATUSFilter<$PrismaModel> | $Enums.TRANSACTION_STATUS
 }
 
-export type NestedEnumTRANSACTION_SOURCEFilter<$PrismaModel = never> = {
-  equals?: $Enums.TRANSACTION_SOURCE | Prisma.EnumTRANSACTION_SOURCEFieldRefInput<$PrismaModel>
-  in?: $Enums.TRANSACTION_SOURCE[] | Prisma.ListEnumTRANSACTION_SOURCEFieldRefInput<$PrismaModel>
-  notIn?: $Enums.TRANSACTION_SOURCE[] | Prisma.ListEnumTRANSACTION_SOURCEFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumTRANSACTION_SOURCEFilter<$PrismaModel> | $Enums.TRANSACTION_SOURCE
-}
-
 export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
@@ -502,33 +461,6 @@ export type NestedEnumTRANSACTION_STATUSWithAggregatesFilter<$PrismaModel = neve
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTRANSACTION_STATUSFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTRANSACTION_STATUSFilter<$PrismaModel>
-}
-
-export type NestedEnumTRANSACTION_SOURCEWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.TRANSACTION_SOURCE | Prisma.EnumTRANSACTION_SOURCEFieldRefInput<$PrismaModel>
-  in?: $Enums.TRANSACTION_SOURCE[] | Prisma.ListEnumTRANSACTION_SOURCEFieldRefInput<$PrismaModel>
-  notIn?: $Enums.TRANSACTION_SOURCE[] | Prisma.ListEnumTRANSACTION_SOURCEFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumTRANSACTION_SOURCEWithAggregatesFilter<$PrismaModel> | $Enums.TRANSACTION_SOURCE
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumTRANSACTION_SOURCEFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumTRANSACTION_SOURCEFilter<$PrismaModel>
-}
-
-export type NestedEnumORDER_STATUSFilter<$PrismaModel = never> = {
-  equals?: $Enums.ORDER_STATUS | Prisma.EnumORDER_STATUSFieldRefInput<$PrismaModel>
-  in?: $Enums.ORDER_STATUS[] | Prisma.ListEnumORDER_STATUSFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ORDER_STATUS[] | Prisma.ListEnumORDER_STATUSFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumORDER_STATUSFilter<$PrismaModel> | $Enums.ORDER_STATUS
-}
-
-export type NestedEnumORDER_STATUSWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ORDER_STATUS | Prisma.EnumORDER_STATUSFieldRefInput<$PrismaModel>
-  in?: $Enums.ORDER_STATUS[] | Prisma.ListEnumORDER_STATUSFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ORDER_STATUS[] | Prisma.ListEnumORDER_STATUSFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumORDER_STATUSWithAggregatesFilter<$PrismaModel> | $Enums.ORDER_STATUS
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumORDER_STATUSFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumORDER_STATUSFilter<$PrismaModel>
 }
 
 export type NestedEnumRoleFilter<$PrismaModel = never> = {

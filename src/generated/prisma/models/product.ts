@@ -297,7 +297,7 @@ export type productWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"product"> | Date | string
   sales?: Prisma.IntFilter<"product"> | number
   cartItems?: Prisma.CartItemListRelationFilter
-  orderItems?: Prisma.OrderListRelationFilter
+  orderItems?: Prisma.OrderItemListRelationFilter
 }
 
 export type productOrderByWithRelationInput = {
@@ -316,7 +316,7 @@ export type productOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   sales?: Prisma.SortOrder
   cartItems?: Prisma.CartItemOrderByRelationAggregateInput
-  orderItems?: Prisma.orderOrderByRelationAggregateInput
+  orderItems?: Prisma.OrderItemOrderByRelationAggregateInput
 }
 
 export type productWhereUniqueInput = Prisma.AtLeast<{
@@ -338,7 +338,7 @@ export type productWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"product"> | Date | string
   sales?: Prisma.IntFilter<"product"> | number
   cartItems?: Prisma.CartItemListRelationFilter
-  orderItems?: Prisma.OrderListRelationFilter
+  orderItems?: Prisma.OrderItemListRelationFilter
 }, "id" | "id">
 
 export type productOrderByWithAggregationInput = {
@@ -398,7 +398,7 @@ export type productCreateInput = {
   updatedAt?: Date | string
   sales?: number
   cartItems?: Prisma.CartItemCreateNestedManyWithoutProductInput
-  orderItems?: Prisma.orderCreateNestedManyWithoutProductInput
+  orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
 }
 
 export type productUncheckedCreateInput = {
@@ -417,7 +417,7 @@ export type productUncheckedCreateInput = {
   updatedAt?: Date | string
   sales?: number
   cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutProductInput
-  orderItems?: Prisma.orderUncheckedCreateNestedManyWithoutProductInput
+  orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type productUpdateInput = {
@@ -435,7 +435,7 @@ export type productUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sales?: Prisma.IntFieldUpdateOperationsInput | number
   cartItems?: Prisma.CartItemUpdateManyWithoutProductNestedInput
-  orderItems?: Prisma.orderUpdateManyWithoutProductNestedInput
+  orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
 }
 
 export type productUncheckedUpdateInput = {
@@ -454,7 +454,7 @@ export type productUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sales?: Prisma.IntFieldUpdateOperationsInput | number
   cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutProductNestedInput
-  orderItems?: Prisma.orderUncheckedUpdateManyWithoutProductNestedInput
+  orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type productCreateManyInput = {
@@ -666,7 +666,7 @@ export type productCreateWithoutCartItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sales?: number
-  orderItems?: Prisma.orderCreateNestedManyWithoutProductInput
+  orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
 }
 
 export type productUncheckedCreateWithoutCartItemsInput = {
@@ -684,7 +684,7 @@ export type productUncheckedCreateWithoutCartItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   sales?: number
-  orderItems?: Prisma.orderUncheckedCreateNestedManyWithoutProductInput
+  orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
 }
 
 export type productCreateOrConnectWithoutCartItemsInput = {
@@ -717,7 +717,7 @@ export type productUpdateWithoutCartItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sales?: Prisma.IntFieldUpdateOperationsInput | number
-  orderItems?: Prisma.orderUpdateManyWithoutProductNestedInput
+  orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
 }
 
 export type productUncheckedUpdateWithoutCartItemsInput = {
@@ -735,7 +735,7 @@ export type productUncheckedUpdateWithoutCartItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sales?: Prisma.IntFieldUpdateOperationsInput | number
-  orderItems?: Prisma.orderUncheckedUpdateManyWithoutProductNestedInput
+  orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
 }
 
 export type productCreateWithoutOrderItemsInput = {
@@ -860,7 +860,7 @@ export type ProductCountOutputTypeCountCartItemsArgs<ExtArgs extends runtime.Typ
  * ProductCountOutputType without action
  */
 export type ProductCountOutputTypeCountOrderItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.orderWhereInput
+  where?: Prisma.OrderItemWhereInput
 }
 
 
@@ -948,7 +948,7 @@ export type $productPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "product"
   objects: {
     cartItems: Prisma.$CartItemPayload<ExtArgs>[]
-    orderItems: Prisma.$orderPayload<ExtArgs>[]
+    orderItems: Prisma.$OrderItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1360,7 +1360,7 @@ readonly fields: productFieldRefs;
 export interface Prisma__productClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   cartItems<T extends Prisma.product$cartItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.product$cartItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  orderItems<T extends Prisma.product$orderItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.product$orderItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$orderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  orderItems<T extends Prisma.product$orderItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.product$orderItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1825,23 +1825,23 @@ export type product$cartItemsArgs<ExtArgs extends runtime.Types.Extensions.Inter
  */
 export type product$orderItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the order
+   * Select specific fields to fetch from the OrderItem
    */
-  select?: Prisma.orderSelect<ExtArgs> | null
+  select?: Prisma.OrderItemSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the order
+   * Omit specific fields from the OrderItem
    */
-  omit?: Prisma.orderOmit<ExtArgs> | null
+  omit?: Prisma.OrderItemOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.orderInclude<ExtArgs> | null
-  where?: Prisma.orderWhereInput
-  orderBy?: Prisma.orderOrderByWithRelationInput | Prisma.orderOrderByWithRelationInput[]
-  cursor?: Prisma.orderWhereUniqueInput
+  include?: Prisma.OrderItemInclude<ExtArgs> | null
+  where?: Prisma.OrderItemWhereInput
+  orderBy?: Prisma.OrderItemOrderByWithRelationInput | Prisma.OrderItemOrderByWithRelationInput[]
+  cursor?: Prisma.OrderItemWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+  distinct?: Prisma.OrderItemScalarFieldEnum | Prisma.OrderItemScalarFieldEnum[]
 }
 
 /**

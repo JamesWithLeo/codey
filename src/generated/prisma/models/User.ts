@@ -249,7 +249,7 @@ export type UserWhereInput = {
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   carts?: Prisma.CartListRelationFilter
-  order?: Prisma.TransactionListRelationFilter
+  order?: Prisma.OrderListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -269,7 +269,7 @@ export type UserOrderByWithRelationInput = {
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   carts?: Prisma.CartOrderByRelationAggregateInput
-  order?: Prisma.transactionOrderByRelationAggregateInput
+  order?: Prisma.OrderOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -292,7 +292,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   accounts?: Prisma.AccountListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   carts?: Prisma.CartListRelationFilter
-  order?: Prisma.TransactionListRelationFilter
+  order?: Prisma.OrderListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -350,7 +350,7 @@ export type UserCreateInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   carts?: Prisma.CartCreateNestedManyWithoutUserInput
-  order?: Prisma.transactionCreateNestedManyWithoutUsersInput
+  order?: Prisma.OrderCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -370,7 +370,7 @@ export type UserUncheckedCreateInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   carts?: Prisma.CartUncheckedCreateNestedManyWithoutUserInput
-  order?: Prisma.transactionUncheckedCreateNestedManyWithoutUsersInput
+  order?: Prisma.OrderUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserUpdateInput = {
@@ -390,7 +390,7 @@ export type UserUpdateInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   carts?: Prisma.CartUpdateManyWithoutUserNestedInput
-  order?: Prisma.transactionUpdateManyWithoutUsersNestedInput
+  order?: Prisma.OrderUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -410,7 +410,7 @@ export type UserUncheckedUpdateInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   carts?: Prisma.CartUncheckedUpdateManyWithoutUserNestedInput
-  order?: Prisma.transactionUncheckedUpdateManyWithoutUsersNestedInput
+  order?: Prisma.OrderUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -689,7 +689,7 @@ export type UserCreateWithoutCartsInput = {
   phoneNumber?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
-  order?: Prisma.transactionCreateNestedManyWithoutUsersInput
+  order?: Prisma.OrderCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateWithoutCartsInput = {
@@ -708,7 +708,7 @@ export type UserUncheckedCreateWithoutCartsInput = {
   phoneNumber?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
-  order?: Prisma.transactionUncheckedCreateNestedManyWithoutUsersInput
+  order?: Prisma.OrderUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserCreateOrConnectWithoutCartsInput = {
@@ -743,7 +743,7 @@ export type UserUpdateWithoutCartsInput = {
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
-  order?: Prisma.transactionUpdateManyWithoutUsersNestedInput
+  order?: Prisma.OrderUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCartsInput = {
@@ -762,7 +762,7 @@ export type UserUncheckedUpdateWithoutCartsInput = {
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
-  order?: Prisma.transactionUncheckedUpdateManyWithoutUsersNestedInput
+  order?: Prisma.OrderUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -781,7 +781,7 @@ export type UserCreateWithoutSessionsInput = {
   phoneNumber?: string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   carts?: Prisma.CartCreateNestedManyWithoutUserInput
-  order?: Prisma.transactionCreateNestedManyWithoutUsersInput
+  order?: Prisma.OrderCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -800,7 +800,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   phoneNumber?: string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   carts?: Prisma.CartUncheckedCreateNestedManyWithoutUserInput
-  order?: Prisma.transactionUncheckedCreateNestedManyWithoutUsersInput
+  order?: Prisma.OrderUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -835,7 +835,7 @@ export type UserUpdateWithoutSessionsInput = {
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   carts?: Prisma.CartUpdateManyWithoutUserNestedInput
-  order?: Prisma.transactionUpdateManyWithoutUsersNestedInput
+  order?: Prisma.OrderUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -854,7 +854,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   carts?: Prisma.CartUncheckedUpdateManyWithoutUserNestedInput
-  order?: Prisma.transactionUncheckedUpdateManyWithoutUsersNestedInput
+  order?: Prisma.OrderUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -873,7 +873,7 @@ export type UserCreateWithoutAccountsInput = {
   phoneNumber?: string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   carts?: Prisma.CartCreateNestedManyWithoutUserInput
-  order?: Prisma.transactionCreateNestedManyWithoutUsersInput
+  order?: Prisma.OrderCreateNestedManyWithoutUsersInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -892,7 +892,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   phoneNumber?: string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   carts?: Prisma.CartUncheckedCreateNestedManyWithoutUserInput
-  order?: Prisma.transactionUncheckedCreateNestedManyWithoutUsersInput
+  order?: Prisma.OrderUncheckedCreateNestedManyWithoutUsersInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -927,7 +927,7 @@ export type UserUpdateWithoutAccountsInput = {
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   carts?: Prisma.CartUpdateManyWithoutUserNestedInput
-  order?: Prisma.transactionUpdateManyWithoutUsersNestedInput
+  order?: Prisma.OrderUpdateManyWithoutUsersNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -946,7 +946,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   carts?: Prisma.CartUncheckedUpdateManyWithoutUserNestedInput
-  order?: Prisma.transactionUncheckedUpdateManyWithoutUsersNestedInput
+  order?: Prisma.OrderUncheckedUpdateManyWithoutUsersNestedInput
 }
 
 
@@ -1003,7 +1003,7 @@ export type UserCountOutputTypeCountCartsArgs<ExtArgs extends runtime.Types.Exte
  * UserCountOutputType without action
  */
 export type UserCountOutputTypeCountOrderArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.transactionWhereInput
+  where?: Prisma.OrderWhereInput
 }
 
 
@@ -1093,7 +1093,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     carts: Prisma.$CartPayload<ExtArgs>[]
-    order: Prisma.$transactionPayload<ExtArgs>[]
+    order: Prisma.$OrderPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1506,7 +1506,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   carts<T extends Prisma.User$cartsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$cartsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CartPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  order<T extends Prisma.User$orderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$orderArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$transactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  order<T extends Prisma.User$orderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$orderArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2018,23 +2018,23 @@ export type User$cartsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
  */
 export type User$orderArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the transaction
+   * Select specific fields to fetch from the Order
    */
-  select?: Prisma.transactionSelect<ExtArgs> | null
+  select?: Prisma.OrderSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the transaction
+   * Omit specific fields from the Order
    */
-  omit?: Prisma.transactionOmit<ExtArgs> | null
+  omit?: Prisma.OrderOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.transactionInclude<ExtArgs> | null
-  where?: Prisma.transactionWhereInput
-  orderBy?: Prisma.transactionOrderByWithRelationInput | Prisma.transactionOrderByWithRelationInput[]
-  cursor?: Prisma.transactionWhereUniqueInput
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
+  cursor?: Prisma.OrderWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.TransactionScalarFieldEnum | Prisma.TransactionScalarFieldEnum[]
+  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
 }
 
 /**

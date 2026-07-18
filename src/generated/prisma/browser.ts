@@ -28,15 +28,15 @@ export type product = Prisma.productModel
  */
 export type CartItem = Prisma.CartItemModel
 /**
- * Model transaction
+ * Model Order
  * 
  */
-export type transaction = Prisma.transactionModel
+export type Order = Prisma.OrderModel
 /**
- * Model order
+ * Model OrderItem
  * 
  */
-export type order = Prisma.orderModel
+export type OrderItem = Prisma.OrderItemModel
 /**
  * Model Cart
  * 

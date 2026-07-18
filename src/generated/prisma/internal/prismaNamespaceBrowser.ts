@@ -53,8 +53,8 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   product: 'product',
   CartItem: 'CartItem',
-  transaction: 'transaction',
-  order: 'order',
+  Order: 'Order',
+  OrderItem: 'OrderItem',
   Cart: 'Cart',
   User: 'User',
   Session: 'Session',
@@ -110,32 +110,34 @@ export const CartItemScalarFieldEnum = {
 export type CartItemScalarFieldEnum = (typeof CartItemScalarFieldEnum)[keyof typeof CartItemScalarFieldEnum]
 
 
-export const TransactionScalarFieldEnum = {
+export const OrderScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   user_id: 'user_id',
   status: 'status',
-  source: 'source'
+  totalAmount: 'totalAmount',
+  isPaid: 'isPaid'
 } as const
 
-export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
 
 
-export const OrderScalarFieldEnum = {
+export const OrderItemScalarFieldEnum = {
   id: 'id',
   total_price: 'total_price',
   quantity: 'quantity',
   isPaid: 'isPaid',
-  status: 'status',
+  subtotal: 'subtotal',
+  pricePerUnit: 'pricePerUnit',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   product_id: 'product_id',
-  transaction_id: 'transaction_id',
-  product_name: 'product_name'
+  product_name: 'product_name',
+  transaction_id: 'transaction_id'
 } as const
 
-export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
 export const CartScalarFieldEnum = {

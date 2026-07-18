@@ -24,33 +24,16 @@ export const Category = {
 export type Category = (typeof Category)[keyof typeof Category]
 
 
-export const ORDER_STATUS = {
-  pending: 'pending',
-  shipped: 'shipped',
-  delivered: 'delivered',
-  canceled: 'canceled',
-  suspended: 'suspended'
-} as const
-
-export type ORDER_STATUS = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS]
-
-
 export const TRANSACTION_STATUS = {
   pending: 'pending',
-  suspended: 'suspended',
+  shipping: 'shipping',
+  delivered: 'delivered',
+  canceled: 'canceled',
   completed: 'completed',
   deleted: 'deleted'
 } as const
 
 export type TRANSACTION_STATUS = (typeof TRANSACTION_STATUS)[keyof typeof TRANSACTION_STATUS]
-
-
-export const TRANSACTION_SOURCE = {
-  POS: 'POS',
-  ONLINE: 'ONLINE'
-} as const
-
-export type TRANSACTION_SOURCE = (typeof TRANSACTION_SOURCE)[keyof typeof TRANSACTION_SOURCE]
 
 
 export const Role = {

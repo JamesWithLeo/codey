@@ -1,136 +1,78 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-}
-enum Role {
-  user
-  admin
-}
-enum ORDER_STATUS {
-  pending
-  suspended
-  shipped
-  delivered
-  canceled
-	@@map("Status")
-}
-enum TRANSACTION_STATUS {
-  pending
-  suspended
-  completed
-  deleted
 }
 
-enum TRANSACTION_SOURCE {
-  POS
-  ONLINE
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+
+  role          Role      @default(user)
+  firstName     String?
+  lastName      String?
+  isOnline      Boolean   @default(true)
+  location      String?
+  phoneNumber   String?
+  carts         Cart[]    @relation("UserToCarts")
+  order         transaction[] @relation("UserToOrders")
+
+  @@map("user")
 }
-enum Category {
-  handtools
-  powertools
-  materials
-  electrical
-  plumbing
-  fasteners
-  safetygears
-  machineries
-  others
-}
-model users {
-  id        Int      @id @unique()@default(autoincrement())
-  role      Role     @default(user)
-  email     String   @unique
-  username  String
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt 
-  isOnline  Boolean  @default(true)  
-  
-  order     transaction[]  @relation("UserToOrders")
-  carts     Cart[]        @relation("UserToCarts")
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
 }
 
-model product {
-  id          Int      @id @unique @default(autoincrement())
-  name        String  
-  category    Category 
-  price       Decimal  @db.Decimal(10, 2)
-  description String
-  thumbnail   String
-  otherUrl    String[] @default([])
-  stock       Int      
-  brand       String
-  isFeatured  Boolean  @default(false)
-  isAvailable Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  sales       Int      @default(0)
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  orderItems  order[]  @relation("ProductOrderItems") // Relates to order items, not directly to orders
-  cartItems CartItem[] @relation("ProductToCartItems")
-
+  @@index([userId])
+  @@map("account")
 }
 
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-model transaction {
-  id           Int      @id @unique @default(autoincrement())
-  status       TRANSACTION_STATUS @default(pending)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  user_id      Int?
-  users        users?    @relation("UserToOrders", fields: [user_id], references: [id])
-  source       TRANSACTION_SOURCE     @default(ONLINE)
-
-  orderItems   order[] @relation("OrderToOrderItems")
-	@@map("order")
-}
-
-model order {
-  id                  Int            @id @unique @default(autoincrement())
-  total_price         Decimal        @db.Decimal(10, 2)
-  quantity            Int
-  product_name        String         @default("Product not specified, use id instead")
-  isPaid              Boolean        @default(true)
-  status              ORDER_STATUS   @default(pending)
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
-
-  product_id          Int
-  product             product        @relation("ProductOrderItems", fields: [product_id], references: [id])
-
-  transaction_id      Int
-  transaction         transaction    @relation("OrderToOrderItems", fields: [transaction_id], references: [id],onDelete: Cascade)
-	@@map("OrderItem")
-}
-
-
-model Cart {
-  id        String    @id @default(cuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  
-  user_id   Int
-  user      users     @relation("UserToCarts", fields: [user_id], references: [id])
-
-
-  cartItems     CartItem[]
-
-}
-
-model CartItem {
-  id                  String            @id @default(cuid())
-  quantity            Int
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
-  
-  cart_id             String
-  cart                Cart      @relation(fields: [cart_id], references: [id])
-  
-  product_id          Int
-  product             product  @relation("ProductToCartItems", fields: [product_id], references: [id])
+  @@index([identifier])
+  @@map("verification")
 }

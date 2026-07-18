@@ -1,6 +1,6 @@
-import { prisma } from "@/prisma";
-import { Category } from "@prisma/client";
-import React, { Suspense } from "react";
+import { prisma } from "@/src/prisma";
+import { Category } from "@/src/generated/prisma/enums";
+import { Suspense } from "react";
 import RecommendedList from "../client/recommendedList";
 
 export default async function Recomended({

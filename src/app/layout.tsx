@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import Header from "./components/server/header";
-import Footer from "./components/client/footer";
+import "@/src/app/globals.css";
+
+import { Inter } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+import GlobalHeader from "./components/Headers/GlobalHeader";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "Hardware",
@@ -10,15 +17,27 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
+
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      data-theme="bumblebee"
+      className={cn("font-sans ", inter.variable)}
+      data-scroll-behavior="smooth"
+    >
       <body>
-        <Header />
+        <GlobalHeader session={session} />
         {children}
-        <Footer />
+        {modal}
+        {/* <Footer /> */}
       </body>
     </html>
   );

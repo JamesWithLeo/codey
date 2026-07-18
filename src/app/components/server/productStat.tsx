@@ -1,8 +1,5 @@
-import React from "react";
 import Stat from "../client/stat/productStat";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/src/prisma";
 
 export default async function ProductStat() {
   const products = await prisma.product.findMany();

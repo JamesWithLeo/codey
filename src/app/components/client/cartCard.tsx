@@ -1,12 +1,17 @@
 "use client";
 
-import { CartItem, product } from "@prisma/client";
+import { product, CartItem } from "@/src/generated/prisma/client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { productType } from "./utils/validation";
-import React from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Plus, Minus } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 export default function CartCard({
   cartItem,
@@ -29,64 +34,70 @@ export default function CartCard({
   const [product, setProduct] = useState<product | null>(null);
   const [quantity, setQuantity] = useState<number>(cartItem.quantity);
   const [isMarking, setIsMarking] = useState<boolean>(false);
+  const [isSelected, setIsSelected] = useState<boolean>(false);
 
-  function HandleIncrementQuantity() {
+  // FIX: Added missing path forward-slash separator
+  const productLink = `/products/${product?.category}/${product?.id}`;
+
+  function HandleIncrementQuantity(e: React.MouseEvent) {
+    e.stopPropagation(); // Avoid triggering Card selection when marking for deletion
     if (!product) return;
-    const totalPrice = Number(product.price.toString()) * quantity;
+
+    const nextQuantity = quantity + 1;
+    const totalPrice = Number(product.price.toString()) * nextQuantity;
+
+    // FIX: Using nextQuantity instead of stale state variables
     onIncrement({
+      total_price: totalPrice,
+      quantity: nextQuantity,
+      id: product.id,
+      name: product.name,
+      price: Number(product.price.toString()),
+      brand: product.brand,
+    });
+    setQuantity(nextQuantity);
+  }
+
+  function HandleDecrementQuantity(e: React.MouseEvent) {
+    e.stopPropagation();
+    if (!product || quantity <= 1) return;
+
+    const nextQuantity = quantity - 1;
+    const totalPrice = Number(product.price.toString()) * nextQuantity;
+
+    onDecrement({
+      total_price: totalPrice,
+      quantity: nextQuantity,
+      id: product.id,
+      name: product.name,
+      price: Number(product.price.toString()),
+      brand: product.brand,
+    });
+    setQuantity(nextQuantity);
+  }
+
+  // FIX: Controlled state handler instead of document.getElementById DOM lookup
+  function HandleSelect(checked: boolean) {
+    if (!product) return;
+    setIsSelected(checked);
+
+    const totalPrice = Number(product.price.toString()) * quantity;
+    const payload = {
       total_price: totalPrice,
       quantity: quantity,
       id: product.id,
       name: product.name,
       price: Number(product.price.toString()),
       brand: product.brand,
-    });
-    setQuantity((state) => state + 1);
-    console.log("Quantity Increment!", quantity);
-  }
-  function HandleDecrementQuantity() {
-    if (!product) return;
-    const totalPrice = Number(product.price.toString()) * quantity;
-    if (quantity > 1) {
-      onDecrement({
-        total_price: totalPrice,
-        quantity: quantity,
-        id: product.id,
-        name: product.name,
-        price: Number(product.price.toString()),
-        brand: product.brand,
-      });
-      setQuantity((state) => state - 1);
-      console.log("Quantity Decrement!", quantity);
+    };
+
+    if (checked) {
+      onAdd(payload);
+    } else {
+      onRemove(payload);
     }
   }
 
-  function HandleSelect() {
-    if (!product) return;
-    const productCheckbox = document.getElementById(
-      product.id.toString(),
-    ) as HTMLInputElement;
-    const totalPrice = Number(product.price.toString()) * quantity;
-    if (productCheckbox.checked) {
-      onAdd({
-        total_price: totalPrice,
-        quantity: quantity,
-        id: product.id,
-        name: product.name,
-        price: Number(product.price.toString()),
-        brand: product.brand,
-      });
-    } else {
-      onRemove({
-        total_price: totalPrice,
-        quantity: quantity,
-        id: product.id,
-        name: product.name,
-        price: Number(product.price.toString()),
-        brand: product.brand,
-      });
-    }
-  }
   function HandleMark() {
     if (isMarking) {
       onMark(cartItem.id, "unselect");
@@ -94,6 +105,7 @@ export default function CartCard({
       onMark(cartItem.id, "select");
     }
   }
+
   useEffect(() => {
     async function FetchProduct(id: number) {
       const response = await fetch(`/api/product/?id=${id}`);
@@ -103,120 +115,143 @@ export default function CartCard({
       }
     }
     FetchProduct(cartItem.product_id);
-  }, []);
+  }, [cartItem.product_id]);
+
+  if (!product) return <CartCardSkeleton />;
 
   return (
-    <>
-      {product ? (
-        <div
-          className={`max-w-full w-full min-h-32 h-full  rounded-sm  ${isMarking && isMarkingForDeletion ? "bg-red-50" : "border-t"} border-gray-100 grid-cols-5 grid`}
-          id={cartItem.id}
-          onClick={(event) => {
-            if (isMarkingForDeletion) {
-              setIsMarking(!isMarking);
-              console.log(isMarking);
-              HandleMark();
-            }
-          }}
+    <Card
+      id={cartItem.id}
+      className={`relative  p-2 max-w-full w-full min-h-32  transition-all rounded-md overflow-hidden   items-center grid grid-cols-4   lg:p-4 lg:gap-4 gap-1 text-xs cursor-pointer select-none ${
+        isMarking && isMarkingForDeletion
+          ? "bg-destructive/10 border border-destructive"
+          : ""
+      }`}
+      onClick={() => {
+        if (isMarkingForDeletion) {
+          setIsMarking(!isMarking);
+          HandleMark();
+        } else {
+          // router.push(productLink);
+          setIsMarking(false);
+        }
+      }}
+    >
+      {/* Product Image section */}
+      <div className="grid grid-cols-1 relative    max-w-32  grid-rows-1   col-span-1">
+        <Checkbox
+          id={`check-${product.id}`}
+          checked={isSelected}
+          onCheckedChange={(checked) => HandleSelect(!!checked)}
+          className={`h-5 w-5  absolute left-2 top-2  rounded-sm border-muted-foreground/60 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground ${isMarkingForDeletion && "hidden "}`}
+        />
+        <Image
+          className="object-contain md:max-h-32  max-h-20 w-full max-w-full rounded-sm "
+          src={product?.thumbnail ?? ""}
+          width={200}
+          height={200}
+          alt={product?.name || "Product Image"}
+          priority
+        />
+      </div>
+
+      {/* Description Header Text layout info */}
+      <div className="p-0 w-full flex flex-col h-full col-span-2 ">
+        <div>
+          <h1
+            className=" font-bold  leading-tight lg:text-base text-sm  line-clamp-2 uppercase hover:underline underline-offset-2"
+            onClick={() => {
+              router.push(productLink);
+            }}
+          >
+            {product?.name}
+          </h1>
+        </div>
+        <div className="flex flex-wrap items-center space-x-4 text-sm font-medium">
+          <code className="text-muted-foreground">{product.brand}</code>
+
+          <Separator orientation="vertical" className="h-4" />
+
+          <code className="text-muted-foreground">
+            {product.category.toLowerCase()}
+          </code>
+
+          <Separator orientation="vertical" className="h-4" />
+
+          <Badge variant={product.stock <= 0 ? "destructive" : "default"}>
+            {product.stock} left in stock
+          </Badge>
+        </div>
+        <div className="h-full  flex items-end">
+          <p className="lg:text-lg text-xs   font-light text-foreground/80">
+            ${Number(product.price).toFixed(2)}
+          </p>
+        </div>
+      </div>
+
+      {/* Quantity adjustment buttons container grid */}
+
+      {/* Totals displaying alongside selection checkboxes layout block */}
+      <div className="flex flex-col justify-between  items-end w-full h-full  col-span-1">
+        <CardContent
+          className="p-0 flex flex-col items-center sm:items-end justify-center col-span-1 "
+          onClick={(e) => e.stopPropagation()}
         >
-          <figure className="flex justify-center flex-col items-center">
-            <Image
-              onClick={() => {
-                router.push(`/p/${product.id}`);
-              }}
-              className="cursor-pointer"
-              src={product?.thumbnail ?? ""}
-              width={100}
-              height={100}
-              alt=""
-              priority
-            />
-          </figure>
-
-          <div className="p-2 md:p-4 col-span-2">
-            <Link
-              href={`/p/${product.id}`}
-              className="card-title text-sm md:text-base"
+          {isMarkingForDeletion ? null : (
+            <>
+              <h2 className="text-sm lg:text-base font-bold text-foreground">
+                ${(Number(product.price.toString()) * quantity).toFixed(2)}
+              </h2>
+              <h1 className="text-xs text-zinc-500">Quanity:{quantity}</h1>
+            </>
+          )}
+        </CardContent>
+        {isMarkingForDeletion ? null : (
+          <div className="flex items-center  justify-center text-center h-9">
+            <Button
+              // variant="ghost"
+              variant={"secondary"}
+              size="icon-xs"
+              className="h-full w-8 "
+              onClick={HandleDecrementQuantity}
+              disabled={quantity === 1}
             >
-              {product?.name}
-            </Link>
-            <h1 className="text-xs md:text-sm">{product.brand}</h1>
-            <h1 className="text-xs md:text-sm">${product.price.toString()}</h1>
+              <Minus className="h-2 w-2" />
+            </Button>
+            <h1 className={"w-8 text-xs"}>{quantity}</h1>
+            <Button
+              variant="secondary"
+              size="icon-xs"
+              className="h-full w-8"
+              onClick={HandleIncrementQuantity}
+            >
+              <Plus className="h-2 w-2" />
+            </Button>
           </div>
+        )}
+      </div>
+    </Card>
+  );
+}
 
-          {isMarkingForDeletion ? null : (
-            <section className="flex items-center  justify-center">
-              <div className="flex flex-col sm:flex-row">
-                <button
-                  className="btn btn-square rounded-b-none sm:rounded-b sm:rounded-r-none btn-xs sm:btn-sm"
-                  onClick={HandleIncrementQuantity}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    viewBox="0 0 256 256"
-                  >
-                    <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"></path>
-                  </svg>
-                </button>
-                <button className="btn btn-square btn-xs sm:btn-sm rounded-none">
-                  {quantity}
-                </button>
-                <button
-                  className="btn btn-square btn-xs sm:btn-sm rounded-t-none sm:rounded-t sm:rounded-l-none"
-                  onClick={HandleDecrementQuantity}
-                  disabled={quantity === 1}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    viewBox="0 0 256 256"
-                  >
-                    <path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128Z"></path>
-                  </svg>
-                </button>
-              </div>
-            </section>
-          )}
-
-          {isMarkingForDeletion ? null : (
-            <section
-              className={`flex items-center flex-col gap-2 text-sm sm:text-base sm:flex-col justify-center`}
-            >
-              <h1>${Number(product.price.toString()) * quantity}</h1>
-              <input
-                id={cartItem.product_id.toString()}
-                onChange={HandleSelect}
-                type="checkbox"
-                className="sm:absolute sm:self-end checkbox checkbox-sm "
-              />
-            </section>
-          )}
-        </div>
-      ) : (
-        <div className="max-w-full w-full min-h-32 h-full border-t rounded-sm  border-gray-100 grid-cols-5 grid ">
-          <section className="p-2">
-            <div className="skeleton w-full h-full" />
-          </section>
-
-          <section className="p-2 col-span-2 flex flex-col gap-2">
-            <div className="skeleton w-full h-6" />
-            <div className="skeleton w-1/2 h-4" />
-          </section>
-
-          <section className="p-2 flex justify-center items-center flex-col">
-            <div className="skeleton w-full h-6" />
-          </section>
-
-          <section className="p-2 flex justify-center items-center flex-col">
-            <div className="skeleton w-full h-6" />
-          </section>
-        </div>
-      )}
-    </>
+function CartCardSkeleton() {
+  return (
+    <Card className="max-w-full w-full min-h-32 grid grid-cols-5 p-4 gap-4 items-center rounded-md border border-muted">
+      <div className="col-span-1 flex justify-center">
+        <Skeleton className="w-20 h-20 rounded-md" />
+      </div>
+      <div className="col-span-2 space-y-2">
+        <Skeleton className="w-full h-5 rounded-sm" />
+        <Skeleton className="w-1/2 h-4 rounded-sm" />
+        <Skeleton className="w-1/3 h-4 rounded-sm" />
+      </div>
+      <div className="col-span-1 flex justify-center">
+        <Skeleton className="w-24 h-9 rounded-md" />
+      </div>
+      <div className="col-span-1 flex flex-col items-end gap-2">
+        <Skeleton className="w-16 h-5 rounded-sm" />
+        <Skeleton className="w-5 h-5 rounded-sm" />
+      </div>
+    </Card>
   );
 }

@@ -1,54 +1,18 @@
 "use client";
-import React from "react";
-import Card from "./card";
-import { useEffect, useState } from "react";
+import ProductCard from "./ProductCard";
 import { DM_Sans } from "next/font/google";
-import { Category } from "@prisma/client";
-import Skeleton from "./skeleton";
 const sans = DM_Sans({ style: "normal", subsets: [] });
+import { CLIENT_PRODUCT } from "@/src/types";
 
-interface IProduct {
-  id: number;
-  name: string;
-  category: Category;
-  price: string;
-  description: string;
-  thumbnail: string;
-  otherUrl: string[];
-  brand: string;
-  isFeatured: boolean;
-  isAvailable: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  sales: number;
-}
-export default function ProductList({ data }: { data: IProduct[] }) {
+export default function ProductList({ data }: { data: CLIENT_PRODUCT[] }) {
   const products = data;
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [skeletonCount, setSkeletonCount] = useState<number>(0);
-  useEffect(() => {
-    setSkeletonCount(products.length);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }, []);
   return (
     <>
-      {isLoading
-        ? Array.from({ length: skeletonCount }).map((_, index) => (
-            <Skeleton key={index} />
-          ))
-        : null}
-
       {products.length ? (
         <>
-          {!isLoading ? (
-            <>
-              {products.map((product: IProduct) => {
-                return <Card key={product.id} data={product} />;
-              })}
-            </>
-          ) : null}
+          {products.map((product: CLIENT_PRODUCT) => {
+            return <ProductCard key={product.id} data={product} />;
+          })}
         </>
       ) : null}
 

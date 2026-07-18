@@ -1,5 +1,5 @@
 "use client";
-import { Category } from "@prisma/client";
+import { Category } from "@/src/generated/prisma/enums";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"], weight: ["600"] });
 

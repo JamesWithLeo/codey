@@ -1,8 +1,7 @@
-const prisma = new PrismaClient();
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/src/prisma";
 
 export default async function Dashboard() {
-  const users = await prisma.users.findMany();
+  const users = await prisma.user.findMany();
 
   return (
     <main className="w-full h-full p-4">

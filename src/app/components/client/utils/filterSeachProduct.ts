@@ -1,41 +1,66 @@
-import { Category, PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { Category } from "@/src/generated/prisma/enums";
+import { Prisma } from "@/src/generated/prisma/client";
+import { prisma } from "@/src/prisma";
 
 export default async function FilterSeachByName({
   searchByName,
-  catergory,
+  category,
   limit,
   cursor,
+  page = 1,
+  defaultLimit = 15,
 }: {
   searchByName?: string;
-  catergory?: Category;
+  category?: Category;
   limit: number;
-  cursor?: number;
+  cursor?: number | string;
+  page?: number;
+  defaultLimit?: number;
 }) {
-  let products = [];
-  let filteredProducts = await prisma.product.findMany({
-    where: {
-      category: catergory,
-      name: { contains: searchByName, mode: "insensitive" },
-    },
-    orderBy: {
-      id: "asc",
-    },
-  });
+  const whereClause: Prisma.productWhereInput = {};
+  const currentLimit = limit || defaultLimit;
 
-  const cursorIndex = cursor
-    ? filteredProducts.findIndex((product) => product.id == cursor)
-    : -1;
-
-  if (cursorIndex === -1) {
-    products = filteredProducts.slice(0, limit);
-  } else {
-    products = filteredProducts.slice(cursorIndex, cursorIndex + limit);
+  // 1. Filter by Category
+  if (category) {
+    whereClause.category = category;
   }
-  return products.map((product) => {
-    return {
-      ...product,
-      price: product.price.toFixed(),
-    };
-  });
+
+  // 2. Filter by Search Query
+  const isSearching = !!(searchByName && searchByName.trim() !== "");
+  if (isSearching) {
+    const words = searchByName.trim().split(/\s+/);
+    whereClause.AND = words.map((word) => ({
+      name: {
+        contains: word,
+        mode: "insensitive",
+      },
+    }));
+  }
+
+  const parsedCursor =
+    typeof cursor === "string" ? parseInt(cursor, 10) : cursor;
+  const hasValidCursor = parsedCursor !== undefined && !isNaN(parsedCursor);
+
+  // 3. Hybrid Strategy Selection
+  let queryOptions: Prisma.productFindManyArgs = {
+    where: whereClause,
+    take: currentLimit,
+    orderBy: { id: "asc" },
+  };
+
+  // If the user is searching text OR navigating pages beyond page 1,
+  // offset pagination ensures that going backward is mathematically perfect.
+  if (isSearching || page > 1) {
+    queryOptions.skip = (page - 1) * currentLimit;
+  } else if (hasValidCursor) {
+    queryOptions.cursor = { id: parsedCursor };
+    queryOptions.skip = 1;
+  }
+
+  const filteredProducts = await prisma.product.findMany(queryOptions);
+
+  return filteredProducts.map((product) => ({
+    ...product,
+    price: product.price ? Number(product.price).toFixed(2) : "0.00",
+  }));
 }

@@ -1,7 +1,6 @@
 "use client";
+import { useSession } from "@/lib/auth-client";
 import BuyConfirmation from "./buyConfirmation";
-import { getSession } from "next-auth/react";
-import React from "react";
 import { useState } from "react";
 
 type product = {
@@ -21,10 +20,11 @@ export default function ProductControls({ product }: { product: product }) {
   const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
 
   async function HandlePurchase() {
-    const session = await getSession();
-    if (!session || !session.user) return;
+    const { data, error } = useSession();
+    const { session, user } = { ...data };
+    if (!session || !user) return;
 
-    const user_id = session.user.id;
+    const user_id = user.id;
     const product_id = product.id;
     const total_price = Number(product.price) * quantity;
     const newOrder = {
@@ -44,10 +44,12 @@ export default function ProductControls({ product }: { product: product }) {
     console.log("purchased:", insertedOrder);
   }
   async function HandleAddToCart() {
-    const session = await getSession();
-    if (!session || !session.user) return;
+    const { data, error } = useSession();
+    const { session, user } = { ...data };
+    if (!session || !user) return;
+
     const newCartItem = { quantity, product_id: product.id };
-    const user_id = session.user.id;
+    const user_id = user.id;
     const response = await fetch("/api/cart", {
       method: "POST",
       body: JSON.stringify({ user_id, item: newCartItem }),

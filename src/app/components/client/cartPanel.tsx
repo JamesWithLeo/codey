@@ -1,9 +1,19 @@
 "use client";
-import { CartItem } from "@prisma/client";
+import { CartItem } from "@/src/generated/prisma/client";
 import { useReducer, useState } from "react";
 import CartCard from "./cartCard";
 import { productType } from "./utils/validation";
-import React from "react";
+import { Separator } from "@/components/ui/separator";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
 
 enum SELECTED_ORDER_REDUCER {
   increment = "increment",
@@ -49,8 +59,7 @@ function selectedOrderReducer(
 
     case SELECTED_ORDER_REDUCER.decrement:
       if (!payload) return state;
-
-      return state.reduce<productType[]>((stayingOrder, order, index) => {
+      return state.reduce<productType[]>((stayingOrder, order) => {
         if (order.id === payload.id) {
           if (order.quantity > 1) {
             stayingOrder.push({
@@ -61,14 +70,19 @@ function selectedOrderReducer(
           } else {
             stayingOrder.push(order);
           }
+        } else {
+          stayingOrder.push(order);
         }
         return stayingOrder;
       }, []);
     case SELECTED_ORDER_REDUCER.remove:
       if (!payload) return state;
       return state.filter((currentOrder) => currentOrder.id !== payload.id);
+    default:
+      return state;
   }
 }
+
 export default function CartPanel({
   cartItem: cartItems,
 }: {
@@ -79,14 +93,11 @@ export default function CartPanel({
   const [isMarkingForDeletion, setIsMarkingForDeletion] =
     useState<boolean>(false);
   const [markForDeleteIds, setMarkForDeleteIds] = useState<string[]>([]);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   function AddItem(order: productType) {
-    dispatchOrder({
-      type: SELECTED_ORDER_REDUCER.add,
-      payload: order,
-    });
+    dispatchOrder({ type: SELECTED_ORDER_REDUCER.add, payload: order });
   }
-
   function RemoveItem(order: productType) {
     dispatchOrder({ type: SELECTED_ORDER_REDUCER.remove, payload: order });
   }
@@ -111,119 +122,163 @@ export default function CartPanel({
   }
 
   async function HandleDeleteSelect() {
-    if (isMarkingForDeletion && markForDeleteIds.length) {
+    if (isMarkingForDeletion && markForDeleteIds.length >= 1) {
+      setIsDeleting(true);
       const response = await fetch(
         `/api/cart/?ids=${JSON.stringify(markForDeleteIds)}`,
-        {
-          method: "DELETE",
-        },
+        { method: "DELETE" },
       );
       const deletedResponse = await response.json();
       if (deletedResponse.ok) {
-        setIsMarkingForDeletion(false);
         setCart((state) =>
           state.filter((cart) => !markForDeleteIds.includes(cart.id)),
         );
         setMarkForDeleteIds([]);
-      } else {
-        console.log(deletedResponse);
+        setIsMarkingForDeletion(false);
       }
+      setIsDeleting(false);
     } else {
       setIsMarkingForDeletion(true);
     }
   }
 
   return (
-    <>
-      <section className="md:grid grid-rows-3 md:px-8 md:py-4 flex flex-col grid-cols-1 min-h-full w-full  max-w-7xl gap-4 sm:grid-cols-3 sm:grid-rows-1">
-        <section className="h-max gap-2 w-full px-4 md:px-0 row-span-2 sm:col-span-2 sm:row-span-1 flex-col grid grid-cols-1">
-          <div className="flex justify-between items-center ">
-            <h1>{cart?.length ? cart.length : 0} items</h1>
-            <span className="flex gap-2">
-              <button
-                onClick={HandleDeleteSelect}
-                className={`btn btn-sm btn-square   ${isMarkingForDeletion ? "btn-error text-white" : ""}`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  fill="currentColor"
-                  viewBox="0 0 256 256"
-                >
-                  <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"></path>
-                </svg>
-              </button>
+    <div className="w-full max-w-7xl ">
+      <section className="flex flex-col lg:grid lg:grid-cols-[2fr_min-content_1fr] h-[calc(100vh-6rem)]  gap-4 overflow-hidden   lg:overflow-scroll">
+        <section className="flex-1 flex flex-col pr-2   overflow-y-auto lg:overflow-y-scroll  ">
+          <div className="flex h-min justify-between items-center sticky top-0  py-2 bg-background z-10 ">
+            <h1 className="font-semibold text-lg">
+              {cart?.length} {cart?.length <= 1 ? "item" : "items"}
+            </h1>
+            <div className="flex gap-2">
               {isMarkingForDeletion ? (
-                <button
-                  className="btn btn-sm btn-ghost"
-                  onClick={() => {
-                    setIsMarkingForDeletion(false);
-                    setMarkForDeleteIds([]);
-                  }}
+                <>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={HandleDeleteSelect}
+                  >
+                    {isDeleting ? (
+                      <Spinner />
+                    ) : (
+                      <Trash2 className="h-4 w-4 mr-1" />
+                    )}
+                    Delete selected
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => {
+                      setIsMarkingForDeletion(false);
+                      setMarkForDeleteIds([]);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  onClick={HandleDeleteSelect}
+                  size="icon"
+                  variant="secondary"
                 >
-                  cancel
-                </button>
-              ) : null}
-            </span>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
           </div>
-          <div className="h-max w-fullflex-col grid grid-cols-1  ">
+
+          <div className="flex flex-col gap-4   ">
             {cart && cart.length
-              ? cart.map((item) => {
-                  return (
-                    <CartCard
-                      cartItem={item}
-                      key={item.id}
-                      onAdd={AddItem}
-                      onRemove={RemoveItem}
-                      onIncrement={IncrementItem}
-                      onDecrement={DecrementItem}
-                      onMark={HandleMark}
-                      isMarkingForDeletion={isMarkingForDeletion}
-                    />
-                  );
-                })
+              ? cart.map((item) => (
+                  <CartCard
+                    cartItem={item}
+                    key={item.id}
+                    onAdd={AddItem}
+                    onRemove={RemoveItem}
+                    onIncrement={IncrementItem}
+                    onDecrement={DecrementItem}
+                    onMark={HandleMark}
+                    isMarkingForDeletion={isMarkingForDeletion}
+                  />
+                ))
               : null}
           </div>
         </section>
 
-        <div className="w-full left-0 sticky md:relative bottom-0 z-10  min-h-full flex flex-col gap-2 h-full shadow">
-          <div className="bg-gray-100 rounded flex flex-col justify-between h-full py-2 px-4  w-full">
-            <h1 className="font-bold">Order Summary</h1>
-            <div className="h-full">
-              <div className="grid grid-cols-4 grid-rows-1">
-                <h1 className="col-span-2">ITEM</h1>
-                <h1 className="text-center">QTY</h1>
-                <h1 className="text-right">AMOUNT</h1>
+        <Separator orientation="vertical" className="hidden lg:block" />
+
+        {/* ORDER SUMMARY CHECKOUT CONTAINER FIX: Locks permanently to viewport bottom on mobile */}
+        <div className="w-full sticky bottom-0  left-0  lg:bottom-auto z-0  ">
+          <Card className="w-full lg:sticky lg:top-0 flex flex-col  overflow-hidden ">
+            {/* Hidden header on mobile to maximize room for items list */}
+            <CardHeader className=" px-4 bg-muted/40 border-b hidden sm:block">
+              <CardTitle className="text-base font-bold tracking-tight text-foreground">
+                Order Summary
+              </CardTitle>
+            </CardHeader>
+
+            {/* Content items tray: limits heights dynamically on desktop views */}
+            <CardContent className="p-4 flex-1  flex-col min-h-0 hidden sm:flex">
+              <div className="grid grid-cols-4 text-[11px] font-bold tracking-wider text-muted-foreground uppercase pb-2 mb-2 border-b border-muted">
+                <span className="col-span-2">Item</span>
+                <span className="text-center">Qty</span>
+                <span className="text-right">Amount</span>
               </div>
-              {orders.map((value) => {
-                return (
-                  <div className="grid grid-cols-4 grid-rows-1" key={value.id}>
-                    <h1 className="truncate col-span-2">{value.name}</h1>
-                    <h1 className="text-center">{value.quantity}</h1>
-                    <h1 className="text-right">
-                      {value.total_price.toFixed(2)}
-                    </h1>
+
+              <div className="flex flex-col gap-2 max-h-32 lg:max-h-64 overflow-y-auto pr-1">
+                {orders.map((value) => (
+                  <div
+                    className="grid grid-cols-4 text-sm items-center py-0.5 text-foreground/90 font-medium"
+                    key={value.id}
+                  >
+                    <span className="truncate col-span-2 text-xs md:text-sm pr-2">
+                      {value.name}
+                    </span>
+                    <span className="text-center text-muted-foreground text-xs md:text-sm">
+                      {value.quantity}
+                    </span>
+                    <span className="text-right font-semibold text-xs md:text-sm">
+                      ${value.total_price.toFixed(2)}
+                    </span>
                   </div>
-                );
-              })}
-            </div>
-            <div className="flex justify-between items-center">
-              <h1>Items {orders.length}</h1>
-              <h1>Total ${0}</h1>
-            </div>
-            <div className="flex w-full">
-              <button
+                ))}
+                {orders.length === 0 && (
+                  <p className="text-xs text-center text-muted-foreground italic py-2">
+                    No items selected for checkout
+                  </p>
+                )}
+              </div>
+            </CardContent>
+
+            <Separator className="bg-muted hidden sm:block" />
+
+            <CardFooter className="p-4 flex flex-col gap-3 bg-muted/20">
+              <div className="flex justify-between items-center w-full text-sm font-medium">
+                <span className="text-muted-foreground text-xs sm:text-sm">
+                  Items ({orders.length})
+                </span>
+                <span className="text-base font-bold text-foreground">
+                  Total: $
+                  {orders
+                    .reduce((sum, item) => sum + item.total_price, 0)
+                    .toFixed(2)}
+                </span>
+              </div>
+
+              <Button
                 onClick={HandleCheckOut}
                 disabled={orders.length === 0}
-                className="btn w-full btn-sm text-white btn-error"
+                className="w-full font-bold shadow-sm"
+                variant="default"
+                size="lg"
               >
-                Check out
-              </button>
-            </div>
-          </div>
+                Proceed to Checkout
+              </Button>
+            </CardFooter>
+          </Card>
         </div>
       </section>
-    </>
+    </div>
   );
 }

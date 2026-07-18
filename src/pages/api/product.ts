@@ -3,7 +3,7 @@ import { Prisma } from "@/src/generated/prisma/client";
 import { Category } from "@/src/generated/prisma/enums";
 
 import { prisma } from "@/src/prisma";
-import { isValidToUpdate } from "@/src/app/components/client/utils/validation";
+import { isValidCartToUpdate } from "@/lib/utils";
 
 interface IProduct {
   name: string;
@@ -90,7 +90,7 @@ export default async function handler(
     case "PUT":
       const toUpdateProducts = JSON.parse(req.body) as any[];
       const isValidProducts = toUpdateProducts.map((product) => {
-        return isValidToUpdate(product);
+        return isValidCartToUpdate(product);
       });
       const isValidAll = isValidProducts.every((product) => product === true);
       if (!isValidAll)

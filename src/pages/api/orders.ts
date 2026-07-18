@@ -1,19 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/src/prisma";
-import { IOrder } from "@/src/app/components/client/utils/validation";
+import { isValidOrderItem } from "@/lib/utils";
 
-function isValidOrder(order: any): order is IOrder {
-  return (
-    typeof order === "object" &&
-    order !== null &&
-    typeof order.id === "number" &&
-    !Number.isNaN(order.id) &&
-    typeof order.quantity === "number" &&
-    !Number.isNaN(order.quantity) &&
-    !Number.isNaN(order.total_price) &&
-    typeof order.total_price === "number"
-  );
-}
 function omit<T extends object, K extends keyof T>(
   obj: T,
   keysToRemove: K[],
@@ -34,18 +22,31 @@ export default async function handler(
     case "POST":
       const id = req.body.id;
       if (!id || typeof id !== "string")
-        return res.status(400).json({ ok: 1, error: "Invalid id" });
+        return res.status(400).json({ ok: 1, error: "Missing or Invalid id" });
 
       const orderItems = req.body.orders as any[];
-      const areAllItemsValid = orderItems.every(isValidOrder);
+      const areAllItemsValid = orderItems.every(isValidOrderItem);
       if (!areAllItemsValid) {
         return res.status(400).json({ ok: 0, error: "Invalid order data" });
       }
 
-      const productItem = await prisma.transaction.create({
+      const productItem = await prisma.order.create({
         data: {
           user_id: id,
-          orderItems: { create: orderItems },
+          totalAmount: 299.99, // Total for the entire order
+          isPaid: true,
+          orderItems: {
+            create: [
+              {
+                ...orderItems,
+                subtotal: 0,
+                total_price: 0,
+                quantity: 1,
+                pricePerUnit: 1,
+                product_id: 1,
+              },
+            ],
+          },
         },
       });
       res.status(200).json({ ok: 1, productItem });

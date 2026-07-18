@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/src/prisma";
-import { TRANSACTION_SOURCE } from "@/src/generated/prisma/enums";
 import { isOrderValidForPOS } from "@/src/app/components/client/utils/validation";
 
 export default async function handler(
@@ -13,7 +12,10 @@ export default async function handler(
       return;
 
     case "POST":
-      // get the orders, check its format and data type.
+      const id = req.body.id;
+      if (!id || typeof id !== "string")
+        return res.status(400).json({ ok: 1, error: "Missing or Invalid id" });
+
       const orderItems = req.body.orders as any[];
       const areAllItemsValid = orderItems.every(isOrderValidForPOS);
       if (!areAllItemsValid) {
@@ -26,10 +28,24 @@ export default async function handler(
         return { ...value, product_id, product_name };
       });
 
-      const productItem = await prisma.transaction.create({
+      const productItem = await prisma.order.create({
         data: {
-          source: TRANSACTION_SOURCE.POS,
-          orderItems: { create: newItems },
+          user_id: id,
+          totalAmount: 299.99, // Total for the entire order
+          isPaid: true,
+
+          orderItems: {
+            create: [
+              {
+                ...newItems,
+                subtotal: 0,
+                total_price: 0,
+                quantity: 1,
+                pricePerUnit: 1,
+                product_id: 1,
+              },
+            ],
+          },
         },
       });
       res.status(200).json({ ok: 1, productItem });

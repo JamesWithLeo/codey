@@ -39,7 +39,11 @@ export default function ProductView({ product, slug }: Props) {
     const newCartItem = { quantity: 1, product_id: product.id };
     const response = await fetch("/api/cart", {
       method: "POST",
-      body: JSON.stringify({ user_id: user.id, item: newCartItem }),
+      body: JSON.stringify({
+        user_id: user.id,
+        item: newCartItem,
+        quantity: quantity,
+      }),
     });
     const item = await response.json();
 

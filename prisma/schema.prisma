@@ -25,7 +25,7 @@ model User {
   location      String?
   phoneNumber   String?
   carts         Cart[]    @relation("UserToCarts")
-  order         transaction[] @relation("UserToOrders")
+  order         Order[] @relation("UserToOrders")
 
   @@map("user")
 }

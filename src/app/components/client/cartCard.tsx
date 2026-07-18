@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { productType } from "./utils/validation";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -32,7 +32,7 @@ export default function CartCard({
 }) {
   const router = useRouter();
   const [product, setProduct] = useState<product | null>(null);
-  const [quantity, setQuantity] = useState<number>(cartItem.quantity);
+  const [quantity, setQuantity] = useState<number>(0);
   const [isMarking, setIsMarking] = useState<boolean>(false);
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
@@ -116,6 +116,10 @@ export default function CartCard({
     }
     FetchProduct(cartItem.product_id);
   }, [cartItem.product_id]);
+
+  useEffect(() => {
+    setQuantity(cartItem.quantity);
+  }, []);
 
   if (!product) return <CartCardSkeleton />;
 

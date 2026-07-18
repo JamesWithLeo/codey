@@ -1,51 +1,47 @@
-model transaction {
+model Order {
   id         Int                @id @unique @default(autoincrement())
   createdAt  DateTime           @default(now())
   updatedAt  DateTime           @updatedAt
   user_id    String?
   status     TRANSACTION_STATUS @default(pending)
-  source     TRANSACTION_SOURCE @default(ONLINE)
-  orderItems order[]            @relation("OrderToOrderItems")
+  totalAmount Decimal            @db.Decimal(10, 2) @map("total_amount")
+  isPaid      Boolean            @default(false)    @map("is_paid")
+  // source     TRANSACTION_SOURCE @default(ONLINE)
+  orderItems OrderItem[]            @relation("OrderToOrderItems")
   users      User?             @relation("UserToOrders", fields: [user_id], references: [id])
 
   @@map("order")
 }
 
-model order {
+model OrderItem {
   id             Int          @id @unique @default(autoincrement())
   total_price    Decimal      @db.Decimal(10, 2)
   quantity       Int
   isPaid         Boolean      @default(true)
-  status         ORDER_STATUS @default(pending)
+  subtotal      Decimal  @db.Decimal(10, 2) // quantity * pricePerUnit
+
+  
+  pricePerUnit  Decimal  @db.Decimal(10, 2) @map("price_per_unit")
+
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
+
   product_id     Int
-  transaction_id Int
   product_name   String       @default("Product not specified, use id instead")
   product        product      @relation("ProductOrderItems", fields: [product_id], references: [id])
-  transaction    transaction  @relation("OrderToOrderItems", fields: [transaction_id], references: [id], onDelete: Cascade)
+
+  transaction_id Int
+  transaction    Order  @relation("OrderToOrderItems", fields: [transaction_id], references: [id], onDelete: Cascade)
 
   @@map("OrderItem")
 }
 
-enum ORDER_STATUS {
-  pending
-  shipped
-  delivered
-  canceled
-  suspended
-
-  @@map("Status")
-}
 
 enum TRANSACTION_STATUS {
   pending
-  suspended
+  shipping
+  delivered
+  canceled
   completed
   deleted
-}
-
-enum TRANSACTION_SOURCE {
-  POS
-  ONLINE
 }

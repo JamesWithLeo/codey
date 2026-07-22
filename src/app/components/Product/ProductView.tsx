@@ -12,6 +12,9 @@ import { Separator } from "@/components/ui/separator";
 import { CLIENT_PRODUCT } from "@/src/types";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
+import { ProductToast } from "../common/ProductToast";
+import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 type Props = {
   product: CLIENT_PRODUCT;
@@ -20,8 +23,6 @@ type Props = {
 
 export default function ProductView({ product, slug }: Props) {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
-  const [isAddedToCart, setIsAddedToCart] = useState(false);
-  const [errorCart, setErrorCart] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const router = useRouter();
   const { data, error } = useSession();
@@ -39,32 +40,22 @@ export default function ProductView({ product, slug }: Props) {
     const newCartItem = { quantity: 1, product_id: product.id };
     const response = await fetch("/api/cart", {
       method: "POST",
-      body: JSON.stringify({
-        user_id: user.id,
-        item: newCartItem,
-        quantity: quantity,
-      }),
+      body: JSON.stringify({ user_id: user.id, item: newCartItem }),
     });
     const item = await response.json();
 
     if (item.ok) {
-      setIsAddedToCart(true);
-      setIsAddingToCart(false);
-      setTimeout(() => {
-        setIsAddedToCart(false);
-        setQuantity(0);
-      }, 5000);
+      ProductToast({
+        thumbnail: product.thumbnail,
+        productName: product.name,
+        link: {
+          href: `/cart`,
+          label: "View",
+        },
+      });
     } else {
-      if (item.maxCart) {
-        setErrorCart(item.error);
-        setTimeout(() => {
-          setErrorCart(null);
-          setQuantity(0);
-        }, 10000);
-      }
-
+      toast.error("Failed to add to cart");
       setIsAddingToCart(false);
-      console.log(item);
     }
   }
 
@@ -146,7 +137,11 @@ export default function ProductView({ product, slug }: Props) {
                 className="flex items-center gap-2 px-4 text-sm"
                 onClick={HandleAddToCart}
               >
-                <ShoppingCart className="size-4" />
+                {isAddingToCart ? (
+                  <Spinner />
+                ) : (
+                  <ShoppingCart className="size-4" />
+                )}
                 Add to Cart
               </Button>
               <Button

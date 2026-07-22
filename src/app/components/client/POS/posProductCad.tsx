@@ -1,20 +1,13 @@
 "use client";
-import { useRouter } from "next/navigation";
-type productType = {
-  id: number;
-  name: string;
-  price: number;
-  brand: string;
 
-  total_price: number;
-  quantity: number;
-};
+import { useRouter } from "next/navigation";
+import { CheckOutItem } from "@/src/types";
 export default function PosProductCard({
   product,
   onAdd,
 }: {
-  product: productType;
-  onAdd: (product: productType) => void;
+  product: CheckOutItem;
+  onAdd: (product: CheckOutItem) => void;
 }) {
   const router = useRouter();
   function HandleAddToTerminal() {
@@ -22,7 +15,9 @@ export default function PosProductCard({
   }
   function HandleOpen(event: React.MouseEvent<HTMLElement, MouseEvent>) {
     (
-      document.getElementById(product.id.toString()) as HTMLDialogElement
+      document.getElementById(
+        product.product_id.toString(),
+      ) as HTMLDialogElement
     ).showModal();
   }
   return (
@@ -34,7 +29,6 @@ export default function PosProductCard({
       >
         <div className="text-sm overflow-x-hidden">
           <h1 className="truncate">{product.name}</h1>
-          <h1 className="truncate">{product.brand}</h1>
         </div>
         <div>
           <button
@@ -55,19 +49,19 @@ export default function PosProductCard({
       </main>
 
       <dialog
-        id={product.id.toString()}
+        id={product.product_id.toString()}
         className="modal modal-bottom sm:modal-middle"
       >
         <div className="modal-box">
           <h3 className="font-bold text-lg select-none">{product.name}</h3>
-          <p className="py-4">{product.price}</p>
+          <p className="py-4">{product.pricePerUnit}</p>
           <div className="modal-action">
             <button className="btn bg-primary" onClick={HandleAddToTerminal}>
               Add
             </button>
             <button
               onClick={() => {
-                router.replace(`/p/${product.id}`);
+                router.replace(`/product/${product.product_id}`);
                 document.body.style.overflowY = "scroll";
               }}
               className="btn"

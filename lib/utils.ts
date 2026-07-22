@@ -1,6 +1,21 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { OrderItem } from "@/src/generated/prisma/client";
+import { OrderItemCreateManyInput } from "@/src/generated/prisma/models";
+
+export function isValidCheckOutItems(
+  items: any[],
+): items is OrderItemCreateManyInput[] {
+  return items.every(
+    (i) =>
+      typeof i.subtotal === "number" &&
+      i.subtotal > 0 &&
+      typeof i.quantity === "number" &&
+      i.quantity >= 1 &&
+      typeof i.product_id === "number" &&
+      i.product_id > 0,
+  );
+}
 
 export function isValidOrderItem(item: any): item is OrderItem {
   return (

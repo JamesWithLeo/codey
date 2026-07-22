@@ -1,32 +1,24 @@
-type productType = {
-  id: number;
-  name: string;
-  price: number;
-  brand: string;
-
-  total_price: number;
-  quantity: number;
-};
+import { CheckOutItem } from "@/src/types";
 export default function PosSelectedProduct({
   product,
   onIncrement,
   onDecrement,
 }: {
-  product: productType;
-  onIncrement: (toAddProduct: productType) => void;
-  onDecrement: (toRemoveProduct: productType) => void;
+  product: CheckOutItem;
+  onIncrement: (toAddProduct: CheckOutItem) => void;
+  onDecrement: (toRemoveProduct: CheckOutItem) => void;
 }) {
   return (
     <>
       <div
-        key={product.id}
+        key={product.product_id}
         className="grid grid-cols-6 w-full px-2 py-1 text-sm border-b"
       >
         <h1 className="col-span-3 truncate overflow-y-hidden ">
           {product.name}
         </h1>
         <h1>{product.quantity}</h1>
-        <h1 className="">{product.total_price.toFixed(2)}</h1>
+        <h1 className="">{product.pricePerUnit.toFixed(2)}</h1>
         <div className="col-start-6 flex items-center justify-end">
           <button
             className="text-contrast"

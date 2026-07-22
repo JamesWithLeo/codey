@@ -15,9 +15,7 @@ model Order {
 
 model OrderItem {
   id             Int          @id @unique @default(autoincrement())
-  total_price    Decimal      @db.Decimal(10, 2)
   quantity       Int
-  isPaid         Boolean      @default(true)
   subtotal      Decimal  @db.Decimal(10, 2) // quantity * pricePerUnit
 
   
@@ -27,7 +25,6 @@ model OrderItem {
   updatedAt      DateTime     @updatedAt
 
   product_id     Int
-  product_name   String       @default("Product not specified, use id instead")
   product        product      @relation("ProductOrderItems", fields: [product_id], references: [id])
 
   transaction_id Int

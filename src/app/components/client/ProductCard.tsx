@@ -50,31 +50,18 @@ export default function ProductCard({
     const item = await response.json();
 
     if (item.ok) {
-      // setIsAddedToCart(true);
       ProductToast({
         thumbnail: product.thumbnail,
-
         productName: product.name,
         link: {
-          href: `/products/${product.category}/${product.id}`,
+          href: `/cart`,
           label: "View",
         },
       });
-      setIsAddingToCart(false);
-      setTimeout(() => {
-        setIsAddedToCart(false);
-      }, 5000);
     } else {
-      if (item.maxCart) {
-        setErrorCart(item.error);
-        setTimeout(() => {
-          setErrorCart(null);
-        }, 10000);
-      }
-
-      setIsAddingToCart(false);
-      console.log(item);
+      toast.error("Failed to add to cart");
     }
+    setIsAddingToCart(false);
   }
 
   return (
@@ -227,19 +214,6 @@ export default function ProductCard({
             {product.description}
           </CardDescription>
         </CardHeader>
-
-        {/* <CardFooter className=" ">
-          <Button
-            variant={"secondary"}
-            className={`w-full ${isAddingToCart ? "cursor-progress" : ""}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              HandleAddToCart();
-            }}
-          >
-            Add to cart
-          </Button>
-        </CardFooter> */}
       </Card>
     </>
   );

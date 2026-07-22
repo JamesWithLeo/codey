@@ -2,7 +2,6 @@
 import { CartItem } from "@/src/generated/prisma/client";
 import { useReducer, useState } from "react";
 import CartCard from "./cartCard";
-import { productType } from "./utils/validation";
 import { Separator } from "@/components/ui/separator";
 import {
   Card,
@@ -14,19 +13,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
+import { CheckOutItem } from "@/src/types";
 
 enum SELECTED_ORDER_REDUCER {
   increment = "increment",
   decrement = "decrement",
   add = "add",
   remove = "remove",
+  checkout = "checkout",
 }
 
 function selectedOrderReducer(
-  state: productType[],
+  state: CheckOutItem[],
   action: {
     type: SELECTED_ORDER_REDUCER;
-    payload?: productType;
+    payload?: CheckOutItem;
   },
 ) {
   const { type, payload } = action;
@@ -34,13 +35,15 @@ function selectedOrderReducer(
   switch (type) {
     case SELECTED_ORDER_REDUCER.add:
       if (!payload) return state;
-      const existingOrder = state.find((order) => order.id === payload.id);
+      const existingOrder = state.find(
+        (order) => order.product_id === payload.product_id,
+      );
       if (!existingOrder) return [...state, { ...payload }];
       return state.map((order) =>
-        order.id === existingOrder.id
+        order.product_id === existingOrder.product_id
           ? {
               ...order,
-              total_price: order.total_price + order.price,
+              subtotal: order.subtotal + order.pricePerUnit,
               quantity: order.quantity + 1,
             }
           : order,
@@ -48,10 +51,10 @@ function selectedOrderReducer(
     case SELECTED_ORDER_REDUCER.increment:
       if (!payload) return state;
       return state.map((order) =>
-        order.id === payload.id
+        order.product_id === payload.product_id
           ? {
               ...order,
-              total_price: order.total_price + order.price,
+              subtotal: order.subtotal + order.pricePerUnit,
               quantity: order.quantity + 1,
             }
           : order,
@@ -59,13 +62,13 @@ function selectedOrderReducer(
 
     case SELECTED_ORDER_REDUCER.decrement:
       if (!payload) return state;
-      return state.reduce<productType[]>((stayingOrder, order) => {
-        if (order.id === payload.id) {
+      return state.reduce<CheckOutItem[]>((stayingOrder, order) => {
+        if (order.product_id === payload.product_id) {
           if (order.quantity > 1) {
             stayingOrder.push({
               ...order,
               quantity: order.quantity - 1,
-              total_price: order.total_price - payload.price,
+              subtotal: order.subtotal - payload.pricePerUnit,
             });
           } else {
             stayingOrder.push(order);
@@ -77,7 +80,9 @@ function selectedOrderReducer(
       }, []);
     case SELECTED_ORDER_REDUCER.remove:
       if (!payload) return state;
-      return state.filter((currentOrder) => currentOrder.id !== payload.id);
+      return state.filter(
+        (currentOrder) => currentOrder.product_id !== payload.product_id,
+      );
     default:
       return state;
   }
@@ -95,20 +100,31 @@ export default function CartPanel({
   const [markForDeleteIds, setMarkForDeleteIds] = useState<string[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  function AddItem(order: productType) {
+  function AddItem(order: CheckOutItem) {
     dispatchOrder({ type: SELECTED_ORDER_REDUCER.add, payload: order });
   }
-  function RemoveItem(order: productType) {
+  function RemoveItem(order: CheckOutItem) {
     dispatchOrder({ type: SELECTED_ORDER_REDUCER.remove, payload: order });
   }
-  function IncrementItem(order: productType) {
+  function IncrementItem(order: CheckOutItem) {
     dispatchOrder({ type: SELECTED_ORDER_REDUCER.increment, payload: order });
   }
-  function DecrementItem(order: productType) {
+  function DecrementItem(order: CheckOutItem) {
     dispatchOrder({ type: SELECTED_ORDER_REDUCER.decrement, payload: order });
   }
-  function HandleCheckOut() {
-    console.log(orders);
+  async function HandleCheckOut() {
+    const response = await fetch("/api/order", {
+      body: JSON.stringify(
+        orders.map((order) => {
+          const { name, pricePerUnit, ...newOrder } = order;
+          return newOrder;
+        }),
+      ),
+      method: "POST",
+    });
+
+    const result = await response.json();
+    console.log(result);
   }
 
   function HandleMark(id: string, type: "select" | "unselect") {
@@ -230,7 +246,7 @@ export default function CartPanel({
                 {orders.map((value) => (
                   <div
                     className="grid grid-cols-4 text-sm items-center py-0.5 text-foreground/90 font-medium"
-                    key={value.id}
+                    key={value.product_id}
                   >
                     <span className="truncate col-span-2 text-xs md:text-sm pr-2">
                       {value.name}
@@ -239,7 +255,7 @@ export default function CartPanel({
                       {value.quantity}
                     </span>
                     <span className="text-right font-semibold text-xs md:text-sm">
-                      ${value.total_price.toFixed(2)}
+                      ${value.subtotal.toFixed(2)}
                     </span>
                   </div>
                 ))}
@@ -261,7 +277,7 @@ export default function CartPanel({
                 <span className="text-base font-bold text-foreground">
                   Total: $
                   {orders
-                    .reduce((sum, item) => sum + item.total_price, 0)
+                    .reduce((sum, item) => sum + item.subtotal, 0)
                     .toFixed(2)}
                 </span>
               </div>

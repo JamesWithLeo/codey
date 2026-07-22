@@ -5,14 +5,6 @@ export interface IOrder {
   product_name: string;
 }
 
-export interface productType {
-  id: number;
-  name: string;
-  price: number;
-  brand: string;
-  total_price: number;
-  quantity: number;
-}
 export function isOrderValidForPOS(order: any): order is IOrder {
   return (
     typeof order === "object" &&

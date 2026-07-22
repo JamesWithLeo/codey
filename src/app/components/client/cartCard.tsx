@@ -4,7 +4,6 @@ import { product, CartItem } from "@/src/generated/prisma/client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { productType } from "./utils/validation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -12,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Minus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { CheckOutItem } from "@/src/types";
 
 export default function CartCard({
   cartItem,
@@ -23,10 +23,10 @@ export default function CartCard({
   isMarkingForDeletion,
 }: {
   cartItem: CartItem;
-  onAdd: (order: productType) => void;
-  onRemove: (order: productType) => void;
-  onIncrement: (order: productType) => void;
-  onDecrement: (order: productType) => void;
+  onAdd: (order: CheckOutItem) => void;
+  onRemove: (order: CheckOutItem) => void;
+  onIncrement: (order: CheckOutItem) => void;
+  onDecrement: (order: CheckOutItem) => void;
   onMark: (id: string, type: "select" | "unselect") => void;
   isMarkingForDeletion: boolean;
 }) {
@@ -36,7 +36,6 @@ export default function CartCard({
   const [isMarking, setIsMarking] = useState<boolean>(false);
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
-  // FIX: Added missing path forward-slash separator
   const productLink = `/products/${product?.category}/${product?.id}`;
 
   function HandleIncrementQuantity(e: React.MouseEvent) {
@@ -48,12 +47,11 @@ export default function CartCard({
 
     // FIX: Using nextQuantity instead of stale state variables
     onIncrement({
-      total_price: totalPrice,
-      quantity: nextQuantity,
-      id: product.id,
+      subtotal: totalPrice,
+      quantity: nextQuantity + 1,
+      product_id: product.id,
+      pricePerUnit: Number(product.price),
       name: product.name,
-      price: Number(product.price.toString()),
-      brand: product.brand,
     });
     setQuantity(nextQuantity);
   }
@@ -66,12 +64,11 @@ export default function CartCard({
     const totalPrice = Number(product.price.toString()) * nextQuantity;
 
     onDecrement({
-      total_price: totalPrice,
+      subtotal: totalPrice,
       quantity: nextQuantity,
-      id: product.id,
+      product_id: product.id,
       name: product.name,
-      price: Number(product.price.toString()),
-      brand: product.brand,
+      pricePerUnit: Number(product.price.toString()),
     });
     setQuantity(nextQuantity);
   }
@@ -83,12 +80,11 @@ export default function CartCard({
 
     const totalPrice = Number(product.price.toString()) * quantity;
     const payload = {
-      total_price: totalPrice,
+      subtotal: totalPrice,
       quantity: quantity,
-      id: product.id,
+      product_id: product.id,
       name: product.name,
-      price: Number(product.price.toString()),
-      brand: product.brand,
+      pricePerUnit: Number(product.price.toString()),
     };
 
     if (checked) {

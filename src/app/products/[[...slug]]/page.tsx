@@ -4,17 +4,6 @@ import FilterSeachByName from "../../components/client/utils/filterSeachProduct"
 import { Category } from "@/src/generated/prisma/enums";
 import { notFound } from "next/navigation";
 import { prisma } from "@/src/prisma";
-import Image from "next/image";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Button } from "@/components/ui/button";
-import {
-  ChevronLeft,
-  ChevronLeftSquare,
-  ChevronRight,
-  Minus,
-  MinusIcon,
-  Plus,
-} from "lucide-react";
 import ProductView from "../../components/Product/ProductView";
 
 export default async function Page({

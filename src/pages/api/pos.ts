@@ -39,7 +39,6 @@ export default async function handler(
               {
                 ...newItems,
                 subtotal: 0,
-                total_price: 0,
                 quantity: 1,
                 pricePerUnit: 1,
                 product_id: 1,

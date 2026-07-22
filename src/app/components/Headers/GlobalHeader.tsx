@@ -1,7 +1,14 @@
 "use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Home, Menu, User2, ShoppingBasket } from "lucide-react";
+import {
+  Home,
+  Menu,
+  User2,
+  ShoppingCart,
+  ShoppingBag,
+  LayoutDashboard,
+} from "lucide-react";
 import LogoutButton from "../client/button/logoutButton";
 import Search from "../client/search";
 import {
@@ -15,7 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DM_Serif_Display } from "next/font/google";
 import { Session } from "@/lib/auth-client";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
   weight: ["400"],
@@ -35,18 +42,16 @@ export default function GlobalHeader({ session }: { session: Session | null }) {
           <Search />
         </div>
         <div className="dropdown sm:block place-self-end dropdown-end w-max h-max">
-          <DropdownMenu>
+          <DropdownMenu closeParentOnEsc>
             <DropdownMenuTrigger
               className={" px-4 "}
               render={<Button size={"lg"} className={"rounded-3xl "} />}
             >
               <Menu size={32} strokeWidth={3} />
             </DropdownMenuTrigger>
-            <DropdownMenuContent side="bottom">
+            <DropdownMenuContent side="bottom" className={"w-max"}>
               <DropdownMenuGroup>
                 <DropdownMenuLabel>Account</DropdownMenuLabel>
-                {/* <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Billing</DropdownMenuItem> */}
 
                 {!session || !session.user ? (
                   <>
@@ -72,6 +77,17 @@ export default function GlobalHeader({ session }: { session: Session | null }) {
                       <Home />
                       Home
                     </DropdownMenuItem>
+                    {session.user.role === "admin" && (
+                      <DropdownMenuItem
+                        className={"cursor-pointer"}
+                        onClick={() => {
+                          router.push("/admin");
+                        }}
+                      >
+                        <LayoutDashboard />
+                        Admin Dashboard
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem
                       className={"cursor-pointer"}
                       onClick={() => {
@@ -87,8 +103,17 @@ export default function GlobalHeader({ session }: { session: Session | null }) {
                         router.push("/cart");
                       }}
                     >
-                      <ShoppingBasket />
+                      <ShoppingCart />
                       Cart
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className={"cursor-pointer"}
+                      onClick={() => {
+                        router.push("/orders");
+                      }}
+                    >
+                      <ShoppingBag />
+                      Orders
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
@@ -97,90 +122,8 @@ export default function GlobalHeader({ session }: { session: Session | null }) {
                   </>
                 )}
               </DropdownMenuGroup>
-              {/* <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>Team</DropdownMenuItem>
-                  <DropdownMenuItem>Subscription</DropdownMenuItem>
-                </DropdownMenuGroup> */}
             </DropdownMenuContent>
           </DropdownMenu>
-          {/* 
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-sm h-10 rounded-full bg-white "
-            >
-              <svg
-                color="#374151"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-6 "
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                />
-              </svg>
-              {!session ? (
-                <svg
-                  color="#374151"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              ) : (
-                <Image
-                  className="rounded-full"
-                  src={session.user?.image ?? ""}
-                  alt=""
-                  height={20}
-                  width={20}
-                />
-              )}
-            </div>
-
-            <ul
-              tabIndex={0}
-              className="dropdown-content shadow-lg menu bg-base-100 rounded-box z-1c w-52 p-2"
-            >
-              {session && session.user?.role === "admin" ? (
-                <>
-                  <AdminButton />
-                </>
-              ) : null}
-
-              {!session || !session.user ? (
-                <>
-                  <LoginButton />
-                </>
-              ) : (
-                <>
-                  <li>
-                    <Link href={"/profile"}>Profile</Link>
-                  </li>
-                  <li>
-                    <Link href={"/cart"}>Cart</Link>
-                  </li>
-                </>
-              )}
-              {session && session.user ? (
-                <>
-                  <div className="divider m-0" />
-                  <LogoutButton />
-                </>
-              ) : null}
-            </ul> */}
         </div>
       </div>
     </section>

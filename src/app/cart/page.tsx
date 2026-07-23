@@ -1,11 +1,7 @@
 import { prisma } from "@/src/prisma";
-import { prisma } from "@/src/prisma";
 import { redirect } from "next/navigation";
 import { DM_Sans } from "next/font/google";
 import Link from "next/link";
-import CartPanel from "@/src/app/components/client/cartPanel";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import CartPanel from "@/src/app/components/client/cartPanel";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -20,7 +16,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ShoppingCart } from "lucide-react";
 
-async function FetchCart(uid: string) {
 async function FetchCart(uid: string) {
   const cart = await prisma.cart.findFirst({ where: { user_id: uid } });
   if (!cart) return null;
@@ -40,14 +35,6 @@ export default async function Page() {
   // const Auth = await auth();
   const { session, user } = { ...AuthSession };
   if (!session || !user) redirect("/");
-  const AuthSession = await auth.api.getSession({
-    headers: await headers(), // you need to pass the headers object.
-  });
-  // const Auth = await auth();
-  const { session, user } = { ...AuthSession };
-  if (!session || !user) redirect("/");
-
-  const cart = await FetchCart(user.id);
   const cart = await FetchCart(user.id);
   return (
     <div className="w-full flex   lg:min-h-dvh items-start    justify-center  ">

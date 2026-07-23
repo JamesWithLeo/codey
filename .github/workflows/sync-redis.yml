@@ -1,0 +1,31 @@
+name: Sync Products to Upstash Redis
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+
+  # 2. Allow manual triggers directly from the GitHub UI
+  workflow_dispatch:
+
+jobs:
+  sync-redis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Redis Sync Script
+        env:
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: npx tsx scripts/sync-redis.ts

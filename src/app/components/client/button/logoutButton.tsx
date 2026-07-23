@@ -2,12 +2,10 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { LogOutIcon } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
 import { useState } from "react";
 
 export default function LogoutButton() {
-  const router = useRouter();
   const [isloading, setIsLoading] = useState(false);
   const handleLogout = async () => {
     await authClient.signOut({

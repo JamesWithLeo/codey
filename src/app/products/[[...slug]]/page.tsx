@@ -1,10 +1,10 @@
-import ProductList from "../../components/client/productList";
 import ProductPagination from "../../components/client/ProductPagination";
 import FilterSeachByName from "../../components/client/utils/filterSeachProduct";
 import { Category } from "@/src/generated/prisma/enums";
 import { notFound } from "next/navigation";
 import { prisma } from "@/src/prisma";
 import ProductView from "../../components/Product/ProductView";
+import ProductList from "../../components/client/productList";
 
 export default async function Page({
   searchParams,

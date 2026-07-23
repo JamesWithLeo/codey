@@ -26,7 +26,6 @@ async function FetchCart(uid: string) {
   if (!cart) return null;
   const cart_id = cart.id;
 
-  await prisma.cartItem.findMany({ where: { cart_id } });
   const response = await prisma.cartItem.findMany({
     where: { cart_id: cart.id },
   });
@@ -66,7 +65,7 @@ export default async function Page() {
             </BreadcrumbList>
           </Breadcrumb>
         </div>
-        {(cart?.length ?? 0 > 0) ? (
+        {cart && cart.length > 0 ? (
           <>
             <CartPanel cartItem={cart} />
           </>

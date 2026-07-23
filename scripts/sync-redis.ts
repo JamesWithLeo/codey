@@ -13,9 +13,8 @@ async function Main() {
   for (const product of products) {
     pipeline.set(`product:${product.id}`, JSON.stringify(product));
 
-    for (const cat in Category) {
-      if (cat === product.category)
-        pipeline.set(`collection:${cat}`, product.id);
+    if (product.category) {
+      pipeline.sadd(`collection:${product.category}`, product.id);
     }
   }
   await pipeline.exec();

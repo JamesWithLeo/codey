@@ -12,6 +12,11 @@ export const auth = betterAuth({
       : process.env.BETTER_AUTH_URL!,
   ],
 
+  baseURL:
+    process.env.NODE_ENV !== "production"
+      ? process.env.BETTER_AUTH_URL
+      : "http://localhost:3000",
+
   user: {
     additionalFields: {
       role: { type: "string", input: false },

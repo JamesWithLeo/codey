@@ -1,13 +1,12 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-// import { getSession } from "next-auth/react";
 import { useState } from "react";
+import { toast } from "sonner";
 import {
   Card,
   CardAction,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -16,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { CLIENT_PRODUCT } from "@/src/types";
 import { useSession } from "@/lib/auth-client";
 import { Spinner } from "@/components/ui/spinner";
+import { ProductToast } from "@/src/app/components/common/ProductToast";
 
 export default function ProductCard({
   data: product,
@@ -50,22 +50,18 @@ export default function ProductCard({
     const item = await response.json();
 
     if (item.ok) {
-      setIsAddedToCart(true);
-      setIsAddingToCart(false);
-      setTimeout(() => {
-        setIsAddedToCart(false);
-      }, 5000);
+      ProductToast({
+        thumbnail: product.thumbnail,
+        productName: product.name,
+        link: {
+          href: `/cart`,
+          label: "View",
+        },
+      });
     } else {
-      if (item.maxCart) {
-        setErrorCart(item.error);
-        setTimeout(() => {
-          setErrorCart(null);
-        }, 10000);
-      }
-
-      setIsAddingToCart(false);
-      console.log(item);
+      toast.error("Failed to add to cart");
     }
+    setIsAddingToCart(false);
   }
 
   return (
@@ -73,7 +69,7 @@ export default function ProductCard({
       {errorCart !== null ? (
         <div
           role="alert"
-          className="alert shadow-sm alert-warning w-full max-w-sm -translate-x-1/2 left-1/2 text-white border-none z-10 fixed sm:bottom-8 top-4 sm:top-auto sm:right-4 sm:w-max flex flex-col gap-1 p-3 sm:p-4 sm:gap-2  sm:left-auto sm:-translate-x-0"
+          className="alert shadow-sm alert-warning w-full max-w-sm -translate-x-1/2 left-1/2 text-white border-none z-10 fixed sm:bottom-8 top-4 sm:top-auto sm:right-4 sm:w-max flex flex-col gap-1 p-3 sm:p-4 sm:gap-2  sm:left-auto sm:translate-x-0"
         >
           <div className="text-xs text-wrap justify-between text-gray-600 min-h-max h-10 w-full flex items-center gap-2 sm:gap-4">
             <span className="flex gap-2 sm:gap-4 items-center">
@@ -120,7 +116,7 @@ export default function ProductCard({
       {isAddedToCart ? (
         <div
           role="alert"
-          className="alert shadow-sm flex flex-col -translate-x-1/2 left-1/2 w-full max-w-sm top-4 alert-success h-max sm:left-auto sm:-translate-x-0 sm:top-auto text-white border-none z-10 fixed sm:bottom-8 sm:right-4 gap-2 sm:w-max"
+          className="alert shadow-sm flex flex-col -translate-x-1/2 left-1/2 w-full max-w-sm top-4 alert-success h-max sm:left-auto sm:translate-x-0 sm:top-auto text-white border-none z-10 fixed sm:bottom-8 sm:right-4 gap-2 sm:w-max"
         >
           <div className="text-xs text-wrap justify-between min-h-max h-10 w-full flex items-center gap-2 md:gap-4">
             <span className="flex gap-2 md:gap-4 items-center">
@@ -218,19 +214,6 @@ export default function ProductCard({
             {product.description}
           </CardDescription>
         </CardHeader>
-
-        {/* <CardFooter className=" ">
-          <Button
-            variant={"secondary"}
-            className={`w-full ${isAddingToCart ? "cursor-progress" : ""}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              HandleAddToCart();
-            }}
-          >
-            Add to cart
-          </Button>
-        </CardFooter> */}
       </Card>
     </>
   );

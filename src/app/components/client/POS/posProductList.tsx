@@ -3,7 +3,9 @@ import PosProductCard from "./posProductCad";
 import { useEffect, useReducer, useState } from "react";
 import PosSelectedProduct from "./posSelectedProductCard";
 import { omit } from "../utils/omit";
-import { isOrderValidForPOS, productType } from "../utils/validation";
+import { isOrderValidForPOS } from "../utils/validation";
+import { CheckOutItem } from "@/src/types";
+
 enum SELECTED_PRODUCT_REDUCER {
   increment = "increment",
   decrement = "decrement",
@@ -22,10 +24,10 @@ enum TOTAL_REDUCER {
 }
 
 function selectedReducer(
-  state: productType[],
+  state: CheckOutItem[],
   action: {
     type: SELECTED_PRODUCT_REDUCER;
-    payload?: productType;
+    payload?: CheckOutItem;
   },
 ) {
   const { type, payload } = action;
@@ -34,16 +36,17 @@ function selectedReducer(
       if (!payload) return state;
 
       const existingProduct = state.find(
-        (product) => product.id === payload.id,
+        (product) => product.product_id === payload.product_id,
       );
       // add as initial, increment the price and quantity accordingly if existed
       if (!existingProduct) return [...state, { ...payload }]; // return initial
       return state.map((product) =>
-        product.id === existingProduct.id
+        product.product_id === existingProduct.pricePerUnit
           ? {
               ...product,
               quantity: product.quantity + 1,
-              total_price: payload.total_price + payload.price,
+              subtotal:
+                payload.subtotal - payload.pricePerUnit * payload.quantity,
             }
           : product,
       );
@@ -51,14 +54,14 @@ function selectedReducer(
     case SELECTED_PRODUCT_REDUCER.decrement:
       if (!payload) return state;
 
-      return state.reduce<productType[]>((stayingProduct, product) => {
-        if (product.id === payload.id) {
+      return state.reduce<CheckOutItem[]>((stayingProduct, product) => {
+        if (product.product_id === payload.product_id) {
           if (product.quantity > 1) {
             // Reduce quantity but do not remove the product
             stayingProduct.push({
               ...product,
               quantity: product.quantity - 1,
-              total_price: product.total_price - product.price,
+              subtotal: product.pricePerUnit - product.quantity,
             });
           }
           // Optionally handle removing the product if quantity reaches 0
@@ -95,7 +98,7 @@ function totalReducer(
 export default function PosProductList({
   serializedProduct,
 }: {
-  serializedProduct: productType[];
+  serializedProduct: CheckOutItem[];
 }) {
   const [selectedProduct, dispatchProduct] = useReducer(selectedReducer, []);
   const [currentTotal, dispatchTotal] = useReducer(totalReducer, 0);
@@ -105,25 +108,25 @@ export default function PosProductList({
 
   const [errorLogs, setErrorLogs] = useState<errorType | null>(null);
 
-  function HandleAddToTerminal(product: productType) {
+  function HandleAddToTerminal(product: CheckOutItem) {
     dispatchProduct({
       type: SELECTED_PRODUCT_REDUCER.increment,
       payload: product,
     });
     dispatchTotal({
       type: TOTAL_REDUCER.increment,
-      payload: product.price,
+      payload: product.subtotal,
     });
   }
 
-  function HandleRemoveFromTerminal(toRemoveProduct: productType) {
+  function HandleRemoveFromTerminal(toRemoveProduct: CheckOutItem) {
     dispatchProduct({
       type: SELECTED_PRODUCT_REDUCER.decrement,
       payload: toRemoveProduct,
     });
     dispatchTotal({
       type: TOTAL_REDUCER.decrement,
-      payload: toRemoveProduct.price,
+      payload: toRemoveProduct.subtotal,
     });
   }
 
@@ -135,15 +138,15 @@ export default function PosProductList({
 
   async function PostPosOrder() {
     const toOrderProduct = selectedProduct.map((value) => {
-      const product_id = value.id;
+      const product_id = value.product_id;
       const product_name = value.name;
       return {
         product_id,
         product_name,
-        total_price: value.total_price,
+        subtotal: value.subtotal,
         quantity: value.quantity,
       };
-      return omit(value, ["price", "brand"]);
+      return omit(value, ["name"]);
     });
 
     const isValid = toOrderProduct.every((product) =>
@@ -174,7 +177,7 @@ export default function PosProductList({
 
   async function ReduceItem() {
     const toOrderProduct = selectedProduct.map((value) => {
-      return omit(value, ["name", "price", "brand", "total_price"]);
+      return omit(value, ["name"]);
     });
 
     return fetch("/api/product", {
@@ -377,7 +380,7 @@ export default function PosProductList({
                 <PosProductCard
                   product={value}
                   onAdd={HandleAddToTerminal}
-                  key={value.id}
+                  key={value.product_id}
                 />
               );
             })}
@@ -402,7 +405,7 @@ export default function PosProductList({
             {selectedProduct?.map((value) => {
               return (
                 <PosSelectedProduct
-                  key={value.id}
+                  key={value.product_id}
                   product={value}
                   onIncrement={HandleAddToTerminal}
                   onDecrement={HandleRemoveFromTerminal}

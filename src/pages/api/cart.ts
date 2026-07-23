@@ -1,4 +1,4 @@
-import { isValidCartItem } from "@/src/app/components/client/utils/validation";
+import { isValidCartItem } from "@/lib/utils";
 import { prisma } from "@/src/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 

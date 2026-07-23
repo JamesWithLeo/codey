@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { DM_Sans } from "next/font/google";
 const sans = DM_Sans({ style: "normal", subsets: [] });
 import { useRouter, useSearchParams } from "next/navigation";
@@ -42,8 +43,10 @@ export default function CategoryNav({
     <section
       className={`flex gap-2 ${sans.className} md:flex-col  border-t pt-2 flex justify-between  px-4 md:px-8 text-xs items-center font-light `}
     >
-      <button
-        className="btn btn-circle md:hidden left-0 btn-xs "
+      <Button
+        className="md:hidden rounded-full left-0 "
+        variant={"outline"}
+        size={"icon-lg"}
         onClick={HandlePrev}
       >
         <svg
@@ -55,7 +58,7 @@ export default function CategoryNav({
         >
           <path d="M168,48V208a8,8,0,0,1-13.66,5.66l-80-80a8,8,0,0,1,0-11.32l80-80A8,8,0,0,1,168,48Z"></path>
         </svg>
-      </button>
+      </Button>
 
       <div
         className="md:grid md:grid-rows-1 flex grid-cols-10 text-center w-full max-w-7xl overflow-x-hidden md:gap-9 gap-6 text-xs"
@@ -317,7 +320,12 @@ export default function CategoryNav({
           </h1>
         </span>
       </div>
-      <button className="btn btn-circle  md:hidden btn-xs" onClick={HandleNext}>
+      <Button
+        className="md:hidden rounded-full left-0 "
+        variant={"outline"}
+        size={"icon-lg"}
+        onClick={HandleNext}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -327,7 +335,7 @@ export default function CategoryNav({
         >
           <path d="M181.66,133.66l-80,80A8,8,0,0,1,88,208V48a8,8,0,0,1,13.66-5.66l80,80A8,8,0,0,1,181.66,133.66Z"></path>
         </svg>
-      </button>
+      </Button>
     </section>
   );
 }

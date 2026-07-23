@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import GlobalHeader from "./components/Headers/GlobalHeader";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -38,6 +39,7 @@ export default async function RootLayout({
         {children}
         {modal}
         {/* <Footer /> */}
+        <Toaster />
       </body>
     </html>
   );

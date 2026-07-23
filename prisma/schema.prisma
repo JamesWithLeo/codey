@@ -25,7 +25,7 @@ model User {
   location      String?
   phoneNumber   String?
   carts         Cart[]    @relation("UserToCarts")
-  order         transaction[] @relation("UserToOrders")
+  order         Order[] @relation("UserToOrders")
 
   @@map("user")
 }
@@ -65,6 +65,7 @@ model Account {
   @@map("account")
 }
 
+
 model Verification {
   id         String   @id
   identifier String
@@ -75,4 +76,5 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+
 }

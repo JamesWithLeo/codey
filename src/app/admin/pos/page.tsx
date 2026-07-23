@@ -23,9 +23,11 @@ export default async function page() {
     return omit(
       {
         ...product,
-        price: parseFloat(product.price.toString()),
+        pricePerUnit: parseFloat(product.price.toString()),
         quantity: 1,
-        total_price: parseFloat(product.price.toString()),
+        subtotal: parseFloat(product.price.toString()),
+        product_id: product.id,
+        name: product.name,
       },
       [
         "createdAt",

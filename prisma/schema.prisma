@@ -1,8 +1,6 @@
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -65,14 +63,6 @@ model Account {
 
   @@index([userId])
   @@map("account")
-  updatedAt DateTime @updatedAt
-  ipAddress String?
-  userAgent String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@map("session")
 }
 
 

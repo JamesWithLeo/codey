@@ -19,7 +19,6 @@ import { ArrowRight, ShoppingCart } from "lucide-react";
 async function FetchCart(uid: string) {
   const cart = await prisma.cart.findFirst({ where: { user_id: uid } });
   if (!cart) return null;
-  const cart_id = cart.id;
 
   const response = await prisma.cartItem.findMany({
     where: { cart_id: cart.id },

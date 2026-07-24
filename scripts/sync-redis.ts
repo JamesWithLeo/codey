@@ -1,12 +1,8 @@
 import { prisma } from "@/src/prisma";
 import { redis } from "@/lib/redis";
 
-import { Category } from "@/src/generated/prisma/enums";
-
 async function Main() {
-  const products = await prisma.product.findMany({
-    omit: { sales: true, createdAt: true, updatedAt: true },
-  });
+  const products = await prisma.product.findMany();
 
   const pipeline = redis.pipeline();
 

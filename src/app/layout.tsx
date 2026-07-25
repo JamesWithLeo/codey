@@ -5,8 +5,6 @@ import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 
 import GlobalHeader from "./components/Headers/GlobalHeader";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -23,10 +21,6 @@ export default async function RootLayout({
   children: React.ReactNode;
   modal: React.ReactNode;
 }>) {
-  const session = await auth.api.getSession({
-    headers: await headers(), // you need to pass the headers object.
-  });
-
   return (
     <html
       lang="en"
@@ -35,7 +29,7 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
     >
       <body>
-        <GlobalHeader session={session} />
+        <GlobalHeader />
         {children}
         {modal}
         {/* <Footer /> */}

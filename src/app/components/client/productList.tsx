@@ -3,15 +3,24 @@ import ProductCard from "./ProductCard";
 import { DM_Sans } from "next/font/google";
 const sans = DM_Sans({ style: "normal", subsets: [] });
 import { CLIENT_PRODUCT } from "@/src/types";
+import { useSession } from "@/lib/auth-client";
 
 export default function ProductList({ data }: { data: CLIENT_PRODUCT[] }) {
   const products = data;
+  const session = useSession();
   return (
     <>
       {products.length ? (
         <>
-          {products.map((product: CLIENT_PRODUCT) => {
-            return <ProductCard key={product.id} data={product} />;
+          {products.map((product: CLIENT_PRODUCT, index) => {
+            return (
+              <ProductCard
+                key={product.id}
+                data={product}
+                index={index}
+                userId={session.data?.user.id}
+              />
+            );
           })}
         </>
       ) : null}

@@ -13,21 +13,23 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CLIENT_PRODUCT } from "@/src/types";
-import { useSession } from "@/lib/auth-client";
 import { Spinner } from "@/components/ui/spinner";
 import { ProductToast } from "@/src/app/components/common/ProductToast";
+import { optimizeCloudinaryUrl } from "@/lib/optimizeCloudinaryUrl";
 
 export default function ProductCard({
   data: product,
+  index,
+  userId,
 }: {
   data: CLIENT_PRODUCT;
+  index: number;
+  userId?: string | undefined;
 }) {
   const router = useRouter();
   const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
   const [isAddingToCart, setIsAddingToCart] = useState<boolean>(false);
   const [errorCart, setErrorCart] = useState<string | null>(null);
-  const { data, error } = useSession();
-  const { session, user } = { ...data };
 
   function HandleViewProduct() {
     router.push(`/products/${product.category}/${product.id}/`);
@@ -36,7 +38,7 @@ export default function ProductCard({
   async function HandleAddToCart() {
     if (isAddingToCart) return;
 
-    if (!data?.session || !user) {
+    if (!userId) {
       router.push("/login", { scroll: false });
       return;
     }
@@ -45,7 +47,7 @@ export default function ProductCard({
     const newCartItem = { quantity: 1, product_id: product.id };
     const response = await fetch("/api/cart", {
       method: "POST",
-      body: JSON.stringify({ user_id: user.id, item: newCartItem }),
+      body: JSON.stringify({ user_id: userId, item: newCartItem }),
     });
     const item = await response.json();
 
@@ -191,14 +193,16 @@ export default function ProductCard({
               </svg>
             )}
           </Button>
-          <Image
-            src={product.thumbnail}
-            width={600}
-            height={600}
-            alt={product.name}
-            className="h-full w-full object-cover z-0 transition-transform duration-300 group-hover:scale-105"
-            priority
-          />
+          <div className="relative aspect-square w-full overflow-hidden">
+            <Image
+              src={optimizeCloudinaryUrl(product.thumbnail, 400)}
+              alt={product.name}
+              fill
+              priority={index < 4}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover z-0 transition-transform duration-300 group-hover:scale-105"
+            />
+          </div>
         </div>
 
         <CardHeader className="pb-4 flex flex-col">

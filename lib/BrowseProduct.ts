@@ -1,6 +1,6 @@
 import FilterSeachByName from "@/src/app/components/client/utils/filterSeachProduct";
 import { Category } from "@/src/generated/prisma/enums";
-import { getRedisProduct } from "./redis/getRedisProduct";
+import { getRedisProducts } from "./redis/getRedisProducts";
 
 type Props = {
   query?: string | undefined;
@@ -18,10 +18,9 @@ export async function BrowseProduct({ query, category, page, limit }: Props) {
     });
     return { ...result };
   } else {
-    const result = await getRedisProduct({
+    const result = await getRedisProducts({
       page,
       limit,
-      query,
       category,
     });
     return { ...result };

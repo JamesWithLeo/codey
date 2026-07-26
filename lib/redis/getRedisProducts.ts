@@ -1,15 +1,13 @@
 import { product } from "@/src/generated/prisma/client";
 import { redis } from "./redis";
 
-export async function getRedisProduct({
+export async function getRedisProducts({
   page,
   limit,
-  query,
   category,
 }: {
   page: number;
   limit: number;
-  query?: string;
   category?: string;
 }) {
   const startIndex = (page - 1) * limit;

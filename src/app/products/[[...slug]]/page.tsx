@@ -5,6 +5,7 @@ import { prisma } from "@/src/prisma";
 import ProductView from "../../components/Product/ProductView";
 import ProductList from "../../components/client/productList";
 import { BrowseProduct } from "@/lib/BrowseProduct";
+import { getRedisProduct } from "@/lib/redis/getRedisProduct";
 
 export default async function Page({
   searchParams,
@@ -49,19 +50,25 @@ export default async function Page({
 
       if (isNaN(productId)) notFound();
 
-      const product = await prisma.product.findUnique({
-        where: {
-          id: productId,
-        },
-      });
+      let product = await getRedisProduct(productId);
 
-      //  Fallback: Verify record exists AND its category matches the URL route state
-      if (!product || product.category !== matchingCategoryEnum) notFound();
+      if (!product) {
+        const dbProduct = await prisma.product.findUnique({
+          where: { id: productId },
+        });
+
+        if (!dbProduct) notFound();
+
+        product = dbProduct;
+      }
 
       return (
         <ProductView
           slug={slug}
-          product={{ ...product, price: product.price.toFixed(2) }}
+          product={{
+            ...product,
+            price: Number(product.price).toFixed(2),
+          }}
         />
       );
     }

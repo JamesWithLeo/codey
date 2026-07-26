@@ -11,7 +11,7 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import LogoutButton from "../client/button/logoutButton";
-import Search from "../client/search";
+import SearchInput from "../client/search";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +24,8 @@ import {
 import { DM_Serif_Display } from "next/font/google";
 import { useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { Suspense } from "react";
+import Search from "../client/search";
 const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
   weight: ["400"],

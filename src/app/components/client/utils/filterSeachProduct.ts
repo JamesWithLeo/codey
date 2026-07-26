@@ -6,26 +6,22 @@ export default async function FilterSeachByName({
   searchByName,
   category,
   limit,
-  cursor,
   page = 1,
-  defaultLimit = 15,
+  cursor,
 }: {
   searchByName?: string;
   category?: Category;
   limit: number;
-  cursor?: number | string;
   page?: number;
-  defaultLimit?: number;
+  cursor?: number;
 }) {
   const whereClause: Prisma.productWhereInput = {};
-  const currentLimit = limit || defaultLimit;
 
-  // 1. Filter by Category
   if (category) {
     whereClause.category = category;
   }
 
-  // 2. Filter by Search Query
+  // Filter by Search Query
   const isSearching = !!(searchByName && searchByName.trim() !== "");
   if (isSearching) {
     const words = searchByName.trim().split(/\s+/);
@@ -37,30 +33,39 @@ export default async function FilterSeachByName({
     }));
   }
 
-  const parsedCursor =
-    typeof cursor === "string" ? parseInt(cursor, 10) : cursor;
-  const hasValidCursor = parsedCursor !== undefined && !isNaN(parsedCursor);
-
-  // 3. Hybrid Strategy Selection
+  // Hybrid Strategy Selection
   let queryOptions: Prisma.productFindManyArgs = {
     where: whereClause,
-    take: currentLimit,
-    orderBy: { id: "asc" },
+    take: limit,
+    orderBy: { createdAt: "desc" },
   };
 
-  // If the user is searching text OR navigating pages beyond page 1,
-  // offset pagination ensures that going backward is mathematically perfect.
-  if (isSearching || page > 1) {
-    queryOptions.skip = (page - 1) * currentLimit;
-  } else if (hasValidCursor) {
-    queryOptions.cursor = { id: parsedCursor };
-    queryOptions.skip = 1;
+  if (cursor) {
+    queryOptions.cursor = { id: cursor };
+    queryOptions.skip = 1; // Skip current cursor item
+  } else if (page > 1) {
+    queryOptions.skip = (page - 1) * limit;
   }
 
-  const filteredProducts = await prisma.product.findMany(queryOptions);
+  const [rawProducts, totalItems] = await Promise.all([
+    prisma.product.findMany(queryOptions),
+    prisma.product.count({ where: whereClause }),
+  ]);
 
-  return filteredProducts.map((product) => ({
-    ...product,
-    price: product.price ? Number(product.price).toFixed(2) : "0.00",
-  }));
+  const currentProductsLenght = rawProducts.length;
+
+  return {
+    products: rawProducts.map((product) => ({
+      ...product,
+      price: product.price ? Number(product.price).toFixed(2) : "0.00",
+    })),
+
+    pagination: {
+      totalItems,
+      isEnd: currentProductsLenght < limit,
+      currentPage: page,
+      currentCursor: cursor,
+      nextCursor: rawProducts.at(currentProductsLenght - 1)?.id ?? 0,
+    },
+  };
 }

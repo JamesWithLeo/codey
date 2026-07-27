@@ -1,10 +1,11 @@
 import ProductPagination from "../../components/client/ProductPagination";
-import FilterSeachByName from "../../components/client/utils/filterSeachProduct";
 import { Category } from "@/src/generated/prisma/enums";
 import { notFound } from "next/navigation";
 import { prisma } from "@/src/prisma";
 import ProductView from "../../components/Product/ProductView";
 import ProductList from "../../components/client/productList";
+import { BrowseProduct } from "@/lib/BrowseProduct";
+import { getRedisProduct } from "@/lib/redis/getRedisProduct";
 
 export default async function Page({
   searchParams,
@@ -43,30 +44,31 @@ export default async function Page({
       notFound();
     }
 
+    // skips to product view if category is valid and no product id given.
     if (isProductDetailView) {
       const productId = parseInt(lastSegment, 10);
 
-      // 1. Safe parsing guard (highly recommended)
-      if (isNaN(productId)) {
-        notFound();
-      }
+      if (isNaN(productId)) notFound();
 
-      // 2. Query strictly by the unique primary key (id)
-      const product = await prisma.product.findUnique({
-        where: {
-          id: productId,
-        },
-      });
+      let product = await getRedisProduct(productId);
 
-      // 3. Fallback: Verify record exists AND its category matches the URL route state
-      if (!product || product.category !== matchingCategoryEnum) {
-        notFound();
+      if (!product) {
+        const dbProduct = await prisma.product.findUnique({
+          where: { id: productId },
+        });
+
+        if (!dbProduct) notFound();
+
+        product = dbProduct;
       }
 
       return (
         <ProductView
           slug={slug}
-          product={{ ...product, price: product.price.toFixed(2) }}
+          product={{
+            ...product,
+            price: Number(product.price).toFixed(2),
+          }}
         />
       );
     }
@@ -79,42 +81,31 @@ export default async function Page({
     notFound();
   }
 
-  const currentCursor = parseInt(query.cursor);
-  const rawCursor = Number.isNaN(currentCursor) ? undefined : currentCursor;
-
   const rawPage = parseInt(query.page);
-  const page = Number.isNaN(rawPage) ? 1 : rawPage; // 👈 Extract page parameter safely
+  const page = Number.isNaN(rawPage) ? 1 : rawPage;
 
   const currentLimit = parseInt(query.limit);
   const limit = Number.isNaN(currentLimit) ? LIMIT : currentLimit;
 
-  const products = await FilterSeachByName({
-    searchByName: query.query,
+  const { products, pagination } = await BrowseProduct({
+    query: query.query,
     category: matchingCategoryEnum,
-    cursor: rawCursor,
-    page: page, // 👈 Pass the trackable page number down
-    limit: limit + 1,
-    defaultLimit: LIMIT,
+    page: page,
+    limit,
   });
 
-  // The rest of your slicing rules and cursors stay exactly the same!
-  const hasMore = products.length > limit;
-  const visibleProducts = hasMore ? products.slice(0, limit) : products;
-  const firstCursor = visibleProducts[0]?.id;
-  const nextCursor = hasMore ? products[products.length - 1]?.id : undefined;
-  const isEnd = !hasMore;
   return (
     <div className="w-full bg-base-300 py-2 h-max flex px-4 md:px-8 flex-col gap-2 items-center justify-center">
       <div className="w-full h-min py-4 min-h-screen max-w-7xl grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4">
-        {/* FIX 1: Pass visibleProducts instead of raw products */}
-        <ProductList data={visibleProducts} />
+        <ProductList data={products} />
       </div>
-      {/* FIX 2: Check visibleProducts length instead of raw products length */}
-      {visibleProducts.length ? (
+      {products.length ? (
         <ProductPagination
-          isEnd={isEnd}
-          firstCursor={firstCursor}
-          nextCursor={nextCursor}
+          isEnd={pagination.isEnd}
+          page={pagination.currentPage}
+          firstCursor={pagination.currentCursor}
+          defaultLimit={limit}
+          nextCursor={pagination.nextCursor}
         />
       ) : null}
     </div>

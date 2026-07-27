@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +11,7 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import LogoutButton from "../client/button/logoutButton";
-import Search from "../client/search";
+import SearchInput from "../client/search";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,14 +22,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DM_Serif_Display } from "next/font/google";
-import { Session } from "@/lib/auth-client";
+import { useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { Suspense } from "react";
+import Search from "../client/search";
 const dmSerif = DM_Serif_Display({
   subsets: ["latin"],
   weight: ["400"],
 });
-export default function GlobalHeader({ session }: { session: Session | null }) {
+export default function GlobalHeader() {
   const router = useRouter();
+  const session = useSession();
+  const { data } = session;
+
   return (
     <section className="flex sticky top-0 z-30 bg-white justify-center w-full flex-col items-center px-4 md:px-8 h-16">
       <div className="max-w-7xl grid grid-cols-3 w-full justify-between items-center">
@@ -53,7 +59,7 @@ export default function GlobalHeader({ session }: { session: Session | null }) {
               <DropdownMenuGroup>
                 <DropdownMenuLabel>Account</DropdownMenuLabel>
 
-                {!session || !session.user ? (
+                {!data?.session || !data.user ? (
                   <>
                     <DropdownMenuItem>
                       <Link href={"/login"} scroll={false} className="w-full">
@@ -77,7 +83,7 @@ export default function GlobalHeader({ session }: { session: Session | null }) {
                       <Home />
                       Home
                     </DropdownMenuItem>
-                    {session.user.role === "admin" && (
+                    {data.user.role === "admin" && (
                       <DropdownMenuItem
                         className={"cursor-pointer"}
                         onClick={() => {

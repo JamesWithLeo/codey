@@ -15,6 +15,7 @@ import { useSession } from "@/lib/auth-client";
 import { ProductToast } from "../common/ProductToast";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
+import { optimizeCloudinaryUrl } from "@/lib/optimizeCloudinaryUrl";
 
 type Props = {
   product: CLIENT_PRODUCT;
@@ -71,11 +72,12 @@ export default function ProductView({ product, slug }: Props) {
       <div className="grid gap-8 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
         <div className="flex items-center flex-col px-4">
           <Image
-            src={product.thumbnail}
+            src={optimizeCloudinaryUrl(product.thumbnail)}
             alt={`${product.name} Thumbnail`}
             height={200}
             width={200}
-            priority
+            loading="lazy"
+            sizes="(max-width: 640px) 208px, 320px"
             className="w-full aspect-square lg:w-80 h-max sm:w-60 max-w-52 sm:max-w-80"
           />
         </div>

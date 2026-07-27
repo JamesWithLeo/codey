@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { DM_Sans } from "next/font/google";
 import { Button } from "@/components/ui/button";

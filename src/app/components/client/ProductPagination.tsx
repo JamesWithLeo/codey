@@ -25,19 +25,18 @@ export default function ProductPagination({
   firstCursor,
   nextCursor,
   defaultLimit = 15,
+  page,
 }: {
   isEnd: boolean;
   firstCursor?: number | string;
   nextCursor?: number | string;
+  page: number;
   defaultLimit?: number;
 }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const rawPage = searchParams?.get("page");
-  const page =
-    rawPage && !Number.isNaN(parseInt(rawPage)) ? parseInt(rawPage) : 1;
   const itemsPerPage = searchParams?.get("limit") || defaultLimit.toString();
 
   // Helper function to build and execute the navigation cleanly
@@ -52,8 +51,7 @@ export default function ProductPagination({
   const handleLimitChange = (newLimit: string) => {
     navigateWithParams((params) => {
       params.set("limit", newLimit);
-      params.delete("page");
-      params.delete("cursor"); // Reset back to page 1 on limit modification
+      // params.delete("page");
     });
   };
 
@@ -62,7 +60,6 @@ export default function ProductPagination({
     if (!nextCursor || isEnd) return;
 
     navigateWithParams((params) => {
-      params.set("cursor", nextCursor.toString());
       params.set("page", (page + 1).toString());
       params.set("limit", itemsPerPage);
     });
@@ -75,11 +72,11 @@ export default function ProductPagination({
     navigateWithParams((params) => {
       if (prevPage === 1) {
         // Wipe cursor state cleanly out to pull from the top of the search result stack
-        params.delete("cursor");
+        // params.delete("cursor");
         params.delete("page");
       } else if (firstCursor) {
         // Approach A: Send back the first item's ID as the marker for the prior data window
-        params.set("cursor", firstCursor.toString());
+        // params.set("cursor", firstCursor.toString());
         params.set("page", prevPage.toString());
       }
     });

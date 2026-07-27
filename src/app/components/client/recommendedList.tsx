@@ -3,6 +3,7 @@ import { product } from "@/src/generated/prisma/client";
 import React, { use } from "react";
 import ProductCard from "./ProductCard";
 import Link from "next/link";
+import { useSession } from "@/lib/auth-client";
 
 export default function RecommendedList({
   promise,
@@ -12,6 +13,7 @@ export default function RecommendedList({
   category: Category;
 }) {
   const products = use(promise);
+  const session = useSession();
   return (
     <>
       {products.length ? (
@@ -21,12 +23,19 @@ export default function RecommendedList({
               <h1>Recommended</h1>
             </span>
             <div className="h-full w-full grid grid-cols-2 grid-rows-1 md:grid-cols-4 gap-2">
-              {products.map((product: product) => {
+              {products.map((product: product, index) => {
                 const productSerialize = {
                   ...product,
                   price: product.price.toString(),
                 };
-                return <ProductCard key={product.id} data={productSerialize} />;
+                return (
+                  <ProductCard
+                    key={product.id}
+                    data={productSerialize}
+                    index={index}
+                    userId={session.data?.user.id}
+                  />
+                );
               })}
             </div>
             <span className="flex flex-col">

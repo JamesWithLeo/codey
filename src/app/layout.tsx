@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import "@/src/app/globals.css";
 
-import { Inter } from "next/font/google";
+import { Oxanium, JetBrains_Mono } from "next/font/google";
 import { cn } from "@/lib/utils";
 
 import GlobalHeader from "./components/Headers/GlobalHeader";
 import { Toaster } from "@/components/ui/sonner";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const jetbrainsMonoHeading = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-heading",
+});
+
+const oxanium = Oxanium({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "Hardware",
@@ -25,7 +30,12 @@ export default function RootLayout({
     <html
       lang="en"
       data-theme="bumblebee"
-      className={cn("font-sans ", inter.variable)}
+      className={cn(
+        "font-sans ",
+        "font-sans",
+        oxanium.variable,
+        jetbrainsMonoHeading.variable,
+      )}
       data-scroll-behavior="smooth"
     >
       <body>

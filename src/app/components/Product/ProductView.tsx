@@ -69,6 +69,29 @@ export default function ProductView({ product, slug }: Props) {
 
   return (
     <div className="mx-auto mt-6 w-full max-w-7xl min-h-screen bg-background px-4 py-6 sm:px-6 lg:px-8">
+      <Button
+        onClick={() => {
+          router.back();
+        }}
+        variant={"secondary"}
+        className="flex  items-center gap-2"
+        size={"sm"}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+        Back
+      </Button>
       <div className="grid gap-8 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
         <div className="flex items-center flex-col px-4">
           <Image

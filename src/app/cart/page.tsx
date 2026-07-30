@@ -36,8 +36,8 @@ export default async function Page() {
   if (!session || !user) redirect("/");
   const cart = await FetchCart(user.id);
   return (
-    <div className="w-full flex   lg:min-h-dvh items-start    justify-center  ">
-      <div className="w-full h-full  gap-0  flex max-w-7xl  flex-col  items-center justify-center">
+    <div className="w-full flex h-full   lg:min-h-dvh items-start    justify-center  ">
+      <div className="w-full h-full  flex max-w-7xl  flex-col  items-center justify-center">
         <div className="breadcrumbs  self-start   ">
           <Breadcrumb>
             <BreadcrumbList>
@@ -66,11 +66,11 @@ export default async function Page() {
 const EmptyCartView = () => {
   return (
     <div
-      className={`min-h-full w-full flex items-center justify-center px-6 ${sans.className}`}
+      className={`   h-full   w-full  flex items-center justify-center px-6 ${sans.className}`}
     >
-      <div className="max-w-md w-full text-center flex flex-col items-center">
+      <div className="max-w-md  text-center flex flex-col items-center">
         {/* Shopping Themed Icon Container */}
-        <div className="bg-amber-100 p-4 rounded-full text-amber-600 mb-6 border border-amber-200 shadow-sm">
+        <div className="bg-amber-100 p-4  rounded-full text-amber-600 mb-6 border border-amber-200 shadow-sm">
           <ShoppingCart className="h-12 w-12 stroke-[1.5]" />
         </div>
 

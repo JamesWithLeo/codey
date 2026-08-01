@@ -57,7 +57,7 @@ export default async function Page() {
   const orders = await getOrders(user.id);
 
   return (
-    <div className="w-full min-h-dvh border-t px-4 py-8 sm:px-6 lg:px-8">
+    <div className="w-full min-h-dvh  px-4  sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-6">
         <div className="flex flex-col gap-4">
           <Breadcrumb>

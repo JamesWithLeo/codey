@@ -1,5 +1,11 @@
-import { ReactNode } from "react";
-
-export default function ProfileLayout({ children }: { children: ReactNode }) {
-  return <div className="min-h-screen border-t">{children}</div>;
+import GlobalHeader from "../components/Headers/GlobalHeader";
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <GlobalHeader />
+      <div className="overflow-y-auto h-[calc(100dvh-6rem)] px-4 md:px-8  w-full border-t py-4    ">
+        {children}
+      </div>
+    </>
+  );
 }

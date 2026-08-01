@@ -4,8 +4,8 @@ import "@/src/app/globals.css";
 import { Oxanium, JetBrains_Mono } from "next/font/google";
 import { cn } from "@/lib/utils";
 
-import GlobalHeader from "./components/Headers/GlobalHeader";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const jetbrainsMonoHeading = JetBrains_Mono({
   subsets: ["latin"],
@@ -39,11 +39,12 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
     >
       <body>
-        <GlobalHeader />
-        {children}
-        {modal}
-        {/* <Footer /> */}
-        <Toaster />
+        <TooltipProvider>
+          {children}
+          {modal}
+          {/* <Footer /> */}
+          <Toaster />
+        </TooltipProvider>
       </body>
     </html>
   );

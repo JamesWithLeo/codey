@@ -106,7 +106,7 @@ export default function ProfileDashboard({ user }: { user: ProfileUser }) {
   };
 
   return (
-    <main className="min-h-dvh bg-background px-4 py-8 text-foreground sm:px-6 lg:px-8">
+    <main className="min-h-full bg-background px-4  text-foreground sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-6">
         <header className="flex flex-col gap-4 rounded-3xl border border-border bg-card p-4 lg:p-6  md:flex-row md:items-end md:justify-between">
           <div className="space-y-3">

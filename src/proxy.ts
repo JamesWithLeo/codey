@@ -1,12 +1,23 @@
+import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { nextUrl } = request;
   const pathname = nextUrl.pathname;
 
   if (["/"].includes(pathname)) {
     return NextResponse.redirect(new URL("/products", request.url));
+  }
+
+  if (pathname.startsWith("/admin")) {
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    });
+
+    if (!session || session.user.role !== "admin") {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   }
 
   return NextResponse.next();

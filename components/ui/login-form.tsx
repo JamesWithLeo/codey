@@ -6,21 +6,69 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import signInWithGoogle from "@/lib/sign-in";
+import { signInWithGoogle, signInWithEmail } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { Form, Field as FormischField, useForm } from "@formisch/react";
+import { Checkbox } from "./checkbox";
+import * as v from "valibot";
+
+const LoginSchema = v.object({
+  email: v.pipe(
+    v.string(),
+    v.nonEmpty("Please enter your email."),
+    v.email("The email address is badly formatted."),
+  ),
+  password: v.pipe(v.string(), v.nonEmpty("Please enter your password.")),
+  rememberMe: v.pipe(v.boolean()),
+});
 
 export function LoginForm({
   className,
   isFullPage = false,
   ...props
 }: React.ComponentProps<"div"> & { isFullPage?: boolean }) {
-  const handleLogin = async () => {
-    const { data, error } = await signInWithGoogle();
-    console.log(data, error);
+  const loginForm = useForm({
+    schema: LoginSchema,
+    initialInput: {
+      rememberMe: true,
+      email: "",
+      password: "",
+    },
+    validate: "submit",
+    revalidate: "change",
+  });
+
+  const handleLoginGoogle = async () => {
+    const { error } = await signInWithGoogle();
+    if (error && error.message) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleLoginEmail = async ({
+    email,
+    password,
+    rememberMe,
+  }: {
+    email: string;
+    password: string;
+    rememberMe: boolean;
+  }) => {
+    const { error } = await signInWithEmail({
+      email,
+      password,
+      callbackURL: "/",
+      rememberMe,
+    });
+    if (error && error.message) {
+      toast.error(error.message);
+    }
   };
   return (
     <div className={cn("flex flex-col gap-6 ", className)} {...props}>
@@ -28,7 +76,9 @@ export function LoginForm({
         className={`overflow-hidden h-full p-0 ${isFullPage && "border-0"}`}
       >
         <CardContent className="grid  p-4 h-full md:grid-cols-2">
-          <form
+          <Form
+            of={loginForm}
+            onSubmit={handleLoginEmail}
             className={`p-6 md:p-8 ${isFullPage && "space-y-4 max-w-md w-full place-self-center "}`}
           >
             <FieldGroup>
@@ -38,33 +88,75 @@ export function LoginForm({
                   Login to your Hardware Store account
                 </p>
               </div>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  className="h-10"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </Field>
-              <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
-                    className="ml-auto text-xs underline-offset-2 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  className="h-10"
-                  required
-                />
-              </Field>
+              <FormischField of={loginForm} path={["email"]}>
+                {(field) => (
+                  <Field data-invalid={field.errors !== null}>
+                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                    <Input
+                      id="email"
+                      className="h-10"
+                      type="email"
+                      placeholder="juan@example.com"
+                      required
+                      aria-invalid={field.errors !== null}
+                      {...field.props}
+                    />
+                    {field.errors && (
+                      <FieldError
+                        errors={field.errors.map((message) => ({ message }))}
+                      />
+                    )}
+                  </Field>
+                )}
+              </FormischField>
+              <FormischField of={loginForm} path={["password"]}>
+                {(field) => (
+                  <Field data-invalid={field.errors !== null}>
+                    <div className="flex items-center">
+                      <FieldLabel htmlFor="password">Password</FieldLabel>
+                    </div>
+                    <Input
+                      id="password"
+                      type="password"
+                      className="h-10"
+                      required
+                      aria-invalid={field.errors !== null}
+                      {...field.props}
+                    />
+                    {field.errors && (
+                      <FieldError
+                        errors={field.errors.map((message) => ({ message }))}
+                      />
+                    )}
+                  </Field>
+                )}
+              </FormischField>
+              <FormischField of={loginForm} path={["rememberMe"]}>
+                {(field) => (
+                  <Field data-invalid={field.errors !== null}>
+                    <div className="flex items-center gap-1">
+                      <FieldLabel htmlFor="rememberMe">Remember me?</FieldLabel>
+                      <Checkbox
+                        checked={field.input ?? true}
+                        onCheckedChange={(checked) =>
+                          field.onChange(checked === true)
+                        }
+                      />
+                      <a
+                        href="#"
+                        className="ml-auto text-xs underline-offset-2 hover:underline"
+                      >
+                        Forgot your password?
+                      </a>
+                    </div>
+                    {field.errors && (
+                      <FieldError
+                        errors={field.errors.map((message) => ({ message }))}
+                      />
+                    )}
+                  </Field>
+                )}
+              </FormischField>
               <Field>
                 <Button type="submit" size={"lg"}>
                   Login
@@ -75,7 +167,7 @@ export function LoginForm({
               </FieldSeparator>
               <Field className="flex w-full">
                 <Button
-                  onClick={handleLogin}
+                  onClick={handleLoginGoogle}
                   variant="outline"
                   className={"w-full"}
                   size={"lg"}
@@ -101,7 +193,7 @@ export function LoginForm({
                 <a href="#">Privacy Policy</a>.
               </FieldDescription>
             )}
-          </form>
+          </Form>
           <div className="relative hidden bg-muted md:block">
             <img
               src="/auth-design-7.jpg"

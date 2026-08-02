@@ -9,6 +9,8 @@ import {
   ShoppingCart,
   ShoppingBag,
   LayoutDashboard,
+  BarChart3,
+  Package,
 } from "lucide-react";
 import LogoutButton from "../client/button/logoutButton";
 import {
@@ -81,17 +83,6 @@ export default function GlobalHeader() {
                       <Home />
                       Home
                     </DropdownMenuItem>
-                    {data.user.role === "admin" && (
-                      <DropdownMenuItem
-                        className={"cursor-pointer"}
-                        onClick={() => {
-                          router.push("/admin");
-                        }}
-                      >
-                        <LayoutDashboard />
-                        Admin Dashboard
-                      </DropdownMenuItem>
-                    )}
                     <DropdownMenuItem
                       className={"cursor-pointer"}
                       onClick={() => {
@@ -119,6 +110,39 @@ export default function GlobalHeader() {
                       <ShoppingBag />
                       Orders
                     </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuLabel>Admin</DropdownMenuLabel>
+                    {data.user.role === "admin" && (
+                      <>
+                        <DropdownMenuItem
+                          className={"cursor-pointer"}
+                          onClick={() => {
+                            router.push("/admin");
+                          }}
+                        >
+                          <LayoutDashboard />
+                          Dashboard
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className={"cursor-pointer"}
+                          onClick={() => {
+                            router.push("/admin/analytics");
+                          }}
+                        >
+                          <BarChart3 />
+                          Analytics
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className={"cursor-pointer"}
+                          onClick={() => {
+                            router.push("/admin/analytics");
+                          }}
+                        >
+                          <Package />
+                          Products
+                        </DropdownMenuItem>
+                      </>
+                    )}
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                       <LogoutButton />

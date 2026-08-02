@@ -10,12 +10,39 @@ export const auth = betterAuth({
 
   trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:3000"],
 
+  //  id: string;
+  //   createdAt: Date;
+  //   updatedAt: Date;
+  //   email: string;
+  //   emailVerified: boolean;
+  //   name: string;
+  //   image: string | null;
+  //   role: Role;
+  //   lastName: string | null;
+  //   firstName: string | null;
+  //   isOnline: boolean;
+
   user: {
     additionalFields: {
-      role: { type: "string", input: false },
-      firstName: { type: "string" },
+      role: {
+        type: "string",
+        input: false,
+        required: false,
+        defaultValue: "user",
+      },
+
       lastName: { type: "string" },
-      isOnline: { type: "boolean" },
+      firstName: { type: "string" },
+      location: { type: "string" },
+      phoneNumber: { type: "string" },
+
+      // name: { type: "string", required: false },
+      // isOnline: { type: "boolean", required: false, defaultValue: false },
+      // image: {
+      //   type: "string",
+      //   required: false,
+      //   defaultValue: null,
+      // },
     },
   },
 

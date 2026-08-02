@@ -14,7 +14,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-import { BarChart3, LayoutGrid, Package } from "lucide-react";
+import { BarChart3, LayoutDashboard, Package } from "lucide-react";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 const links = [
@@ -22,7 +22,7 @@ const links = [
     href: "/admin",
     label: "Dashboard",
     description: "Store overview",
-    icon: LayoutGrid,
+    icon: LayoutDashboard,
   },
   {
     href: "/admin/analytics",

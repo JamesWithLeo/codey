@@ -38,7 +38,7 @@ export default function RootLayout({
       )}
       data-scroll-behavior="smooth"
     >
-      <body>
+      <body className="h-full">
         <TooltipProvider>
           {children}
           {modal}

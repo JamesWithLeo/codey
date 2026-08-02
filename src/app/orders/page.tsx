@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { ArrowRight, PackageCheck, ShoppingBag } from "lucide-react";
+import { PackageCheck, ShoppingBag } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -57,9 +57,9 @@ export default async function Page() {
   const orders = await getOrders(user.id);
 
   return (
-    <div className="w-full min-h-dvh  px-4  sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-7xl flex-col gap-6">
-        <div className="flex flex-col gap-4">
+    <div className="w-full  px-4 h-full   sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl h-full flex-col gap-6">
+        <div className="flex flex-col  gap-4">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -71,31 +71,12 @@ export default async function Page() {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-
-          <div className="flex flex-wrap items-end justify-between gap-4 rounded-2xl border border-zinc-200 bg-white p-6 ">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-500">
-                Your account
-              </p>
-              <h1 className="mt-2 text-3xl font-semibold text-zinc-900">
-                Orders
-              </h1>
-              <p className="mt-2 max-w-2xl text-sm text-zinc-500">
-                Track every purchase, review recent deliveries, and jump
-                straight to a specific order whenever you need it.
-              </p>
-            </div>
-            <Button size="lg" className="gap-2  rounded-full">
-              <Link href="/products">Continue shopping</Link>
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
         </div>
 
-        {orders.length ? (
+        {orders.length > 0 ? (
           <OrdersView orders={orders} />
         ) : (
-          <div className="flex min-h-[24rem] flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-300 bg-white/70 p-8 text-center">
+          <div className="flex h-full flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-300 bg-white/70 p-8 text-center">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-zinc-100 text-zinc-600">
               <ShoppingBag className="h-8 w-8" />
             </div>
@@ -106,11 +87,9 @@ export default async function Page() {
               Once you place an order, it will appear here with a quick
               overview, payment status, and a direct link to the full details.
             </p>
-            <Button className="mt-6 gap-2 rounded-full">
-              <Link href="/products">
-                Browse products
-                <PackageCheck className="h-4 w-4" />
-              </Link>
+            <Button size="lg" className="mt-6 gap-2 rounded-full">
+              <PackageCheck className="h-4 w-4" />
+              <Link href="/products">Browse products</Link>
             </Button>
           </div>
         )}

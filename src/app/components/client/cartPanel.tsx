@@ -127,7 +127,13 @@ export default function CartPanel({
     });
 
     const result = await response.json();
-    console.log(result);
+
+    return {
+      success: result.success === true ? true : false,
+      message: result.message
+        ? (result.message as string)
+        : "Checkout failed. Please try again.",
+    };
   }
 
   function HandleMark(id: string, type: "select" | "unselect") {

@@ -31,12 +31,15 @@ const paymentOptions = [
 export function PaymentOptionDialog({
   onConfirm,
 }: {
-  onConfirm?: (option: string | null) => void;
+  onConfirm?: (
+    option: string | null,
+  ) => Promise<{ success: boolean; message?: string } | undefined>;
 }) {
   const [selected, setSelected] = useState<string | null>("");
 
+  const [opened, setOpened] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={opened} onOpenChange={setOpened}>
       <DialogTrigger
         render={<Button className={"w-full"}>Proceed to payment</Button>}
       />
@@ -68,7 +71,14 @@ export function PaymentOptionDialog({
             className=""
             size="lg"
             disabled={!selected}
-            onClick={() => onConfirm?.(selected)}
+            onClick={async () => {
+              const result = await onConfirm?.(selected);
+              if (result && result.success) {
+                alert("Payment successful!");
+                setOpened(false);
+              }
+              alert("Payment failed!");
+            }}
           >
             Confirm & Continue
           </Button>

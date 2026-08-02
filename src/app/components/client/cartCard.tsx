@@ -202,7 +202,7 @@ export default function CartCard({
               <h2 className="text-sm lg:text-base font-bold text-foreground">
                 ${(Number(product.price.toString()) * quantity).toFixed(2)}
               </h2>
-              <h1 className="text-xs text-zinc-500">Quanity:{quantity}</h1>
+              <h1 className="text-xs text-zinc-500">Quantity:{quantity}</h1>
             </>
           )}
         </CardContent>

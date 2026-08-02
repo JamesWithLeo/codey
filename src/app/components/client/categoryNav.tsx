@@ -199,7 +199,7 @@ export default function CategoryNav({
 
   return (
     <section
-      className={`flex gap-2 ${sans.className} md:flex-col  border-t pt-2 flex justify-between  px-4 md:px-8 text-xs items-center font-light `}
+      className={`flex gap-2 ${sans.className} md:flex-col   pt-2 flex justify-between  px-4 md:px-8 text-xs items-center font-light `}
     >
       <Button
         className="md:hidden rounded-full left-0 "
@@ -219,7 +219,7 @@ export default function CategoryNav({
       </Button>
 
       <div
-        className="md:grid md:grid-rows-1 flex grid-cols-10 text-center w-full max-w-7xl overflow-x-hidden md:gap-9 gap-6 text-xs"
+        className="md:grid md:grid-rows-1 flex grid-cols-10  text-center w-full max-w-7xl overflow-x-hidden md:gap-9 gap-6 text-xs"
         id="categoriesContainer"
       >
         {CATEGORIES.map((category) => (

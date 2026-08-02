@@ -163,7 +163,7 @@ export default function ProductCard({
       ) : null}
 
       <Card
-        className="group relative w-full    max-w-sm  h-min overflow-hidden  m-0  hover:shadow-md"
+        className="group relative w-full     border-none hover:shadow max-w-sm  h-min overflow-hidden  gap-0 hover:outline  "
         onClick={(event) => {
           // Safe target check to ensure clicking the button doesn't trigger the card navigation
           if ((event.target as HTMLElement).tagName !== "BUTTON") {
@@ -172,7 +172,7 @@ export default function ProductCard({
         }}
       >
         {/* Container for the image mimicking the overlay style */}
-        <div className="relative aspect-square  w-full overflow-hidden ">
+        <div className="relative aspect-square p-4 pb-0 w-full overflow-hidden ">
           <Button
             onClick={(e) => {
               e.stopPropagation();
@@ -205,7 +205,7 @@ export default function ProductCard({
           </div>
         </div>
 
-        <CardHeader className="pb-4 flex flex-col">
+        <CardHeader className="pb-4   flex flex-col">
           <div className="flex w-full gap-1 flex-col lg:flex-row  ">
             <CardTitle className="line-clamp-1 flex-1  row-start-1 col-start-1  text-sm md:text-base">
               {product.name.toUpperCase()}

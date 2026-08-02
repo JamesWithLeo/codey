@@ -49,8 +49,8 @@ export default function OrdersView({ orders }: { orders: OrderCardData[] }) {
   }, [orders, sortMode]);
 
   return (
-    <div className="w-full space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/60 bg-background/80 p-4 ">
+    <div className="w-full grid flex-col grid-rows-[min-content_1fr]  space-y-3">
+      <div className="flex   flex-wrap items-center justify-between gap-3 rounded-2xl  p-2 ">
         <div>
           <p className="text-sm font-semibold text-zinc-900">
             Your recent orders
@@ -110,8 +110,8 @@ export default function OrdersView({ orders }: { orders: OrderCardData[] }) {
       <div
         className={
           viewMode === "list"
-            ? "flex flex-col gap-4"
-            : "grid gap-4 md:grid-cols-2 xl:grid-cols-3"
+            ? "flex flex-col h-full pb-2   overflow-y-scroll gap-4"
+            : "grid gap-4 overflow-y-scroll h-full  grid-cols-4 pb-2  md:grid-cols-2 xl:grid-cols-3"
         }
       >
         {sortedOrders.map((order) => (

@@ -3,7 +3,13 @@ import { notFound, redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { ArrowLeft, PackageCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import {
   Card,
   CardContent,
@@ -58,14 +64,27 @@ export default async function Page({
   }).format(Number(order.totalAmount));
 
   return (
-    <div className="w-full min-h-dvh bg-zinc-50/70 px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-5xl flex-col gap-6">
+    <div className="w-full min-h-dvh  ">
+      <div className="mx-auto flex max-w-7xl flex-col gap-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" className="rounded-full">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              <Link href="/orders">Back to orders</Link>
-            </Button>
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/orders">Orders</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/orders">
+                    Order #{order.id}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
           </div>
           <Badge
             variant={order.isPaid ? "secondary" : "outline"}
@@ -79,9 +98,9 @@ export default async function Page({
           </Badge>
         </div>
 
-        <Card className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-          <CardHeader className="border-b border-zinc-100 bg-zinc-50/80 p-6">
-            <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+        <Card className="overflow-hidden pt-0 rounded-2xl border border-zinc-200 bg-white shadow-sm">
+          <CardHeader className="border-b   border-zinc-100   px-6">
+            <div className="flex flex-col  gap-5 md:flex-row md:items-center md:justify-between">
               <div>
                 <CardTitle className="text-2xl font-semibold text-zinc-900">
                   Order #{order.id}
@@ -110,12 +129,13 @@ export default async function Page({
 
             <div className="space-y-3">
               {order.orderItems.map((item) => (
-                <div
+                <Link
+                  href={`/products/${item.product?.id}`}
                   key={item.id}
                   className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-zinc-200 bg-white px-4 py-3"
                 >
                   <div>
-                    <p className="font-medium text-zinc-900">
+                    <p className="font-medium hover:underline text-zinc-900">
                       {item.product?.name ?? "Product"}
                     </p>
                     <p className="text-sm text-zinc-500">
@@ -128,7 +148,7 @@ export default async function Page({
                       currency: "USD",
                     }).format(Number(item.subtotal))}
                   </p>
-                </div>
+                </Link>
               ))}
             </div>
           </CardContent>

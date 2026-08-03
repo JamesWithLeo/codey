@@ -39,3 +39,7 @@ next-env.d.ts
 .prettierrc
 .env.development
 .env
+
+
+/.agents/*
+/.impeccable/*

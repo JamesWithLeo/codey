@@ -35,31 +35,42 @@ export default async function Page() {
   const { session, user } = { ...AuthSession };
   if (!session || !user) redirect("/");
   const cart = await FetchCart(user.id);
+
+  const { firstName, lastName, location, phoneNumber } = user;
+
+  const missingFields = {
+    firstName: !firstName,
+    lastName: !lastName,
+    location: !location,
+    phoneNumber: !phoneNumber,
+  };
   return (
-    <div className="w-full flex h-full   lg:min-h-dvh items-start    justify-center  ">
-      <div className="w-full h-full  flex max-w-7xl  flex-col  items-center justify-center">
-        <div className="breadcrumbs  self-start   ">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/">Home</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/cart">Cart</BreadcrumbLink>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+    <>
+      <div className="w-full flex h-full   lg:min-h-dvh items-start    justify-center  ">
+        <div className="w-full h-full  flex max-w-7xl  flex-col  items-center justify-center">
+          <div className="breadcrumbs  self-start   ">
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/cart">Cart</BreadcrumbLink>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+          {cart && cart.length > 0 ? (
+            <>
+              <CartPanel cartItem={cart} missingFields={missingFields} />
+            </>
+          ) : (
+            <EmptyCartView />
+          )}
         </div>
-        {cart && cart.length > 0 ? (
-          <>
-            <CartPanel cartItem={cart} />
-          </>
-        ) : (
-          <EmptyCartView />
-        )}
       </div>
-    </div>
+    </>
   );
 }
 

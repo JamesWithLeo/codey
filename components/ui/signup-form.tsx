@@ -1,82 +1,181 @@
 "use client";
 
-import signInWithGoogle from "@/lib/sign-in";
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { signInWithGoogle, signupWithEmail } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { Form, Field as FormischField, useForm } from "@formisch/react";
+import * as v from "valibot";
+
+const SignupSchema = v.pipe(
+  v.object({
+    email: v.pipe(
+      v.string(),
+      v.nonEmpty("Please enter your email."),
+      v.email("The email address is badly formatted."),
+    ),
+    password: v.pipe(
+      v.string(),
+      v.nonEmpty("Please enter your password."),
+      v.minLength(8, "Password must be at least 8 characters."),
+    ),
+    confirmPassword: v.pipe(
+      v.string(),
+      v.nonEmpty("Please confirm your password."),
+    ),
+  }),
+  v.forward(
+    v.partialCheck(
+      [["password"], ["confirmPassword"]],
+      (input) => input.password === input.confirmPassword,
+      "The two passwords do not match.",
+    ),
+    ["confirmPassword"],
+  ),
+);
 
 export function SignupForm({
   className,
   isFullPage = false,
   ...props
 }: React.ComponentProps<"div"> & { isFullPage?: boolean }) {
-  const handleSignup = async () => {
-    const { data, error } = await signInWithGoogle();
-    console.log(data, error);
+  const signupForm = useForm({
+    schema: SignupSchema,
+    initialInput: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validate: "submit",
+    revalidate: "change",
+  });
+
+  const handleSignupGoogle = async () => {
+    const { error } = await signInWithGoogle();
+    if (error && error.message) {
+      toast.error(error.message);
+    }
   };
+
+  const handleSignupEmail = async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
+    const { error } = await signupWithEmail({
+      callbackURL: "/setup",
+      email,
+      password,
+    });
+    if (error && error.message) {
+      toast.error(error.message);
+    }
+  };
+
   return (
-    <div className={cn("grid flex-col gap-6    ", className)} {...props}>
-      <Card className="overflow-hidden  p-0 h-full">
-        <CardContent className="grid p-4  h-full    md:grid-cols-2">
-          <form
-            className={`p-6 md:p-8 space-y-4  ${isFullPage && "max-w-md place-self-center"}`}
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <Card
+        className={`overflow-hidden h-full p-0 ${isFullPage && "border-0"}`}
+      >
+        <CardContent className="grid p-4 h-full md:grid-cols-2">
+          <Form
+            of={signupForm}
+            onSubmit={({ email, password }) =>
+              handleSignupEmail({ email, password })
+            }
+            className={`p-6 md:p-8 ${isFullPage && "space-y-4 max-w-md w-full place-self-center"}`}
           >
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Create your account</h1>
-                <p className="text-sm text-balance text-muted-foreground">
+                <p className="text-balance text-muted-foreground">
                   Enter your email below to create your account
                 </p>
               </div>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="juandelacruz@example.com"
-                  required
-                  className="text-2xl h-10"
-                />
-                <FieldDescription>
-                  We&apos;ll use this to contact you. We will not share your
-                  email with anyone else.
-                </FieldDescription>
-              </Field>
-              <Field>
-                <Field className="grid grid-rows-2 gap-4">
-                  <Field>
+              <FormischField of={signupForm} path={["email"]}>
+                {(field) => (
+                  <Field data-invalid={field.errors !== null}>
+                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                    <Input
+                      id="email"
+                      className="h-10"
+                      type="email"
+                      placeholder="juandelacruz@example.com"
+                      required
+                      aria-invalid={field.errors !== null}
+                      {...field.props}
+                    />
+                    {field.errors && (
+                      <FieldError
+                        errors={field.errors.map((message) => ({ message }))}
+                      />
+                    )}
+                    <FieldDescription>
+                      We&apos;ll use this to contact you. We will not share your
+                      email with anyone else.
+                    </FieldDescription>
+                  </Field>
+                )}
+              </FormischField>
+              <FormischField of={signupForm} path={["password"]}>
+                {(field) => (
+                  <Field data-invalid={field.errors !== null}>
                     <FieldLabel htmlFor="password">Password</FieldLabel>
                     <Input
                       id="password"
-                      className="text-2xl h-10"
                       type="password"
+                      className="h-10"
                       required
+                      aria-invalid={field.errors !== null}
+                      {...field.props}
                     />
+                    {field.errors && (
+                      <FieldError
+                        errors={field.errors.map((message) => ({ message }))}
+                      />
+                    )}
+                    <FieldDescription>
+                      Must be at least 8 characters long.
+                    </FieldDescription>
                   </Field>
-                  <Field>
+                )}
+              </FormischField>
+              <FormischField of={signupForm} path={["confirmPassword"]}>
+                {(field) => (
+                  <Field data-invalid={field.errors !== null}>
                     <FieldLabel htmlFor="confirm-password">
                       Confirm Password
                     </FieldLabel>
                     <Input
                       id="confirm-password"
-                      className="text-2xl h-10"
                       type="password"
+                      className="h-10"
                       required
+                      aria-invalid={field.errors !== null}
+                      {...field.props}
                     />
+                    {field.errors && (
+                      <FieldError
+                        errors={field.errors.map((message) => ({ message }))}
+                      />
+                    )}
                   </Field>
-                </Field>
-                <FieldDescription>
-                  Must be at least 8 characters long.
-                </FieldDescription>
-              </Field>
+                )}
+              </FormischField>
               <Field>
                 <Button type="submit" size={"lg"}>
                   Create Account
@@ -85,12 +184,13 @@ export function SignupForm({
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
               </FieldSeparator>
-              <Field className="grid  gap-4">
+              <Field className="flex w-full">
                 <Button
+                  onClick={handleSignupGoogle}
                   variant="outline"
+                  className={"w-full"}
                   size={"lg"}
                   type="button"
-                  onClick={handleSignup}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
@@ -102,17 +202,17 @@ export function SignupForm({
                 </Button>
               </Field>
               <FieldDescription className="text-center">
-                Already have an account? <a href="/login">Login </a>
+                Already have an account? <a href="/login">Login</a>
               </FieldDescription>
             </FieldGroup>
             {isFullPage && (
-              <FieldDescription className="px-6   text-center">
+              <FieldDescription className="px-6 text-center">
                 By clicking continue, you agree to our{" "}
                 <a href="#">Terms of Service</a> and{" "}
                 <a href="#">Privacy Policy</a>.
               </FieldDescription>
             )}
-          </form>
+          </Form>
           <div className="relative hidden bg-muted md:block">
             <img
               src="/auth-design-6.jpg"
@@ -122,7 +222,6 @@ export function SignupForm({
           </div>
         </CardContent>
       </Card>
-
       {!isFullPage && (
         <FieldDescription className="px-6 text-white text-center">
           By clicking continue, you agree to our{" "}

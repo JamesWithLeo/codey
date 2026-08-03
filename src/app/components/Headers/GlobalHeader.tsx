@@ -39,7 +39,7 @@ export default function GlobalHeader() {
     <section className="flex sticky top-0 z-30 border-b bg-white justify-center w-full flex-col items-center px-4 md:px-8 h-16">
       <div className="max-w-7xl grid grid-cols-3 w-full justify-between items-center">
         <Link
-          className={`text-2xl sm:text-3xl ${dmSerif.className} text-gray-600`}
+          className={`text-2xl w-min sm:text-3xl ${dmSerif.className} text-gray-600`}
           href={"/"}
         >
           Hardware

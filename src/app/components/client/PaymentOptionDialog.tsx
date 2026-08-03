@@ -19,6 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const paymentOptions = [
   { value: "paypal", label: "PayPal" },
@@ -30,19 +31,24 @@ const paymentOptions = [
 
 export function PaymentOptionDialog({
   onConfirm,
+  onCheckOut,
 }: {
-  onConfirm?: (
-    option: string | null,
-  ) => Promise<{ success: boolean; message?: string } | undefined>;
+  onConfirm?: (option: string | null) => Promise<{
+    success: boolean;
+    message: string;
+    id: string | null | undefined;
+  }>;
+  onCheckOut: () => void;
 }) {
   const [selected, setSelected] = useState<string | null>("");
+  const router = useRouter();
 
   const [opened, setOpened] = useState(false);
   return (
     <Dialog open={opened} onOpenChange={setOpened}>
-      <DialogTrigger
-        render={<Button className={"w-full"}>Proceed to payment</Button>}
-      />
+      <Button className={"w-full"} onClick={onCheckOut}>
+        Proceed to payment
+      </Button>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Select Payment Option</DialogTitle>
@@ -73,9 +79,8 @@ export function PaymentOptionDialog({
             disabled={!selected}
             onClick={async () => {
               const result = await onConfirm?.(selected);
-              if (result && result.success) {
-                alert("Payment successful!");
-                setOpened(false);
+              if (result && result.success && result.id) {
+                router.replace(`/orders/${result.id}`);
               }
               alert("Payment failed!");
             }}

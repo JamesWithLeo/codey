@@ -14,6 +14,7 @@ import {
   Truck,
   UserRound,
   ShoppingCart,
+  CircleUserIcon,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 type ProfileUser = {
   name?: string | null;
@@ -85,8 +87,8 @@ const quickStats = [
 
 export default function ProfileDashboard({ user }: { user: ProfileUser }) {
   const [form, setForm] = useState({
-    firstName: user.firstName ?? user.name?.split(" ")[0] ?? "Guest",
-    lastName: user.lastName ?? user.name?.split(" ")[1] ?? "User",
+    firstName: user.firstName ? user.firstName : "",
+    lastName: user.lastName ? user.lastName : "",
     email: user.email ?? "",
     phone: "",
     location: "",
@@ -95,8 +97,8 @@ export default function ProfileDashboard({ user }: { user: ProfileUser }) {
   const [saved, setSaved] = useState(false);
 
   const initials = useMemo(() => {
-    const first = form.firstName?.[0] ?? "G";
-    const last = form.lastName?.[0] ?? "U";
+    const first = form.firstName?.[0] ?? "";
+    const last = form.lastName?.[0] ?? "";
     return `${first}${last}`.toUpperCase();
   }, [form.firstName, form.lastName]);
 
@@ -159,9 +161,12 @@ export default function ProfileDashboard({ user }: { user: ProfileUser }) {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-xl font-semibold text-primary-foreground shadow-sm">
+                  <Avatar size="lg">
                     {initials}
-                  </div>
+                    <AvatarFallback className={"bg-primary text-white"}>
+                      <CircleUserIcon />
+                    </AvatarFallback>
+                  </Avatar>
                   <div>
                     <h2 className="text-xl font-semibold text-foreground">
                       {form.firstName} {form.lastName}

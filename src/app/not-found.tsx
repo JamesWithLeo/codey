@@ -12,7 +12,7 @@ export default function NotFound() {
 
   return (
     <div
-      className={`min-h-[80vh] w-full flex items-center justify-center px-6 ${sans.className}`}
+      className={`h-full w-full  flex items-center justify-center px-6 ${sans.className}`}
     >
       <div className="max-w-md w-full text-center flex flex-col items-center">
         {/* Construction Themed Warning Icon */}

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { headers } from "next/headers";
-import { ArrowLeft, PackageCheck } from "lucide-react";
+import { PackageCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
@@ -34,7 +34,7 @@ export default async function Page({
   const { session, user } = { ...AuthSession };
 
   if (!session || !user) redirect("/login");
-  if (!Number.isInteger(orderNumber)) notFound();
+  if (Number.isNaN(orderNumber) || !Number.isInteger(orderNumber)) notFound();
 
   const order = await prisma.order.findUnique({
     where: { id: orderNumber },

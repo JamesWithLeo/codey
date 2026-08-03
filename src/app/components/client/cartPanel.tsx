@@ -188,9 +188,9 @@ export default function CartPanel({
         opened={opened}
         setOpened={setOpened}
       />
-      <section className="flex  flex-col lg:flex-row w-full   lg:grid-cols-[2fr_min-content_1fr] lg:grid-rows-[min-content_1fr] h-[calc(100vh-4rem)]- h-full  gap-4 overflow-hidden   lg:overflow-scroll">
-        <section className="flex-1 w-full  flex flex-col pr-2   overflow-y-auto lg:overflow-y-scroll  ">
-          <div className="flex h-min justify-between w-full items-center sticky top-0  py-2 bg-background z-10 ">
+      <section className="flex flex-col lg:flex-row w-full h-[calc(100vh-4rem)] gap-4 overflow-hidden">
+        <section className="flex-1 w-full flex flex-col min-h-0 overflow-hidden">
+          <div className="flex h-min shrink-0 justify-between w-full items-center sticky top-0  py-2 bg-background z-10 ">
             <h1 className="font-semibold text-lg">
               {cart?.length} {cart?.length <= 1 ? "item" : "items"}
             </h1>
@@ -232,7 +232,11 @@ export default function CartPanel({
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 w-full   ">
+          <div
+            className="flex flex-1 flex-col min-h-0 pb-4 gap-2 w-full 
+ overflow-y-auto  scroll-fade-b scrollbar-auto
+            "
+          >
             {cart && cart.length
               ? cart.map((item) => (
                   <CartCard
@@ -252,9 +256,12 @@ export default function CartPanel({
 
         {/* ORDER SUMMARY CHECKOUT CONTAINER FIX: Locks permanently to viewport bottom on mobile */}
         <div className="lg:max-w-md w-full sticky bottom-0  left-0  lg:bottom-auto z-0  ">
-          <Card className="w-full lg:sticky lg:top-0 flex flex-col  overflow-hidden ">
+          <Card
+            className="w-full lg:sticky lg:top-0 flex flex-col  overflow-hidden "
+            style={{ paddingTop: 0, paddingBottom: 0 }}
+          >
             {/* Hidden header on mobile to maximize room for items list */}
-            <CardHeader className=" px-4 bg-muted/40 border-b hidden sm:block">
+            <CardHeader className=" px-4 py-4 bg-muted/50 border-b hidden sm:block">
               <CardTitle className="text-base font-bold tracking-tight text-foreground">
                 Order Summary
               </CardTitle>
@@ -293,9 +300,7 @@ export default function CartPanel({
               </div>
             </CardContent>
 
-            <Separator className="bg-muted hidden sm:block" />
-
-            <CardFooter className="p-4 flex flex-col gap-3 bg-muted/20">
+            <CardFooter className="p-4 flex flex-col gap-3 border-t bg-muted/50">
               <div className="flex justify-between items-center w-full text-sm font-medium">
                 <span className="text-muted-foreground text-xs sm:text-sm">
                   Items ({orders.length})

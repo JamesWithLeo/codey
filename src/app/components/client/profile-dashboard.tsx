@@ -6,13 +6,10 @@ import {
   BellRing,
   Box,
   Clock3,
-  CreditCard,
-  MapPin,
   PackageCheck,
   ShieldCheck,
   Sparkles,
   Truck,
-  UserRound,
   ShoppingCart,
   CircleUserIcon,
 } from "lucide-react";
@@ -108,7 +105,7 @@ export default function ProfileDashboard({ user }: { user: ProfileUser }) {
   };
 
   return (
-    <main className="min-h-full bg-background px-4  text-foreground sm:px-6 lg:px-8">
+    <main className="min-h-full bg-background  text-foreground ">
       <div className="mx-auto flex max-w-7xl flex-col gap-6">
         <header className="flex flex-col gap-4 rounded-3xl border border-border bg-card p-4 lg:p-6  md:flex-row md:items-end md:justify-between">
           <div className="space-y-3">
@@ -185,7 +182,7 @@ export default function ProfileDashboard({ user }: { user: ProfileUser }) {
                   {quickStats.map((stat) => (
                     <div
                       key={stat.label}
-                      className="rounded-2xl border border-border bg-background p-2"
+                      className="rounded-2xl bg-secondary p-4"
                     >
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <stat.icon className="h-4 w-4 text-primary" />
@@ -417,69 +414,6 @@ export default function ProfileDashboard({ user }: { user: ProfileUser }) {
                 Logout
               </Button>
             </div>
-            {/* <Card className="border-border bg-card p-4 text-card-foreground ">
-              <CardHeader>
-                <CardTitle className="text-lg text-foreground">
-                  Contact & preferences
-                </CardTitle>
-                <CardDescription className="text-muted-foreground">
-                  Simple management tools for addresses, payments, and
-                  notifications.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center justify-between rounded-2xl border border-border bg-background p-3">
-                  <div className="flex items-center gap-3">
-                    <MapPin className="h-4 w-4 text-primary" />
-                    <div>
-                      <p className="text-sm font-medium text-foreground">
-                        Primary address
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {form.location}
-                      </p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="sm">
-                    Edit
-                  </Button>
-                </div>
-
-                <div className="flex items-center justify-between rounded-2xl border border-border bg-background p-3">
-                  <div className="flex items-center gap-3">
-                    <CreditCard className="h-4 w-4 text-primary" />
-                    <div>
-                      <p className="text-sm font-medium text-foreground">
-                        Payment method
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        •••• 4821 • Expires 08/28
-                      </p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="sm">
-                    Manage
-                  </Button>
-                </div>
-
-                <div className="flex items-center justify-between rounded-2xl border border-border bg-background p-3">
-                  <div className="flex items-center gap-3">
-                    <UserRound className="h-4 w-4 text-primary" />
-                    <div>
-                      <p className="text-sm font-medium text-foreground">
-                        Account access
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Password, 2FA, and recovery options
-                      </p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="sm">
-                    Review
-                  </Button>
-                </div>
-              </CardContent>
-            </Card> */}
           </div>
         </section>
       </div>

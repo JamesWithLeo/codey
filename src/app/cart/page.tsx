@@ -46,7 +46,7 @@ export default async function Page() {
   };
   return (
     <>
-      <div className="w-full flex h-full   lg:min-h-dvh items-start    justify-center  ">
+      <div className="w-full flex h-full    items-start    justify-center  ">
         <div className="w-full h-full  flex max-w-7xl  flex-col  items-center justify-center">
           <div className="breadcrumbs  self-start   ">
             <Breadcrumb>

@@ -19,10 +19,10 @@ export const auth = betterAuth({
         defaultValue: "user",
       },
 
-      lastName: { type: "string" },
-      firstName: { type: "string" },
-      location: { type: "string" },
-      phoneNumber: { type: "string" },
+      lastName: { type: "string", required: false },
+      firstName: { type: "string", required: false },
+      location: { type: "string", required: false },
+      phoneNumber: { type: "string", required: false },
     },
   },
 

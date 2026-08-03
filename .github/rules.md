@@ -4,5 +4,5 @@
   Valibot skills: ".agents/skills/valibot"
 - Use lucide-react icons if needed.
 
-- Ensure all interactive elements include accessible ARIA attributes.
+- Ensure all interactive elements/components include accessible ARIA attributes.
 - toast from sonner

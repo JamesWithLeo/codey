@@ -111,9 +111,9 @@ export default function GlobalHeader() {
                       Orders
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuLabel>Admin</DropdownMenuLabel>
                     {data.user.role === "admin" && (
                       <>
+                        <DropdownMenuLabel>Admin</DropdownMenuLabel>
                         <DropdownMenuItem
                           className={"cursor-pointer"}
                           onClick={() => {

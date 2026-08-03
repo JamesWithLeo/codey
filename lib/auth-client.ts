@@ -61,10 +61,6 @@ export async function signupWithEmail({
       password, // user password -> min 8 characters by default
       callbackURL, // A URL to redirect to after the user verifies their email (optional)
       name: "",
-      // firstName,
-      // lastName,
-      // location,
-      // phoneNumber,
     },
     {
       onRequest: (ctx) => {
@@ -94,10 +90,26 @@ export async function signInWithEmail({
   callbackURL?: string | undefined;
   rememberMe?: boolean | undefined;
 }) {
-  return await authClient.signIn.email({
-    email,
-    password,
-    callbackURL,
-    rememberMe,
-  });
+  return await authClient.signIn.email(
+    {
+      email,
+      password,
+      callbackURL,
+      rememberMe,
+    },
+    {
+      onRequest: (ctx) => {
+        //show loading
+        console.log("Requesting sign-in with email...");
+      },
+      onSuccess: (ctx) => {
+        console.log("Sign-in successful!", ctx.data);
+        //redirect to the dashboard or sign in page
+      },
+      onError: (ctx) => {
+        // display the error message
+        alert(ctx.error.message);
+      },
+    },
+  );
 }

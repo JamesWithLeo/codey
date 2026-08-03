@@ -10,7 +10,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Minus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { CheckOutItem } from "@/src/types";
 
 export default function CartCard({
@@ -122,7 +121,7 @@ export default function CartCard({
   return (
     <Card
       id={cartItem.id}
-      className={`relative  p-2 max-w-full w-full min-h-32  transition-all rounded-md overflow-hidden   items-center grid grid-cols-4   lg:p-4 lg:gap-4 gap-1 text-xs cursor-pointer select-none ${
+      className={`relative  p-2 max-w-full w-full min-h-40 transition-all rounded-md items-center grid grid-cols-4   lg:p-4 lg:gap-4 gap-1 text-xs cursor-pointer select-none ${
         isMarking && isMarkingForDeletion
           ? "bg-destructive/10 border border-destructive"
           : ""
@@ -132,7 +131,6 @@ export default function CartCard({
           setIsMarking(!isMarking);
           HandleMark();
         } else {
-          // router.push(productLink);
           setIsMarking(false);
         }
       }}
@@ -155,46 +153,39 @@ export default function CartCard({
         />
       </div>
 
-      {/* Description Header Text layout info */}
-      <div className="p-0 w-full flex flex-col h-full col-span-2 ">
-        <div>
+      <div className="p-0 w-full flex flex-col h-full col-span-3  md:col-span-2 ">
+        <div className="max-w-xs ">
           <h1
-            className=" font-bold  leading-tight lg:text-base text-sm  line-clamp-2 uppercase hover:underline underline-offset-2"
+            className={`font-bold text-ellipsis   leading-tight lg:text-base text-sm  line-clamp-2 uppercase ${!isMarkingForDeletion && "hover:underline"} underline-offset-2`}
             onClick={() => {
+              if (isMarkingForDeletion) return;
               router.push(productLink);
             }}
           >
             {product?.name}
           </h1>
         </div>
-        <div className="flex flex-wrap items-center space-x-4 text-sm font-medium">
-          <code className="text-muted-foreground">{product.brand}</code>
-
-          <Separator orientation="vertical" className="h-4" />
-
-          <code className="text-muted-foreground">
-            {product.category.toLowerCase()}
+        <div className="flex flex-wrap flex-col gap-px space-x-4 text-sm font-medium">
+          <code className="text-muted-foreground text-xs md:text-sm">
+            BRAND: {product.brand.toUpperCase()}
           </code>
-
-          <Separator orientation="vertical" className="h-4" />
-
+          <code className="text-muted-foreground text-xs md:text-sm">
+            CATEGORY: {product.category.toUpperCase()}
+          </code>
+        </div>
+        <div className="h-full  flex items-end gap-4">
+          <p className="lg:text-lg text-xs   font-light text-foreground/80">
+            ${Number(product.price).toFixed(2)}
+          </p>
           <Badge variant={product.stock <= 0 ? "destructive" : "default"}>
             {product.stock} left in stock
           </Badge>
         </div>
-        <div className="h-full  flex items-end">
-          <p className="lg:text-lg text-xs   font-light text-foreground/80">
-            ${Number(product.price).toFixed(2)}
-          </p>
-        </div>
       </div>
 
-      {/* Quantity adjustment buttons container grid */}
-
-      {/* Totals displaying alongside selection checkboxes layout block */}
-      <div className="flex flex-col justify-between  items-end w-full h-full  col-span-1">
+      <div className="flex  md:flex-col justify-end md:justify-between   items-center w-full h-full  col-span-4 md:col-span-1  flex-row">
         <CardContent
-          className="p-0 flex flex-col items-center sm:items-end justify-center col-span-1 "
+          className="p-0 flex  flex-row gap-1.5  w-full items-center  md:justify-end   justify-start col-span-1 "
           onClick={(e) => e.stopPropagation()}
         >
           {isMarkingForDeletion ? null : (
@@ -202,32 +193,29 @@ export default function CartCard({
               <h2 className="text-sm lg:text-base font-bold text-foreground">
                 ${(Number(product.price.toString()) * quantity).toFixed(2)}
               </h2>
-              <h1 className="text-xs text-zinc-500">Quantity:{quantity}</h1>
+              <h1 className="text-xs text-zinc-500">(Qty:{quantity})</h1>
             </>
           )}
         </CardContent>
         {isMarkingForDeletion ? null : (
-          <div className="flex items-center  justify-center text-center h-9">
+          <CardContent className="flex items-center w-full    justify-end text-center h-9">
             <Button
-              // variant="ghost"
-              variant={"secondary"}
+              variant={"outline"}
               size="icon-xs"
-              className="h-full w-8 "
               onClick={HandleDecrementQuantity}
               disabled={quantity === 1}
             >
-              <Minus className="h-2 w-2" />
+              <Minus />
             </Button>
             <h1 className={"w-8 text-xs"}>{quantity}</h1>
             <Button
-              variant="secondary"
+              variant={"outline"}
               size="icon-xs"
-              className="h-full w-8"
               onClick={HandleIncrementQuantity}
             >
-              <Plus className="h-2 w-2" />
+              <Plus />
             </Button>
-          </div>
+          </CardContent>
         )}
       </div>
     </Card>
